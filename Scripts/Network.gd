@@ -116,12 +116,24 @@ remote func _lobby_appliquerStatu(idUtilisateur: int, statu: bool):
 func lobby_lancerPartie():
 	""" Permet a l'hote de la partie de démarer le jeu pour tt les utilisateurs"""
 	if id == 1:
-		pass
+		if _peutLancerPartie():
+			_lobby_lancePartie()
+			for usId in utilisateurs:
+				if usId != 1:
+					rpc_id(usId, "_lobby_lancePartie")
 
 
 remote func _lobby_lancePartie():
 	""" Signal a tt les utilisateurs du lobby que la partie commence."""
-	pass
+	emit_signal("partieLancee")
+
+
+func _peutLancerPartie()->bool:
+	var peutLancer: bool = true
+	for usId in utilisateurs:
+		peutLancer = peutLancer and utilisateurs[usId].estPret
+	
+	return peutLancer
 
 # =================================================
 # Partie

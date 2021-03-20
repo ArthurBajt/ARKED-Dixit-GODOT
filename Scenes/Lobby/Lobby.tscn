@@ -13,12 +13,23 @@ __meta__ = {
 }
 
 [node name="ButtonPret" type="Button" parent="Control"]
-margin_left = 807.0
-margin_top = 445.0
-margin_right = 963.0
-margin_bottom = 503.0
+margin_left = 780.0
+margin_top = 402.0
+margin_right = 936.0
+margin_bottom = 460.0
 text = "Pret ?"
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="ButtonLancer" type="Button" parent="Control"]
+margin_left = 781.0
+margin_top = 474.0
+margin_right = 937.0
+margin_bottom = 502.0
+text = "Lancer"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 [connection signal="pressed" from="Control/ButtonPret" to="." method="_on_ButtonPret_pressed"]
+[connection signal="pressed" from="Control/ButtonLancer" to="." method="_on_ButtonLancer_pressed"]
