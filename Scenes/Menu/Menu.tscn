@@ -1,0 +1,35 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Scenes/Menu/Menu.gd" type="Script" id=1]
+
+[node name="Menu" type="Node"]
+script = ExtResource( 1 )
+
+[node name="Ui" type="Control" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ButtonCreer" type="Button" parent="Ui"]
+margin_left = 310.0
+margin_top = 381.0
+margin_right = 526.0
+margin_bottom = 441.0
+text = "Creer"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ButtonRejoindre" type="Button" parent="Ui"]
+margin_left = 593.0
+margin_top = 379.0
+margin_right = 809.0
+margin_bottom = 439.0
+text = "Rejoindre"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+[connection signal="pressed" from="Ui/ButtonCreer" to="." method="_on_ButtonCreer_pressed"]
+[connection signal="pressed" from="Ui/ButtonRejoindre" to="." method="_on_ButtonRejoindre_pressed"]
