@@ -1,31 +1,38 @@
 extends Node
 
 
-
-#	Dictionary du type :
-#		{id_utilisateur: Node_du_joueur}
 onready var nodeJoueurs = $Scene/Joueurs
 var joueurs: Array = []
 const JOUEUR_INSTANCE = preload("res://Scenes/Joueur/Joueur.tscn")
 const JOUEUR_POSITION: Vector3 = Vector3(0, 0, -5)
+
+onready var plateau = $Scene/Plateau
 
 
 
 
 func _ready():
 	_instancierJoueurs()
+	plateau.init(joueurs)
 	_placerJoueurs()
 
+
+class TrieJoueurs:
+	# c'est comme les fonction discrette en js.
+	# mais en becoup moins bien fait
+	static func sort(a, b):
+		return a.id < b.id
 
 func _instancierJoueurs():
 	""" """
 	for usId in Network.utilisateurs:
 		var j = JOUEUR_INSTANCE.instance()
 		
-		
 		nodeJoueurs.add_child(j)
-		j.init(usId)
+		j.init(usId, plateau)
 		joueurs.append(j)
+	
+	joueurs.sort_custom(TrieJoueurs, "sort")
 
 
 func _placerJoueurs():

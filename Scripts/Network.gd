@@ -35,7 +35,6 @@ var utilisateurs: Dictionary
 var data: Dictionary
 const dataStruct = {nom = "",
 					estPret = false,
-					plateau = null,
 					main = [],
 					points = 0,
 					estConteur = false}
@@ -50,7 +49,7 @@ func _lobby_se_declarer():
 	""" Quand un joueur se connecte au serveur
 	Il recupère son ID propre.
 	Et déclare sa présence au serveur. """
-	self.data = dataStruct.duplicate()
+	
 	
 	if get_tree().is_network_server():
 		id = 1
@@ -59,6 +58,7 @@ func _lobby_se_declarer():
 		id = get_tree().get_network_unique_id()
 		rpc_id(1, "_lobby_declareUtilisateur", id)
 	
+	self.data = dataStruct.duplicate()
 	utilisateurs[id] = dataStruct.duplicate()
 
 
@@ -68,10 +68,10 @@ remote func _lobby_declareUtilisateur(idUtilisateur: int):
 	qu'un nv Utilisateur s'est connecté."""
 	for usId in utilisateurs:
 		if usId != 1:
-			rpc_id(usId, "_lobby_ajouteUtilisateur", idUtilisateur)
+			rpc_id(usId, "_lobby_ajouteUtilisateur", idUtilisateur,dataStruct.duplicate())
 			rpc_id(idUtilisateur, "_lobby_ajouteUtilisateur", usId, utilisateurs[usId])
 		else:
-			_lobby_ajouteUtilisateur(idUtilisateur)
+			_lobby_ajouteUtilisateur(idUtilisateur, dataStruct.duplicate())
 			rpc_id(idUtilisateur, "_lobby_ajouteUtilisateur", 1, utilisateurs[1])
 
 
@@ -82,7 +82,7 @@ remote func _lobby_ajouteUtilisateur(idUtilisateur: int, curentData: Dictionary 
 	
 	On met a jour les Utilisateur deja presents et leurs données"""
 	if curentData == {}:
-	 utilisateurs[idUtilisateur] = dataStruct.duplicate()
+		utilisateurs[idUtilisateur] = dataStruct.duplicate()
 	else :
 		utilisateurs[idUtilisateur] = curentData.duplicate()
 	
@@ -135,11 +135,14 @@ remote func _lobby_lancePartie():
 
 func _peutLancerPartie()->bool:
 	""" True si on peut lancer la partie """
-	var peutLancer: bool = true
 	for usId in utilisateurs:
-		peutLancer = peutLancer and utilisateurs[usId].estPret
+		if not "estPret" in utilisateurs[usId]:
+			return false
+		
+		if not utilisateurs[usId].estPret:
+			return false
 	
-	return peutLancer
+	return true
 
 
 # =================================================
