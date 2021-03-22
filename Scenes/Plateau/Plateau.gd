@@ -1,8 +1,13 @@
 extends Spatial
 
 
-var joueurs: Array
+var joueurs: Array = []
+var estHote: bool
+
+
+var pioche
 
 
 func init(joueursDeLaPartie: Array):
-	self.joueurs = joueursDeLaPartie
+	joueurs = joueursDeLaPartie
+	estHote = Network.id == 1

@@ -75,3 +75,10 @@ func getCarte(key: String) -> ImageTexture:
 		push_warning("Cette clef n'est pas le nom d'une carte")
 		return ImageTexture.new()
 	return _cartes[key]
+
+
+func getDeck()->Array:
+	var res = []
+	for c in _cartes:
+		res.append(c)
+	return res

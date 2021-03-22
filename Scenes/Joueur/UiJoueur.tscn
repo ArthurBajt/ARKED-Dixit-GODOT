@@ -16,3 +16,20 @@ margin_top = 18.0
 margin_right = 568.0
 margin_bottom = 32.0
 text = "LE NOM DU JOUEUR"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="LabelPoints" type="Label" parent="."]
+margin_left = 459.0
+margin_top = 42.0
+margin_right = 557.0
+margin_bottom = 56.0
+text = "Et j'ai XX points"
+
+[node name="LabelConteur" type="Label" parent="."]
+margin_left = 449.0
+margin_top = 62.0
+margin_right = 571.0
+margin_bottom = 76.0
+text = "et je suis conteur ?"

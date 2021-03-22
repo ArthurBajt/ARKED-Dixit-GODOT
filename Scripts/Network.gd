@@ -143,10 +143,3 @@ func _peutLancerPartie()->bool:
 			return false
 	
 	return true
-
-
-# =================================================
-# Partie
-
-func initPlateau():
-	pass
