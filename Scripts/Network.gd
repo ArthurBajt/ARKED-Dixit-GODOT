@@ -33,7 +33,12 @@ func rejoindreServeur():
 
 var utilisateurs: Dictionary
 var data: Dictionary
-const dataStruct = {estPret = false}
+const dataStruct = {nom = "",
+					estPret = false,
+					plateau = null,
+					main = [],
+					points = 0,
+					estConteur = false}
 
 
 signal nvUtilisateur(idUtilisateur)
@@ -62,12 +67,12 @@ remote func _lobby_declareUtilisateur(idUtilisateur: int):
 	le serveur signal a tt les utilisateur déjà présents
 	qu'un nv Utilisateur s'est connecté."""
 	for usId in utilisateurs:
-		if id != 1:
+		if usId != 1:
 			rpc_id(usId, "_lobby_ajouteUtilisateur", idUtilisateur)
 			rpc_id(idUtilisateur, "_lobby_ajouteUtilisateur", usId, utilisateurs[usId])
 		else:
 			_lobby_ajouteUtilisateur(idUtilisateur)
-		rpc_id(idUtilisateur, "_lobby_ajouteUtilisateur", 1, utilisateurs[1])
+			rpc_id(idUtilisateur, "_lobby_ajouteUtilisateur", 1, utilisateurs[1])
 
 
 remote func _lobby_ajouteUtilisateur(idUtilisateur: int, curentData: Dictionary = {}):
@@ -129,11 +134,16 @@ remote func _lobby_lancePartie():
 
 
 func _peutLancerPartie()->bool:
+	""" True si on peut lancer la partie """
 	var peutLancer: bool = true
 	for usId in utilisateurs:
 		peutLancer = peutLancer and utilisateurs[usId].estPret
 	
 	return peutLancer
 
+
 # =================================================
 # Partie
+
+func initPlateau():
+	pass

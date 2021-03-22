@@ -8,9 +8,14 @@
 
 config_version=4
 
-_global_script_classes=[  ]
+_global_script_classes=[ {
+"base": "Spatial",
+"class": "Joueur",
+"language": "GDScript",
+"path": "res://Scenes/Joueur/Joueur.gd"
+} ]
 _global_script_class_icons={
-
+"Joueur": ""
 }
 
 [application]
@@ -23,6 +28,7 @@ config/icon="res://icon.png"
 
 Globals="*res://Scripts/Globals.gd"
 Network="*res://Scripts/Network.gd"
+R="*res://Scripts/R.gd"
 Debug="*res://Scripts/Debug.gd"
 
 [rendering]
