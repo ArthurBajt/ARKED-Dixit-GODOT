@@ -59,6 +59,7 @@ func _loadCartes():
 	while file != "":
 		if not  dir.current_is_dir():
 			if reg.search(file):
+				# pour puvoir exporter le jeu, c'est mieux d'utiliser un stream
 				var streamTexture = load(PATH_TO_CARDS + file)
 				var image = streamTexture.get_data()
 				var imageTexture = ImageTexture.new()
@@ -69,5 +70,8 @@ func _loadCartes():
 	
 
 
-func getCarte(key: String):
-	pass
+func getCarte(key: String) -> ImageTexture:
+	if not key in _cartes:
+		push_warning("Cette clef n'est pas le nom d'une carte")
+		return ImageTexture.new()
+	return _cartes[key]

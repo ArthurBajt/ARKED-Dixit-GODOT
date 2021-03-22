@@ -4,14 +4,25 @@ class_name Joueur
 var id: int
 var estLocal: bool = false
 
-onready var camera: Camera = $Camera
+var plateau
+
+onready var cameraPos: Spatial = $CameraPos
+
+const NODE_UI = preload("res://Scenes/Joueur/UiJoueur.tscn")
 
 
-func _ready():
-	pass
 
-
-func init(idJoueur: int):
+func init(idJoueur: int, plateauDePartie):
 	self.id = idJoueur
 	self.estLocal = Network.id == idJoueur
-#	camera.current = self.estLocal
+	self.plateau = plateauDePartie
+	
+	if self.estLocal:
+		var cam: Camera = Camera.new()
+		cameraPos.add_child(cam)
+		cam.set_current(true)
+		cam.global_transform = cameraPos.global_transform
+		
+		var ui= NODE_UI.instance()
+		self.add_child(ui)
+

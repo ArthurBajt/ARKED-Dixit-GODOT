@@ -1,0 +1,18 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Scenes/Joueur/UiJoueur.gd" type="Script" id=1]
+
+[node name="UiJoueur" type="Control"]
+margin_right = 40.0
+margin_bottom = 40.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="LabelNom" type="Label" parent="."]
+margin_left = 440.0
+margin_top = 18.0
+margin_right = 568.0
+margin_bottom = 32.0
+text = "LE NOM DU JOUEUR"

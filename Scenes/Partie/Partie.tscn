@@ -1,6 +1,7 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Scenes/Partie/Partie.gd" type="Script" id=1]
+[ext_resource path="res://Scenes/Plateau/Plateau.tscn" type="PackedScene" id=2]
 
 [sub_resource type="QuadMesh" id=1]
 size = Vector2( 25, 25 )
@@ -32,10 +33,7 @@ material/0 = SubResource( 3 )
 
 [node name="Joueurs" type="Spatial" parent="Scene"]
 
-[node name="Camera" type="Camera" parent="Scene"]
-transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 9.27616, 0 )
-current = true
-fov = 103.4
+[node name="Plateau" parent="Scene" instance=ExtResource( 2 )]
 
 [node name="Ui" type="Control" parent="."]
 margin_right = 40.0
