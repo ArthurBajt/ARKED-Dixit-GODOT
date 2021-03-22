@@ -21,7 +21,7 @@ func init(idJoueur: int, plateauDePartie):
 		var cam: Camera = Camera.new()
 		cameraPos.add_child(cam)
 		cam.set_current(true)
-		cam.global_transform = cameraPos.global_transform
+#		cam.global_transform = cameraPos.global_transform
 		
 		var ui= NODE_UI.instance()
 		self.add_child(ui)
