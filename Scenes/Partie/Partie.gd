@@ -13,8 +13,8 @@ onready var plateau = $Scene/Plateau
 
 func _ready():
 	_instancierJoueurs()
-	plateau.init(joueurs)
 	_placerJoueurs()
+	plateau.init(joueurs)
 
 
 class TrieJoueurs:
