@@ -13,9 +13,15 @@ _global_script_classes=[ {
 "class": "Joueur",
 "language": "GDScript",
 "path": "res://Scenes/Joueur/Joueur.gd"
+}, {
+"base": "Node",
+"class": "Pioche",
+"language": "GDScript",
+"path": "res://Scenes/Pioche/Pioche.gd"
 } ]
 _global_script_class_icons={
-"Joueur": ""
+"Joueur": "",
+"Pioche": ""
 }
 
 [application]

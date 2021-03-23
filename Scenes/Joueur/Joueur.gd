@@ -5,6 +5,7 @@ var id: int
 var estLocal: bool = false
 
 var plateau
+var main: Array
 
 onready var cameraPos: Spatial = $CameraPos
 
@@ -16,12 +17,12 @@ func init(idJoueur: int, plateauDePartie):
 	self.id = idJoueur
 	self.estLocal = Network.id == idJoueur
 	self.plateau = plateauDePartie
+	self.main = []
 	
 	if self.estLocal:
 		var cam: Camera = Camera.new()
 		cameraPos.add_child(cam)
 		cam.set_current(true)
-#		cam.global_transform = cameraPos.global_transform
 		
 		var ui= NODE_UI.instance()
 		self.add_child(ui)

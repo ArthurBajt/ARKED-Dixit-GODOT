@@ -16,5 +16,8 @@ func _process(_delta):
 		utilisateursText += "\t" + "id: " + str(usId)
 		if "estPret" in Network.utilisateurs[usId]:
 			utilisateursText += "\t" + "estPret: " + str(Network.utilisateurs[usId].estPret) + "\n"
-		utilisateursText += "\n\n"
+		utilisateursText += "\n"
+		if "main" in Network.utilisateurs[usId]:
+			utilisateursText += "\t" + "main: " + str(Network.utilisateurs[usId].main) + "\n"
+		
 	labelUtilisateurs.text = utilisateursText

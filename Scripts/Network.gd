@@ -143,3 +143,24 @@ func _peutLancerPartie()->bool:
 			return false
 	
 	return true
+
+
+# =================================================
+# Cartes
+
+signal joueurApiocherCarte(id, carte)
+
+func joueurPioche(idJoueur: int, carte: String):
+	for usId in utilisateurs:
+		if usId != 1:
+			rpc_id(usId, "_joueurPiocheCarte", idJoueur, carte)
+		else:
+			_joueurPiocheCarte(idJoueur, carte)
+
+
+remote func _joueurPiocheCarte(idJoueur: int, carte: String):
+	if idJoueur == id:
+		self.data.main = self.data.main + [carte]
+	utilisateurs[idJoueur].main = utilisateurs[idJoueur].main + [carte]
+	
+	emit_signal("joueurApiocherCarte", idJoueur, carte)
