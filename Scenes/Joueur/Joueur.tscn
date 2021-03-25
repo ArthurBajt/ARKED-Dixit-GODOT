@@ -43,7 +43,7 @@ material/0 = null
 transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 2, 0.625631 )
 
 [node name="MainRoot" type="Spatial" parent="CameraPos"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 8.21229e-08, -0.279892, -0.939376 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.541904, -0.562368, -0.939376 )
 
 [node name="MeshRoot" type="Spatial" parent="."]
 

@@ -10,6 +10,11 @@ config_version=4
 
 _global_script_classes=[ {
 "base": "Spatial",
+"class": "Carte",
+"language": "GDScript",
+"path": "res://Scenes/Carte/Carte.gd"
+}, {
+"base": "Spatial",
 "class": "Joueur",
 "language": "GDScript",
 "path": "res://Scenes/Joueur/Joueur.gd"
@@ -20,6 +25,7 @@ _global_script_classes=[ {
 "path": "res://Scenes/Pioche/Pioche.gd"
 } ]
 _global_script_class_icons={
+"Carte": "",
 "Joueur": "",
 "Pioche": ""
 }

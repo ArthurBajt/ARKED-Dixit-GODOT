@@ -15,6 +15,8 @@ func _ready():
 	_instancierJoueurs()
 	_placerJoueurs()
 	plateau.init(joueurs)
+	
+	Network.partie_setChargee()
 
 
 class TrieJoueurs:

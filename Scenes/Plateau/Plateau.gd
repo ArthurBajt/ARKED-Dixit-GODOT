@@ -10,15 +10,18 @@ const NODE_PIOCHE_HOTE = preload("res://Scenes/Pioche/PiocheHote.tscn")
 
 var nbCarteJoueur: int
 
+func _ready():
+	Network.connect("joueurApiocherCarte", self, "_on_joueurApiocherCarte")
 
-func init(joueursDeLaPartie: Array):
+
+func init(joueursDeLaPartie: Array, cartesMax: int = 6):
 	joueurs = joueursDeLaPartie
 	estHote = Network.id == 1
 	_initPioche()
-	nbCarteJoueur = joueurs.size()
+	nbCarteJoueur = min(joueurs.size() +2, cartesMax)
 	
-	if Network.id == 1:
-		distribuCarte()
+	if estHote:
+		Network.connect("JoueursDansPartie", self, "distribuCarte")
 
 
 func _initPioche():
@@ -34,5 +37,16 @@ func _initPioche():
 
 func distribuCarte():
 	for j in joueurs:
-		for i in range(0, nbCarteJoueur):
+		for _i in range(0, nbCarteJoueur):
 			pioche.piocher(j)
+
+
+func _on_joueurApiocherCarte(idJoueur: int, carte:String):
+	var j = getJoueur(idJoueur)
+	j.piocheCarte(carte)
+
+func getJoueur(id: int):
+	for j in joueurs:
+		if j.id == id:
+			return j
+	return null
