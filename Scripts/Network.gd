@@ -35,6 +35,7 @@ var utilisateurs: Dictionary
 var data: Dictionary
 const dataStruct = {nom = "",
 					estPret = false,
+					estDansPartie = false,
 					main = [],
 					points = 0,
 					estConteur = false}
@@ -146,6 +147,46 @@ func _peutLancerPartie()->bool:
 
 
 # =================================================
+# Partie
+
+#	Quand tt les joueurs on chargé la scene de la partie
+signal JoueursDansPartie
+
+func partie_setChargee():
+	"""Un est appelée quand un joueur a charger la scenen de dela partie."""
+	if id != 1:
+		rpc_id(1, "_partie_declareChargee", id)
+	else:
+		_partie_declareChargee(1)
+
+
+remote func _partie_declareChargee(idJoeuur: int):
+	""" """
+	for usId in utilisateurs:
+		if usId != 1:
+			rpc_id(usId, "_partie_appliqueChargee", idJoeuur)
+		else:
+			_partie_appliqueChargee(idJoeuur)
+
+
+remote func _partie_appliqueChargee(idJoueur: int):
+	if idJoueur == id:
+		data.estDansPartie = true
+	utilisateurs[idJoueur].estDansPartie = true
+	
+	if id == 1 and _sontJoueursDansPartie():
+		emit_signal("JoueursDansPartie")
+		print("--JoueursDansPartie--")
+
+
+func _sontJoueursDansPartie()->bool:
+	for usId in utilisateurs:
+		if not utilisateurs[usId].estDansPartie:
+			return false
+	return true
+
+
+# =================================================
 # Cartes
 
 signal joueurApiocherCarte(id, carte)
@@ -162,5 +203,4 @@ remote func _joueurPiocheCarte(idJoueur: int, carte: String):
 	if idJoueur == id:
 		self.data.main = self.data.main + [carte]
 	utilisateurs[idJoueur].main = utilisateurs[idJoueur].main + [carte]
-	
 	emit_signal("joueurApiocherCarte", idJoueur, carte)
