@@ -16,11 +16,15 @@ const PATH_TO_STRINGS: String= "res://Assets/Values/Strings.js"
 var _cartes: Dictionary = { }
 const PATH_TO_CARDS: String= "res://Assets/Sprites/Cartes/"
 
+const PATH_TO_CARD_DEFAULT: String = "res://Scenes/Carte/Carte_defaut.jpeg"
+var carteTextureDefaut: ImageTexture
+
 
 
 func _ready():
 	_loadStrings()
 	_loadCartes()
+	_loadTextureCarteDefaut()
 
 
 
@@ -48,6 +52,9 @@ func getString(key: String)-> String:
 #	R.cartes
 
 func _loadCartes():
+	""" Initialise le dict des carte
+	en fonction de ce qui est contenus dans :  [PATH_TO_CARDS] """
+	
 	var reg:RegEx = RegEx.new()
 	reg.compile('.jpeg$')
 	
@@ -67,17 +74,33 @@ func _loadCartes():
 				_cartes[file] = imageTexture
 		
 		file = dir.get_next()
+
+
+func _loadTextureCarteDefaut():
+	""" Charge la texture par defaut des cartes """
+	var streamTexture = load(PATH_TO_CARD_DEFAULT)
+	var image = streamTexture.get_data()
+	var imageTexture = ImageTexture.new()
+	imageTexture.create_from_image(image)
+	carteTextureDefaut = imageTexture
 	
 
 
 func getCarte(key: String) -> ImageTexture:
+	""" Renvoie la texture associer a une carte. """
 	if not key in _cartes:
 		push_warning("Cette clef n'est pas le nom d'une carte")
 		return ImageTexture.new()
 	return _cartes[key]
 
 
+func getCarteDefaut() -> ImageTexture:
+	""" Renvoie la texture par defaut pour les carte non-visible.  """
+	return carteTextureDefaut
+
+
 func getDeck()->Array:
+	""" Renvoie un Array de String avec le nom des cartes, afin de representer une pioche / un deck. """
 	var res = []
 	for c in _cartes:
 		res.append(c)

@@ -13,6 +13,7 @@ func _ready():
 	get_tree().connect("connected_to_server", self, "_lobby_se_declarer")
 
 
+
 func creerServeur():
 	""" Creer un serveur """
 	var peer = NetworkedMultiplayerENet.new()
