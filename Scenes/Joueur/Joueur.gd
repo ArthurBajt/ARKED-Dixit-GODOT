@@ -19,7 +19,6 @@ func _ready():
 	pass
 
 
-
 func init(idJoueur: int, plateauDePartie):
 	self.id = idJoueur
 	self.estLocal = Network.id == idJoueur
@@ -34,12 +33,17 @@ func init(idJoueur: int, plateauDePartie):
 		var ui= NODE_UI.instance()
 		self.add_child(ui)
 
+
 func piocheCarte(nomCarte: String):
 	var instanceCarte = NODE_CARTE.instance()
 	mainRoot.add_child(instanceCarte)
-	instanceCarte.init(nomCarte)
+	instanceCarte.init(nomCarte, estLocal(), estLocal())
 	main += [instanceCarte]
 	
 	instanceCarte.positionCible = Vector3(0.7*(main.size()-1), 0, 0)
 	print("piocheCarte ", id, " len: ", main.size())
-	
+
+
+func estLocal()-> bool:
+	""" Renvoie si les joueur est local (aka le joueur que les client est) """
+	return self.id == Network.id
