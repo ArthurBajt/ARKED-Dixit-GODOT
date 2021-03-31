@@ -38,6 +38,7 @@ const dataStruct = {nom = "",
 					estPret = false,
 					estDansPartie = false,
 					main = [],
+					cartesPlateau = [],
 					points = 0,
 					estConteur = false}
 
@@ -205,3 +206,30 @@ remote func _joueurPiocheCarte(idJoueur: int, carte: String):
 		self.data.main = self.data.main + [carte]
 	utilisateurs[idJoueur].main = utilisateurs[idJoueur].main + [carte]
 	emit_signal("joueurApiocherCarte", idJoueur, carte)
+
+# =================================================
+# Plateau
+
+signal JoueurPoseCarte(idJoueur, nomCarte)
+
+func posercarte(idJoueur: int, carte: String):
+	if id != 1:
+		rpc_id(1, "declarePoseCarte", idJoueur, carte)
+	else:
+		declarePoseCarte(idJoueur, carte)
+
+
+remote func declarePoseCarte(idJoueur: int, carte: String):
+	for usId in utilisateurs:
+		if usId != 1:
+			rpc_id(usId, "appliquePoseCarte", idJoueur, carte)
+		else:
+			appliquePoseCarte(idJoueur, carte)
+
+
+remote func appliquePoseCarte(idJoueur: int, carte: String):
+	if idJoueur == self.id:
+		self.data.cartesPlateau = self.data.cartesPlateau + [carte]
+	
+	self.utilisateurs[idJoueur].cartesPlateau = self.utilisateurs[idJoueur].cartesPlateau + [carte]
+	emit_signal("JoueurPoseCarte", idJoueur, carte)

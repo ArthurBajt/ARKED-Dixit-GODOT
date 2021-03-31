@@ -34,6 +34,7 @@ material/0 = SubResource( 3 )
 [node name="Joueurs" type="Spatial" parent="Scene"]
 
 [node name="Plateau" parent="Scene" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.04439, 0 )
 
 [node name="Ui" type="Control" parent="."]
 margin_right = 40.0

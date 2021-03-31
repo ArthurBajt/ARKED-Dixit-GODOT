@@ -1,6 +1,5 @@
 extends Spatial
 
-
 var joueurs: Array
 var estHote: bool
 
@@ -10,8 +9,14 @@ const NODE_PIOCHE_HOTE = preload("res://Scenes/Pioche/PiocheHote.tscn")
 
 var nbCarteJoueur: int
 
+onready var mesh = $Mesh
+onready var rootCartes = $RootCartes
+
+var cartes: Array = []
+
 func _ready():
 	Network.connect("joueurApiocherCarte", self, "_on_joueurApiocherCarte")
+	Network.connect("JoueurPoseCarte", self, "_fairePoserCarte")
 
 
 func init(joueursDeLaPartie: Array, cartesMax: int = 6):
@@ -45,8 +50,35 @@ func _on_joueurApiocherCarte(idJoueur: int, carte:String):
 	var j = getJoueur(idJoueur)
 	j.piocheCarte(carte)
 
+
+func JoueurPosecarte(idJoueur: int, nomCarte: String):
+	pass
+
+
+func _fairePoserCarte(idJoueur: int, nomCarte: String):
+	var j: Joueur= getJoueur(idJoueur)
+	var carte = j.getCarte(nomCarte)
+	
+	if carte != null and j != null:
+		var transformCarte = carte.get_global_transform()
+		j.retireCarte(carte)
+		self.ajouteCartePlateau(carte, transform)
+
+
+func ajouteCartePlateau(carte: Carte, transform = null):
+	self.cartes.append(carte)
+	self.rootCartes.add_child(carte)
+	
+	if transform != null:
+		carte.global_transform = transform
+		
+	carte.positionCible = Vector3(1, 0, 0) * (self.cartes.size() -1)
+
+#================
+#	getters et trucs utiles toi même tu sais
 func getJoueur(id: int):
 	for j in joueurs:
 		if j.id == id:
 			return j
 	return null
+

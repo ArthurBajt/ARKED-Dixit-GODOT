@@ -23,17 +23,17 @@ func _ready():
 
 func _process(delta):
 	if self.translation != positionCible:
-		self.translation = lerp(self.translation, positionCible, 5*delta)
+		self.translation = lerp(self.translation, self.positionCible, 5*delta)
 	
 	if self.peutEtreHover and self.hover:
-		mesh.translation = lerp(mesh.translation, Vector3(0, 0.08, 0), 5*delta)
+		self.mesh.translation = lerp(self.mesh.translation, Vector3(0, 0.08, 0), 5*delta)
 	else:
-		mesh.translation = lerp(mesh.translation, Vector3.ZERO, 3*delta)
+		self.mesh.translation = lerp(self.mesh.translation, Vector3.ZERO, 3*delta)
 
 
 func init(nom, visible: bool = true, estHover: bool= true, positionDepart: Vector3 = Vector3.ZERO, positionCible: Vector3 = Vector3.ZERO):
 	self.nom = nom
-	self.texture = R.getCarte(nom)
+	self.texture = R.getCarte(self.nom)
 	self.translation = positionDepart
 	
 	setVisible(visible)
@@ -63,15 +63,14 @@ func setPeutEtreHover(val: bool):
 
 # Si on survole la carte
 func _on_Area_mouse_entered():
-	hover = true
+	self.hover = true
 
 func _on_Area_mouse_exited():
-	hover = false
+	self.hover = false
 
 # si on clique sur la carte
 signal carteCliquee(laCarte)
 func _on_Area_input_event(camera, event, click_position, click_normal, shape_idx):
 	if event is InputEventMouseButton:
 		if event.button_index == BUTTON_LEFT and event.pressed == true:
-			print("la carte : ", self.name, " a ete cliquée !")
 			emit_signal("carteCliquee", self)
