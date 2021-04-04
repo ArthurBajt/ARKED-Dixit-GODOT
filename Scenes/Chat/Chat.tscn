@@ -1,0 +1,86 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Scenes/Chat/Chat.gd" type="Script" id=1]
+
+[node name="Control" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Chat" type="Button" parent="."]
+margin_left = 11.2535
+margin_top = 475.453
+margin_right = 160.253
+margin_bottom = 589.453
+text = "Chat"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Layout" type="VBoxContainer" parent="Chat"]
+margin_left = 154.083
+margin_top = -26.2949
+margin_right = 351.083
+margin_bottom = 117.705
+rect_min_size = Vector2( 150, 30 )
+alignment = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Message1" type="Button" parent="Chat/Layout"]
+margin_top = 5.0
+margin_right = 197.0
+margin_bottom = 35.0
+rect_min_size = Vector2( 150, 30 )
+text = "Bien Joué !"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Message2" type="Button" parent="Chat/Layout"]
+margin_top = 39.0
+margin_right = 197.0
+margin_bottom = 69.0
+rect_min_size = Vector2( 150, 30 )
+text = "Dommage Fromage"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Message3" type="Button" parent="Chat/Layout"]
+margin_top = 73.0
+margin_right = 197.0
+margin_bottom = 103.0
+rect_min_size = Vector2( 150, 30 )
+text = "Nooooon !"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Message4" type="Button" parent="Chat/Layout"]
+margin_top = 107.0
+margin_right = 197.0
+margin_bottom = 137.0
+rect_min_size = Vector2( 150, 30 )
+text = "Bien Joué !"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ChatDisplay" type="TextEdit" parent="."]
+margin_left = 738.0
+margin_top = 10.0
+margin_right = 1022.0
+margin_bottom = 210.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+[connection signal="pressed" from="Chat" to="." method="_on_Chat_pressed"]
+[connection signal="pressed" from="Chat/Layout/Message1" to="." method="_on_Message1_pressed"]
+[connection signal="pressed" from="Chat/Layout/Message2" to="." method="_on_Message2_pressed"]
+[connection signal="pressed" from="Chat/Layout/Message3" to="." method="_on_Message3_pressed"]
+[connection signal="pressed" from="Chat/Layout/Message4" to="." method="_on_Message4_pressed"]

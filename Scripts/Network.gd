@@ -205,3 +205,17 @@ remote func _joueurPiocheCarte(idJoueur: int, carte: String):
 		self.data.main = self.data.main + [carte]
 	utilisateurs[idJoueur].main = utilisateurs[idJoueur].main + [carte]
 	emit_signal("joueurApiocherCarte", idJoueur, carte)
+
+# =================================================
+# Chat
+
+signal updateChat
+
+func envoieMessage(msg):
+	print("ici")
+	rpc("messageRecu", id, msg)
+	
+sync func messageRecu(id, msg):
+	print("là")
+	print("msg de %s : %s" % [id,msg])
+	emit_signal("updateChat", id, msg)
