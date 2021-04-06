@@ -18,7 +18,6 @@ func _ready():
 	
 	Network.partie_setChargee()
 
-
 class TrieJoueurs:
 	# c'est comme les fonction discrette en js.
 	# mais en becoup moins bien fait

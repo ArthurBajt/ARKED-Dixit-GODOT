@@ -41,9 +41,34 @@ func piocheCarte(nomCarte: String):
 	main += [instanceCarte]
 	
 	instanceCarte.positionCible = Vector3(0.7*(main.size()-1), 0, 0)
-	print("piocheCarte ", id, " len: ", main.size())
+	
+	if estLocal:
+		instanceCarte.connect("carteCliquee", self, "localPoseCarte")
+
+
+func localPoseCarte(carte):
+	Network.posercarte(self.id, carte.nom)
+
+
+
+
+
+#================
+#	getters et trucs utiles toi même tu sais
+
+func getCarte(nom: String):
+	for c in self.main:
+		if c.nom == nom:
+			return c
+	return null
 
 
 func estLocal()-> bool:
 	""" Renvoie si les joueur est local (aka le joueur que les client est) """
 	return self.id == Network.id
+
+
+func retireCarte(carte: Carte):
+	if carte in self.main:
+		self.main.erase(carte)
+		self.mainRoot.remove_child(carte)
