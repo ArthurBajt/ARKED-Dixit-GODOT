@@ -37,7 +37,7 @@ func init(idJoueur: int, plateauDePartie):
 		var cam: Camera = NODE_CAM.instance()
 		cameraPos.add_child(cam)
 		cam.set_current(true)
-		
+		# UI dans le joueur car c'est celui qui est en local qui en a besoin
 		self.ui= NODE_UI.instance()
 		self.add_child(ui)
 
