@@ -2,12 +2,15 @@ extends Spatial
 
 var joueurs: Array
 var estHote: bool
+var indexConteur: int = 0
 
 var pioche: Pioche
 const NODE_PIOCHE_CLIENT = preload("res://Scenes/Pioche/PiocheClient.tscn")
 const NODE_PIOCHE_HOTE = preload("res://Scenes/Pioche/PiocheHote.tscn")
 
 var nbCarteJoueur: int
+
+var theme: String = ""
 
 onready var mesh = $Mesh
 onready var rootCartes = $RootCartes
@@ -26,7 +29,7 @@ func init(joueursDeLaPartie: Array, cartesMax: int = 6):
 	nbCarteJoueur = min(joueurs.size() +2, cartesMax)
 	
 	if estHote:
-		Network.connect("JoueursDansPartie", self, "distribuCarte")
+		Network.connect("JoueursDansPartie", self, "lancePartie")
 
 
 func _initPioche():
@@ -39,6 +42,9 @@ func _initPioche():
 	self.add_child(nodePioche)
 	pioche = nodePioche
 
+func lancePartie():
+	distribuCarte()
+	Network.changeConteur(self.joueurs[0].id)
 
 func distribuCarte():
 	for j in joueurs:
@@ -62,7 +68,7 @@ func _fairePoserCarte(idJoueur: int, nomCarte: String):
 	if carte != null and j != null:
 		var transformCarte = carte.get_global_transform()
 		j.retireCarte(carte)
-		self.ajouteCartePlateau(carte, transform)
+		self.ajouteCartePlateau(carte, transformCarte)
 
 
 func ajouteCartePlateau(carte: Carte, transform = null):
@@ -71,8 +77,9 @@ func ajouteCartePlateau(carte: Carte, transform = null):
 	
 	if transform != null:
 		carte.global_transform = transform
-		
+	
 	carte.positionCible = Vector3(1, 0, 0) * (self.cartes.size() -1)
+	
 
 #================
 #	getters et trucs utiles toi même tu sais
@@ -82,3 +89,15 @@ func getJoueur(id: int):
 			return j
 	return null
 
+#================
+#	Conteur
+
+func changeConteur():
+	indexConteur+=1 % joueurs.size()
+	Network.changeConteur(indexConteur)
+
+func setTheme(themezer):
+	self.theme = themezer
+	
+func getTheme():
+	return self.theme

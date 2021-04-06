@@ -19,8 +19,8 @@ func _ready():
 	Network.partie_setChargee()
 
 class TrieJoueurs:
-	# c'est comme les fonction discrette en js.
-	# mais en becoup moins bien fait
+	# c'est comme les fonctions discrettes en js.
+	# mais en beaucoup moins bien fait
 	static func sort(a, b):
 		return a.id < b.id
 

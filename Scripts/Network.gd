@@ -229,9 +229,6 @@ remote func declarePoseCarte(idJoueur: int, carte: String):
 
 remote func appliquePoseCarte(idJoueur: int, carte: String):
 	if idJoueur == self.id:
-		print(self.data.main)
-		print("nom: ", carte)
-		print("main: ", self.data.main.find(carte))
 		self.data.cartesPlateau[idJoueur] = carte
 		self.data.main.erase(carte)
 	
@@ -239,13 +236,16 @@ remote func appliquePoseCarte(idJoueur: int, carte: String):
 	self.utilisateurs[idJoueur].main.erase(carte)
 	emit_signal("JoueurPoseCarte", idJoueur, carte)
 	
-# =================================================
-# Chat
+signal ChangementConteur
 
-signal updateChat
-
-func envoieMessage(msg):
-	rpc("messageRecu", id, msg)
+func changeConteur(idJoueur):
+	rpc("declareChangementConteur", idJoueur)
 	
-remotesync func messageRecu(id, msg):
-	emit_signal("updateChat", id, msg)
+remotesync func declareChangementConteur(idJoueur):
+	emit_signal("ChangementConteur", idJoueur)
+	self.data.estConteur= idJoueur == self.id
+	for usId in self.utilisateurs:
+		self.utilisateurs[usId].estConteur= usId == idJoueur
+
+
+

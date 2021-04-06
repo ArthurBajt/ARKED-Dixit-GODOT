@@ -6,30 +6,55 @@
 script = ExtResource( 1 )
 
 [node name="Control" type="Control" parent="."]
-margin_right = 40.0
-margin_bottom = 40.0
+anchor_right = 1.0
+anchor_bottom = 1.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="ButtonPret" type="Button" parent="Control"]
-margin_left = 780.0
-margin_top = 402.0
-margin_right = 936.0
-margin_bottom = 460.0
+[node name="HBoxContainer" type="HBoxContainer" parent="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VSeparator" type="VSeparator" parent="Control/HBoxContainer"]
+modulate = Color( 1, 1, 1, 0 )
+margin_right = 900.0
+margin_bottom = 720.0
+rect_min_size = Vector2( 900, 0 )
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/HBoxContainer"]
+margin_left = 904.0
+margin_right = 1104.0
+margin_bottom = 720.0
+rect_min_size = Vector2( 200, 0 )
+
+[node name="HSeparator" type="HSeparator" parent="Control/HBoxContainer/VBoxContainer"]
+modulate = Color( 1, 1, 1, 0 )
+margin_right = 200.0
+margin_bottom = 400.0
+rect_min_size = Vector2( 0, 400 )
+
+[node name="ButtonPret" type="Button" parent="Control/HBoxContainer/VBoxContainer"]
+margin_top = 404.0
+margin_right = 200.0
+margin_bottom = 424.0
+rect_min_size = Vector2( 0, 20 )
 text = "Pret ?"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="ButtonLancer" type="Button" parent="Control"]
-margin_left = 781.0
-margin_top = 474.0
-margin_right = 937.0
-margin_bottom = 502.0
+[node name="ButtonLancer" type="Button" parent="Control/HBoxContainer/VBoxContainer"]
+margin_top = 428.0
+margin_right = 200.0
+margin_bottom = 528.0
+rect_min_size = Vector2( 0, 100 )
 text = "Lancer"
 __meta__ = {
 "_edit_use_anchors_": false
 }
-[connection signal="pressed" from="Control/ButtonPret" to="." method="_on_ButtonPret_pressed"]
-[connection signal="pressed" from="Control/ButtonLancer" to="." method="_on_ButtonLancer_pressed"]
+[connection signal="pressed" from="Control/HBoxContainer/VBoxContainer/ButtonPret" to="." method="_on_ButtonPret_pressed"]
+[connection signal="pressed" from="Control/HBoxContainer/VBoxContainer/ButtonLancer" to="." method="_on_ButtonLancer_pressed"]

@@ -1,7 +1,7 @@
 extends Node
 
-onready var buttonPret = $Control/ButtonPret
-onready var buttonLancer = $Control/ButtonLancer
+onready var buttonPret = $Control/HBoxContainer/VBoxContainer/ButtonPret
+onready var buttonLancer = $Control/HBoxContainer/VBoxContainer/ButtonLancer
 
 
 func _ready():

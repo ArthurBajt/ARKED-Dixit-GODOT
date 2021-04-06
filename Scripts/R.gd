@@ -87,7 +87,7 @@ func _loadTextureCarteDefaut():
 
 
 func getCarte(key: String) -> ImageTexture:
-	""" Renvoie la texture associer a une carte. """
+	""" Renvoie la texture associée à une carte. """
 	if not key in _cartes:
 		push_warning("Cette clef n'est pas le nom d'une carte")
 		return ImageTexture.new()
