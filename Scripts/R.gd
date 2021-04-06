@@ -11,7 +11,7 @@ extends Node
 
 
 var _strings: Dictionary = { }
-const PATH_TO_STRINGS: String= "res://Assets/Values/Strings.js"
+const PATH_TO_STRINGS: String= "res://Assets/Values/Strings.json"
 
 var _cartes: Dictionary = { }
 const PATH_TO_CARDS: String= "res://Assets/Sprites/Cartes/"

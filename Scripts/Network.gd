@@ -238,3 +238,14 @@ remote func appliquePoseCarte(idJoueur: int, carte: String):
 	self.utilisateurs[idJoueur].cartesPlateau[idJoueur] = carte
 	self.utilisateurs[idJoueur].main.erase(carte)
 	emit_signal("JoueurPoseCarte", idJoueur, carte)
+	
+# =================================================
+# Chat
+
+signal updateChat
+
+func envoieMessage(msg):
+	rpc("messageRecu", id, msg)
+	
+remotesync func messageRecu(id, msg):
+	emit_signal("updateChat", id, msg)

@@ -1,0 +1,93 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Scenes/Chat/Chat.gd" type="Script" id=1]
+
+[sub_resource type="StyleBoxEmpty" id=1]
+
+[node name="Control" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Chat" type="Button" parent="."]
+margin_left = 4.51675
+margin_top = 540.183
+margin_right = 72.5168
+margin_bottom = 592.183
+text = "Chat"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Layout" type="VBoxContainer" parent="Chat"]
+margin_left = 78.0
+margin_top = -78.0
+margin_right = 234.0
+margin_bottom = 54.0
+rect_min_size = Vector2( 150, 30 )
+alignment = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Message1" type="Button" parent="Chat/Layout"]
+margin_right = 156.0
+margin_bottom = 30.0
+rect_min_size = Vector2( 150, 30 )
+text = "Bien Joué !"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Message2" type="Button" parent="Chat/Layout"]
+margin_top = 34.0
+margin_right = 156.0
+margin_bottom = 64.0
+rect_min_size = Vector2( 150, 30 )
+text = "Waouh"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Message3" type="Button" parent="Chat/Layout"]
+margin_top = 68.0
+margin_right = 156.0
+margin_bottom = 98.0
+rect_min_size = Vector2( 150, 30 )
+text = "Nooooon"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Message4" type="Button" parent="Chat/Layout"]
+margin_top = 102.0
+margin_right = 156.0
+margin_bottom = 132.0
+rect_min_size = Vector2( 150, 30 )
+text = "Presque !"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ChatDisplay" type="TextEdit" parent="."]
+margin_left = 857.0
+margin_top = 2.0
+margin_right = 1022.0
+margin_bottom = 202.0
+custom_styles/normal = SubResource( 1 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ViewportContainer" type="ViewportContainer" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+[connection signal="pressed" from="Chat" to="." method="_on_Chat_pressed"]
+[connection signal="pressed" from="Chat/Layout/Message1" to="." method="_on_Message1_pressed"]
+[connection signal="pressed" from="Chat/Layout/Message2" to="." method="_on_Message2_pressed"]
+[connection signal="pressed" from="Chat/Layout/Message3" to="." method="_on_Message3_pressed"]
+[connection signal="pressed" from="Chat/Layout/Message4" to="." method="_on_Message4_pressed"]
