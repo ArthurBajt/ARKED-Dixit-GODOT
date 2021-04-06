@@ -10,6 +10,8 @@ const NODE_PIOCHE_HOTE = preload("res://Scenes/Pioche/PiocheHote.tscn")
 
 var nbCarteJoueur: int
 
+var theme
+
 onready var mesh = $Mesh
 onready var rootCartes = $RootCartes
 
@@ -93,3 +95,9 @@ func getJoueur(id: int):
 func changeConteur():
 	indexConteur+=1 % joueurs.size()
 	Network.changeConteur(indexConteur)
+
+func setTheme(themezer):
+	self.theme = themezer
+	
+func getTheme():
+	return self.theme
