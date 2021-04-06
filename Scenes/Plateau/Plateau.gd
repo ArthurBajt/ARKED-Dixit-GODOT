@@ -66,7 +66,7 @@ func _fairePoserCarte(idJoueur: int, nomCarte: String):
 	if carte != null and j != null:
 		var transformCarte = carte.get_global_transform()
 		j.retireCarte(carte)
-		self.ajouteCartePlateau(carte, transform)
+		self.ajouteCartePlateau(carte, transformCarte)
 
 
 func ajouteCartePlateau(carte: Carte, transform = null):
@@ -75,8 +75,9 @@ func ajouteCartePlateau(carte: Carte, transform = null):
 	
 	if transform != null:
 		carte.global_transform = transform
-		
+	
 	carte.positionCible = Vector3(1, 0, 0) * (self.cartes.size() -1)
+	
 
 #================
 #	getters et trucs utiles toi même tu sais

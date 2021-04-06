@@ -28,7 +28,7 @@ func _process(delta):
 	if self.peutEtreHover and self.hover:
 		self.mesh.translation = lerp(self.mesh.translation, Vector3(0, 0.08, 0), 5*delta)
 	else:
-		self.mesh.translation = lerp(self.mesh.translation, Vector3.ZERO, 3*delta)
+		self.mesh.translation = lerp(self.mesh.translation, Vector3.ZERO, 0.5*delta)
 
 
 func init(nom, visible: bool = true, estHover: bool= true, positionDepart: Vector3 = Vector3.ZERO, positionCible: Vector3 = Vector3.ZERO):
