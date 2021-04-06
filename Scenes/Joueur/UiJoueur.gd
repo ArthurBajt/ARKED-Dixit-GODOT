@@ -26,11 +26,23 @@ func _on_Button_pressed():
 
 func _on_OkButton_pressed():
 	var theme = lineEditTheme.text
-	print(theme)
 	if(theme!=null and theme != ""):
+		print(theme)
 		background.visible = false
 		vboxConteur.visible = false
 	else:
-		pass
+		# Animation de sursaut
+		for i in range(0,2):
+			var repetition = 5
+			for j in range(0,repetition):
+				lineEditTheme.rect_position.y += 1
+				yield(get_tree().create_timer(0.01), "timeout")
+			for j in range(0,2*repetition):
+				lineEditTheme.rect_position.y -= 1
+				yield(get_tree().create_timer(0.01), "timeout")
+			for j in range(0,repetition):
+				lineEditTheme.rect_position.y += 1
+				yield(get_tree().create_timer(0.01), "timeout")
+		
 	# Passer la phrase qqpart (vérifier qu'elle est pas vide)
 	# Enlever le UI ou le remplacer

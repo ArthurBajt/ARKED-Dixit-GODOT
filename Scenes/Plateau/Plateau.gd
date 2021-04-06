@@ -10,7 +10,7 @@ const NODE_PIOCHE_HOTE = preload("res://Scenes/Pioche/PiocheHote.tscn")
 
 var nbCarteJoueur: int
 
-var theme
+var theme: String = ""
 
 onready var mesh = $Mesh
 onready var rootCartes = $RootCartes
