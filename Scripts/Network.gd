@@ -238,3 +238,17 @@ remote func appliquePoseCarte(idJoueur: int, carte: String):
 	self.utilisateurs[idJoueur].cartesPlateau[idJoueur] = carte
 	self.utilisateurs[idJoueur].main.erase(carte)
 	emit_signal("JoueurPoseCarte", idJoueur, carte)
+	
+signal ChangementConteur
+
+func changeConteur(idJoueur):
+	rpc("declareChangementConteur", idJoueur)
+	
+remotesync func declareChangementConteur(idJoueur):
+	emit_signal("ChangementConteur", idJoueur)
+	self.data.estConteur= idJoueur == self.id
+	for usId in self.utilisateurs:
+		self.utilisateurs[usId].estConteur= usId == idJoueur
+
+
+

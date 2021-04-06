@@ -14,9 +14,13 @@ const NODE_CAM = preload("res://Scenes/Joueur/CameraJoueur.tscn")
 const NODE_UI = preload("res://Scenes/Joueur/UiJoueur.tscn")
 
 const NODE_CARTE = preload("res://Scenes/Carte/Carte.tscn")
+var estConteur: bool = false 
+
+func setConteur(idJoueur):
+	self.estConteur = self.id == idJoueur
 
 func _ready():
-	pass
+	Network.connect("ChangementConteur", self, "setConteur")
 
 
 func init(idJoueur: int, plateauDePartie):
@@ -24,6 +28,8 @@ func init(idJoueur: int, plateauDePartie):
 	self.estLocal = Network.id == idJoueur
 	self.plateau = plateauDePartie
 	self.main = []
+	self.estConteur
+	
 	
 	if self.estLocal:
 		var cam: Camera = NODE_CAM.instance()

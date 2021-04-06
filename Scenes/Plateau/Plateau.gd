@@ -2,6 +2,7 @@ extends Spatial
 
 var joueurs: Array
 var estHote: bool
+var indexConteur: int = 0
 
 var pioche: Pioche
 const NODE_PIOCHE_CLIENT = preload("res://Scenes/Pioche/PiocheClient.tscn")
@@ -26,7 +27,7 @@ func init(joueursDeLaPartie: Array, cartesMax: int = 6):
 	nbCarteJoueur = min(joueurs.size() +2, cartesMax)
 	
 	if estHote:
-		Network.connect("JoueursDansPartie", self, "distribuCarte")
+		Network.connect("JoueursDansPartie", self, "lancePartie")
 
 
 func _initPioche():
@@ -39,6 +40,9 @@ func _initPioche():
 	self.add_child(nodePioche)
 	pioche = nodePioche
 
+func lancePartie():
+	distribuCarte()
+	Network.changeConteur(self.joueurs[0].id)
 
 func distribuCarte():
 	for j in joueurs:
@@ -82,3 +86,9 @@ func getJoueur(id: int):
 			return j
 	return null
 
+#================
+#	Conteur
+
+func changeConteur():
+	indexConteur+=1 % joueurs.size()
+	Network.changeConteur(indexConteur)
