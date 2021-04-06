@@ -229,9 +229,6 @@ remote func declarePoseCarte(idJoueur: int, carte: String):
 
 remote func appliquePoseCarte(idJoueur: int, carte: String):
 	if idJoueur == self.id:
-		print(self.data.main)
-		print("nom: ", carte)
-		print("main: ", self.data.main.find(carte))
 		self.data.cartesPlateau[idJoueur] = carte
 		self.data.main.erase(carte)
 	
