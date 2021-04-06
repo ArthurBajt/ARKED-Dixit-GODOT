@@ -15,3 +15,9 @@ func _ready():
 
 func afficheUiConteur(isConteur):
 	vboxConteur.visible = isConteur
+
+
+func _on_Button_pressed():
+	pass # Replace with function body.
+	# Passer la phrase qqpart (vérifier qu'elle est pas vide)
+	# Enlever le UI ou le remplacer
