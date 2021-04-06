@@ -212,10 +212,7 @@ remote func _joueurPiocheCarte(idJoueur: int, carte: String):
 signal updateChat
 
 func envoieMessage(msg):
-	print("ici")
 	rpc("messageRecu", id, msg)
 	
-sync func messageRecu(id, msg):
-	print("là")
-	print("msg de %s : %s" % [id,msg])
+remotesync func messageRecu(id, msg):
 	emit_signal("updateChat", id, msg)
