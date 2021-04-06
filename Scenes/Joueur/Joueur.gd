@@ -47,7 +47,7 @@ func piocheCarte(nomCarte: String):
 
 
 func localPoseCarte(carte):
-	Network.posercarte(self.id, carte.name)
+	Network.posercarte(self.id, carte.nom)
 
 
 
@@ -58,7 +58,7 @@ func localPoseCarte(carte):
 
 func getCarte(nom: String):
 	for c in self.main:
-		if c.name == nom:
+		if c.nom == nom:
 			return c
 	return null
 

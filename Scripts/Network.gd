@@ -38,7 +38,7 @@ const dataStruct = {nom = "",
 					estPret = false,
 					estDansPartie = false,
 					main = [],
-					cartesPlateau = [],
+					cartesPlateau = {},
 					points = 0,
 					estConteur = false}
 
@@ -229,7 +229,12 @@ remote func declarePoseCarte(idJoueur: int, carte: String):
 
 remote func appliquePoseCarte(idJoueur: int, carte: String):
 	if idJoueur == self.id:
-		self.data.cartesPlateau = self.data.cartesPlateau + [carte]
+		print(self.data.main)
+		print("nom: ", carte)
+		print("main: ", self.data.main.find(carte))
+		self.data.cartesPlateau[idJoueur] = carte
+		self.data.main.erase(carte)
 	
-	self.utilisateurs[idJoueur].cartesPlateau = self.utilisateurs[idJoueur].cartesPlateau + [carte]
+	self.utilisateurs[idJoueur].cartesPlateau[idJoueur] = carte
+	self.utilisateurs[idJoueur].main.erase(carte)
 	emit_signal("JoueurPoseCarte", idJoueur, carte)
