@@ -42,10 +42,10 @@ func init(idJoueur: int, plateauDePartie):
 		cameraPos.add_child(cam)
 		cam.set_current(true)
 		# UI dans le joueur car c'est celui qui est en local qui en a besoin
-		self.ui = NODE_UI.instance()
-		self.add_child(ui)
 		self.uiConteur = NODE_UI_CONTEUR.instance()
 		self.add_child(uiConteur)
+		self.ui = NODE_UI.instance()
+		self.add_child(ui)
 
 
 func piocheCarte(nomCarte: String):
