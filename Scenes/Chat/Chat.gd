@@ -46,8 +46,8 @@ func _on_Message4_pressed():
 	Network.envoieMessage(message4.get_text())
 	MessageBox.visible = !MessageBox.visible
 	
-func afficheUpdateChat(name, msg):
-	ChatDisplay.text += "%s: %s \n" % [name,msg]
+func afficheUpdateChat(id, msg):
+	ChatDisplay.text += "[%s]: %s \n" % [id,msg]
 	AutoScroll()
 	
 func AutoScroll():

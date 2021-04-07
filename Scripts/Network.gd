@@ -14,18 +14,16 @@ func _ready():
 
 
 
-func creerServeur(player_name):
+func creerServeur():
 	""" Creer un serveur """
-	dataStruct.nom = player_name
 	var peer = NetworkedMultiplayerENet.new()
 	peer.create_server(DEFAUT_PORT, MAX_UTILISATEURS)
 	get_tree().set_network_peer(peer)
 	_lobby_se_declarer()
 
 
-func rejoindreServeur(player_name):
+func rejoindreServeur():
 	""" Fait rejoindre un serveur à un utilisateur"""
-	dataStruct.nom = player_name
 	var peer = NetworkedMultiplayerENet.new()
 	peer.create_client(DEFAUT_IP, DEFAUT_PORT)
 	get_tree().set_network_peer(peer)
@@ -242,8 +240,6 @@ signal ChangementConteur
 
 func changeConteur(idJoueur):
 	rpc("declareChangementConteur", idJoueur)
-func envoieMessage(msg):
-	rpc("messageRecu", dataStruct.nom , msg)
 	
 remotesync func declareChangementConteur(idJoueur):
 	emit_signal("ChangementConteur", idJoueur)
