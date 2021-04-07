@@ -12,15 +12,17 @@ onready var cameraPos: Spatial = $CameraPos
 
 const NODE_CAM = preload("res://Scenes/Joueur/CameraJoueur.tscn")
 const NODE_UI = preload("res://Scenes/Joueur/UiJoueur.tscn")
+const NODE_UI_CONTEUR = preload("res://Scenes/Joueur/UiConteur.tscn")
 
 const NODE_CARTE = preload("res://Scenes/Carte/Carte.tscn")
 var estConteur: bool = false 
 var ui 
+var uiConteur
 
 func setConteur(idJoueur):
 	self.estConteur = self.id == idJoueur
 	if estLocal():
-		self.ui.afficheUiConteur(self.estConteur)
+		self.uiConteur.afficheUiConteur(self.estConteur)
 
 	
 func _ready():
@@ -42,6 +44,8 @@ func init(idJoueur: int, plateauDePartie):
 		# UI dans le joueur car c'est celui qui est en local qui en a besoin
 		self.ui = NODE_UI.instance()
 		self.add_child(ui)
+		self.uiConteur = NODE_UI_CONTEUR.instance()
+		self.add_child(uiConteur)
 
 
 func piocheCarte(nomCarte: String):
