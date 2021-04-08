@@ -13,6 +13,7 @@ func _process(_delta):
 	
 	var utilisateursText = "Utilisateur(s) :\n"
 	for usId in Network.utilisateurs:
+		utilisateursText += "\t" + "nom: " + str(Network.utilisateurs[usId].nom)
 		utilisateursText += "\t" + "id: " + str(usId)
 		if "estPret" in Network.utilisateurs[usId]:
 			utilisateursText += "\n\t" + "estPret: " + str(Network.utilisateurs[usId].estPret)

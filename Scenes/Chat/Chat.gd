@@ -1,4 +1,5 @@
 extends Control
+class_name Chat
 
 onready var MessageBox = $Chat/Layout
 onready var message1=$Chat/Layout/Message1
@@ -14,13 +15,14 @@ onready var ChatDisplay = $ChatDisplay
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	self.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	Network.connect("updateChat", self, "afficheUpdateChat") # Replace with function body.
 	MessageBox.visible = !MessageBox.visible
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
-#	pass
+#    pass
 
 
 func _on_Chat_pressed():
@@ -46,8 +48,8 @@ func _on_Message4_pressed():
 	Network.envoieMessage(message4.get_text())
 	MessageBox.visible = !MessageBox.visible
 	
-func afficheUpdateChat(id, msg):
-	ChatDisplay.text += "[%s]: %s \n" % [id,msg]
+func afficheUpdateChat(name, msg):
+	ChatDisplay.text += "%s: %s \n" % [name,msg]
 	AutoScroll()
 	
 func AutoScroll():

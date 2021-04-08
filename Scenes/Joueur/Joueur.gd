@@ -19,7 +19,7 @@ const NODE_CARTE = preload("res://Scenes/Carte/Carte.tscn")
 var estConteur: bool = false 
 var ui 
 var uiConteur
-var uiChat
+var uiChat: Chat
 
 func setConteur(idJoueur):
 	self.estConteur = self.id == idJoueur

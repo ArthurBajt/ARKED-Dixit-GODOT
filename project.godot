@@ -14,6 +14,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Scenes/Carte/Carte.gd"
 }, {
+"base": "Control",
+"class": "Chat",
+"language": "GDScript",
+"path": "res://Scenes/Chat/Chat.gd"
+}, {
 "base": "Spatial",
 "class": "Joueur",
 "language": "GDScript",
@@ -26,6 +31,7 @@ _global_script_classes=[ {
 } ]
 _global_script_class_icons={
 "Carte": "",
+"Chat": "",
 "Joueur": "",
 "Pioche": ""
 }
