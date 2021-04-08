@@ -35,7 +35,6 @@ _global_script_class_icons={
 config/name="ARKED-Dixit-GODOT"
 run/main_scene="res://Scenes/Menu/Menu.tscn"
 config/icon="res://icon.png"
-config/windows_native_icon="res://icone.ico"
 
 [autoload]
 
@@ -44,10 +43,15 @@ Network="*res://Scripts/Network.gd"
 R="*res://Scripts/R.gd"
 Debug="*res://Scripts/Debug.gd"
 
+[display]
+
+window/size/width=1280
+window/size/height=720
+
 [rendering]
 
 quality/driver/driver_name="GLES2"
 vram_compression/import_etc=true
 vram_compression/import_etc2=false
-environment/default_clear_color=Color( 0.14902, 0.192157, 0.219608, 1 )
+environment/default_clear_color=Color( 0.145098, 0.176471, 0.25098, 1 )
 environment/default_environment="res://default_env.tres"
