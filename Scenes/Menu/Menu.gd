@@ -1,8 +1,8 @@
 extends Node
 
 
-onready var buttonCreer = $Ui/ButtonCreer
-onready var buttonRejoindre = $Ui/ButtonRejoindre
+onready var buttonCreer = $Ui/VBoxContainer/HBoxContainer2/ButtonCreer
+onready var buttonRejoindre = $Ui/VBoxContainer/HBoxContainer2/ButtonRejoindre
 
 var player_name = ""
 

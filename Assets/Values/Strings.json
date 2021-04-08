@@ -1,8 +1,8 @@
 {
   "test": "Un txt pour tester",
 
-  "buttonCreer": "Creer un Serveur",
-  "buttonRejoindre": "Rejoindre un serveur",
+  "buttonCreer": "Créer une partie",
+  "buttonRejoindre": "Rejoindre une partie en local",
 
   "labelNom": "Je suis le joueur : %s .",
   "labelPoints": "Et j'ai %s point(s).",

@@ -12,49 +12,38 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Control"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Control"]
+anchor_left = 1.0
+anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
+margin_left = -400.0
+margin_top = -304.0
+margin_right = -200.0
+margin_bottom = -150.0
+rect_min_size = Vector2( 200, 154 )
+rect_pivot_offset = Vector2( 200, 154 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="VSeparator" type="VSeparator" parent="Control/HBoxContainer"]
-modulate = Color( 1, 1, 1, 0 )
-margin_right = 900.0
-margin_bottom = 720.0
-rect_min_size = Vector2( 900, 0 )
-
-[node name="VBoxContainer" type="VBoxContainer" parent="Control/HBoxContainer"]
-margin_left = 904.0
-margin_right = 1104.0
-margin_bottom = 720.0
-rect_min_size = Vector2( 200, 0 )
-
-[node name="HSeparator" type="HSeparator" parent="Control/HBoxContainer/VBoxContainer"]
-modulate = Color( 1, 1, 1, 0 )
+[node name="ButtonPret" type="Button" parent="Control/VBoxContainer"]
 margin_right = 200.0
-margin_bottom = 400.0
-rect_min_size = Vector2( 0, 400 )
-
-[node name="ButtonPret" type="Button" parent="Control/HBoxContainer/VBoxContainer"]
-margin_top = 404.0
-margin_right = 200.0
-margin_bottom = 424.0
-rect_min_size = Vector2( 0, 20 )
-text = "Pret ?"
+margin_bottom = 50.0
+rect_min_size = Vector2( 200, 50 )
+text = "Pas prêt"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="ButtonLancer" type="Button" parent="Control/HBoxContainer/VBoxContainer"]
-margin_top = 428.0
+[node name="ButtonLancer" type="Button" parent="Control/VBoxContainer"]
+margin_top = 54.0
 margin_right = 200.0
-margin_bottom = 528.0
+margin_bottom = 154.0
 rect_min_size = Vector2( 0, 100 )
 text = "Lancer"
 __meta__ = {
 "_edit_use_anchors_": false
 }
-[connection signal="pressed" from="Control/HBoxContainer/VBoxContainer/ButtonPret" to="." method="_on_ButtonPret_pressed"]
-[connection signal="pressed" from="Control/HBoxContainer/VBoxContainer/ButtonLancer" to="." method="_on_ButtonLancer_pressed"]
+[connection signal="pressed" from="Control/VBoxContainer/ButtonPret" to="." method="_on_ButtonPret_pressed"]
+[connection signal="pressed" from="Control/VBoxContainer/ButtonLancer" to="." method="_on_ButtonLancer_pressed"]
