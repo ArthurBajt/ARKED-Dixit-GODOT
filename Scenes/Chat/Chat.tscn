@@ -13,10 +13,13 @@ __meta__ = {
 }
 
 [node name="Chat" type="Button" parent="."]
-margin_left = 4.51675
-margin_top = 540.183
-margin_right = 72.5168
-margin_bottom = 592.183
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_left = 40.0
+margin_top = -92.0
+margin_right = 108.0
+margin_bottom = -40.0
+rect_min_size = Vector2( 68, 52 )
 text = "Chat"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -27,7 +30,7 @@ margin_left = 78.0
 margin_top = -78.0
 margin_right = 234.0
 margin_bottom = 54.0
-rect_min_size = Vector2( 150, 30 )
+rect_min_size = Vector2( 156, 132 )
 alignment = 1
 __meta__ = {
 "_edit_use_anchors_": false
@@ -73,10 +76,13 @@ __meta__ = {
 }
 
 [node name="ChatDisplay" type="TextEdit" parent="."]
-margin_left = 857.0
-margin_top = 2.0
-margin_right = 1022.0
-margin_bottom = 202.0
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -240.0
+margin_top = 40.0
+margin_right = -40.0
+margin_bottom = 240.0
+rect_min_size = Vector2( 200, 200 )
 custom_styles/normal = SubResource( 1 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 __meta__ = {
@@ -86,6 +92,9 @@ __meta__ = {
 [node name="ViewportContainer" type="ViewportContainer" parent="."]
 margin_right = 40.0
 margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
 [connection signal="pressed" from="Chat" to="." method="_on_Chat_pressed"]
 [connection signal="pressed" from="Chat/Layout/Message1" to="." method="_on_Message1_pressed"]
 [connection signal="pressed" from="Chat/Layout/Message2" to="." method="_on_Message2_pressed"]

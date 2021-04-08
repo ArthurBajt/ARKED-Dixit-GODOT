@@ -53,3 +53,5 @@ func afficheUpdateChat(id, msg):
 func AutoScroll():
 	var cl = ChatDisplay.get_line_count()
 	ChatDisplay.cursor_set_line(cl)
+
+# =================================================

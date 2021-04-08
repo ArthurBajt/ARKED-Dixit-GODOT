@@ -247,5 +247,13 @@ remotesync func declareChangementConteur(idJoueur):
 	for usId in self.utilisateurs:
 		self.utilisateurs[usId].estConteur= usId == idJoueur
 
+# =================================================
+# Chat
+signal updateChat
+func envoieMessage(msg):
+	rpc("messageRecu", id, msg)
+	
+remotesync func messageRecu(id, msg):
+	emit_signal("updateChat", id, msg)
 
 

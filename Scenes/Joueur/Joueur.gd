@@ -13,11 +13,13 @@ onready var cameraPos: Spatial = $CameraPos
 const NODE_CAM = preload("res://Scenes/Joueur/CameraJoueur.tscn")
 const NODE_UI = preload("res://Scenes/Joueur/UiJoueur.tscn")
 const NODE_UI_CONTEUR = preload("res://Scenes/Joueur/UiConteur.tscn")
+const NODE_CHAT = preload("res://Scenes/Chat/Chat.tscn")
 
 const NODE_CARTE = preload("res://Scenes/Carte/Carte.tscn")
 var estConteur: bool = false 
 var ui 
 var uiConteur
+var uiChat
 
 func setConteur(idJoueur):
 	self.estConteur = self.id == idJoueur
@@ -42,6 +44,8 @@ func init(idJoueur: int, plateauDePartie):
 		cameraPos.add_child(cam)
 		cam.set_current(true)
 		# UI dans le joueur car c'est celui qui est en local qui en a besoin
+		self.uiChat = NODE_CHAT.instance()
+		self.add_child(uiChat)
 		self.uiConteur = NODE_UI_CONTEUR.instance()
 		self.add_child(uiConteur)
 		self.ui = NODE_UI.instance()
