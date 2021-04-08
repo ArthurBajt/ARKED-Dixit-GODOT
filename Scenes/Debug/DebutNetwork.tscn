@@ -25,5 +25,5 @@ __meta__ = {
 [node name="labelUtilisateurs" type="RichTextLabel" parent="UI"]
 margin_left = 16.0
 margin_top = 71.0
-margin_right = 228.0
+margin_right = 542.0
 margin_bottom = 252.0

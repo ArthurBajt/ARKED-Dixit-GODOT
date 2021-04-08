@@ -13,16 +13,18 @@ func _ready():
 	get_tree().connect("connected_to_server", self, "_lobby_se_declarer")
 
 
-func creerServeur():
+
+func creerServeur(player_name):
 	""" Creer un serveur """
+	dataStruct.nom = player_name
 	var peer = NetworkedMultiplayerENet.new()
 	peer.create_server(DEFAUT_PORT, MAX_UTILISATEURS)
 	get_tree().set_network_peer(peer)
 	_lobby_se_declarer()
-
-
-func rejoindreServeur():
+	
+func rejoindreServeur(player_name):
 	""" Fait rejoindre un serveur à un utilisateur"""
+	dataStruct.nom = player_name
 	var peer = NetworkedMultiplayerENet.new()
 	peer.create_client(DEFAUT_IP, DEFAUT_PORT)
 	get_tree().set_network_peer(peer)
@@ -33,7 +35,13 @@ func rejoindreServeur():
 
 var utilisateurs: Dictionary
 var data: Dictionary
-const dataStruct = {estPret = false}
+const dataStruct = {nom = "",
+					estPret = false,
+					estDansPartie = false,
+					main = [],
+					cartesPlateau = {},
+					points = 0,
+					estConteur = false}
 
 
 signal nvUtilisateur(idUtilisateur)
@@ -45,7 +53,7 @@ func _lobby_se_declarer():
 	""" Quand un joueur se connecte au serveur
 	Il recupère son ID propre.
 	Et déclare sa présence au serveur. """
-	self.data = dataStruct.duplicate()
+	
 	
 	if get_tree().is_network_server():
 		id = 1
@@ -54,6 +62,7 @@ func _lobby_se_declarer():
 		id = get_tree().get_network_unique_id()
 		rpc_id(1, "_lobby_declareUtilisateur", id)
 	
+	self.data = dataStruct.duplicate()
 	utilisateurs[id] = dataStruct.duplicate()
 
 
@@ -62,12 +71,12 @@ remote func _lobby_declareUtilisateur(idUtilisateur: int):
 	le serveur signal a tt les utilisateur déjà présents
 	qu'un nv Utilisateur s'est connecté."""
 	for usId in utilisateurs:
-		if id != 1:
-			rpc_id(usId, "_lobby_ajouteUtilisateur", idUtilisateur)
+		if usId != 1:
+			rpc_id(usId, "_lobby_ajouteUtilisateur", idUtilisateur,dataStruct.duplicate())
 			rpc_id(idUtilisateur, "_lobby_ajouteUtilisateur", usId, utilisateurs[usId])
 		else:
-			_lobby_ajouteUtilisateur(idUtilisateur)
-		rpc_id(idUtilisateur, "_lobby_ajouteUtilisateur", 1, utilisateurs[1])
+			_lobby_ajouteUtilisateur(idUtilisateur, dataStruct.duplicate())
+			rpc_id(idUtilisateur, "_lobby_ajouteUtilisateur", 1, utilisateurs[1])
 
 
 remote func _lobby_ajouteUtilisateur(idUtilisateur: int, curentData: Dictionary = {}):
@@ -77,7 +86,7 @@ remote func _lobby_ajouteUtilisateur(idUtilisateur: int, curentData: Dictionary 
 	
 	On met a jour les Utilisateur deja presents et leurs données"""
 	if curentData == {}:
-	 utilisateurs[idUtilisateur] = dataStruct.duplicate()
+		utilisateurs[idUtilisateur] = dataStruct.duplicate()
 	else :
 		utilisateurs[idUtilisateur] = curentData.duplicate()
 	
@@ -129,11 +138,123 @@ remote func _lobby_lancePartie():
 
 
 func _peutLancerPartie()->bool:
-	var peutLancer: bool = true
+	""" True si on peut lancer la partie """
 	for usId in utilisateurs:
-		peutLancer = peutLancer and utilisateurs[usId].estPret
+		if not "estPret" in utilisateurs[usId]:
+			return false
+		
+		if not utilisateurs[usId].estPret:
+			return false
 	
-	return peutLancer
+	return true
+
 
 # =================================================
 # Partie
+
+#	Quand tt les joueurs on chargé la scene de la partie
+signal JoueursDansPartie
+
+func partie_setChargee():
+	"""Un est appelée quand un joueur a charger la scenen de dela partie."""
+	if id != 1:
+		rpc_id(1, "_partie_declareChargee", id)
+	else:
+		_partie_declareChargee(1)
+
+
+remote func _partie_declareChargee(idJoeuur: int):
+	""" """
+	for usId in utilisateurs:
+		if usId != 1:
+			rpc_id(usId, "_partie_appliqueChargee", idJoeuur)
+		else:
+			_partie_appliqueChargee(idJoeuur)
+
+
+remote func _partie_appliqueChargee(idJoueur: int):
+	if idJoueur == id:
+		data.estDansPartie = true
+	utilisateurs[idJoueur].estDansPartie = true
+	
+	if id == 1 and _sontJoueursDansPartie():
+		emit_signal("JoueursDansPartie")
+		print("--JoueursDansPartie--")
+
+
+func _sontJoueursDansPartie()->bool:
+	for usId in utilisateurs:
+		if not utilisateurs[usId].estDansPartie:
+			return false
+	return true
+
+
+# =================================================
+# Cartes
+
+signal joueurApiocherCarte(id, carte)
+
+func joueurPioche(idJoueur: int, carte: String):
+	for usId in utilisateurs:
+		if usId != 1:
+			rpc_id(usId, "_joueurPiocheCarte", idJoueur, carte)
+		else:
+			_joueurPiocheCarte(idJoueur, carte)
+
+
+remote func _joueurPiocheCarte(idJoueur: int, carte: String):
+	if idJoueur == id:
+		self.data.main = self.data.main + [carte]
+	utilisateurs[idJoueur].main = utilisateurs[idJoueur].main + [carte]
+	emit_signal("joueurApiocherCarte", idJoueur, carte)
+
+# =================================================
+# Plateau
+
+signal JoueurPoseCarte(idJoueur, nomCarte)
+
+func posercarte(idJoueur: int, carte: String):
+	if id != 1:
+		rpc_id(1, "declarePoseCarte", idJoueur, carte)
+	else:
+		declarePoseCarte(idJoueur, carte)
+
+
+remote func declarePoseCarte(idJoueur: int, carte: String):
+	for usId in utilisateurs:
+		if usId != 1:
+			rpc_id(usId, "appliquePoseCarte", idJoueur, carte)
+		else:
+			appliquePoseCarte(idJoueur, carte)
+
+
+remote func appliquePoseCarte(idJoueur: int, carte: String):
+	if idJoueur == self.id:
+		self.data.cartesPlateau[idJoueur] = carte
+		self.data.main.erase(carte)
+	
+	self.utilisateurs[idJoueur].cartesPlateau[idJoueur] = carte
+	self.utilisateurs[idJoueur].main.erase(carte)
+	emit_signal("JoueurPoseCarte", idJoueur, carte)
+	
+signal ChangementConteur
+
+func changeConteur(idJoueur):
+	rpc("declareChangementConteur", idJoueur)
+	
+remotesync func declareChangementConteur(idJoueur):
+	emit_signal("ChangementConteur", idJoueur)
+	self.data.estConteur= idJoueur == self.id
+	for usId in self.utilisateurs:
+		self.utilisateurs[usId].estConteur= usId == idJoueur
+
+# =================================================
+# Chat
+signal updateChat
+func envoieMessage(msg):
+	rpc("messageRecu", dataStruct.nom , msg)
+	
+remotesync func messageRecu(id, msg):
+	emit_signal("updateChat", id, msg)
+
+

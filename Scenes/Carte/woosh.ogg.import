@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/woosh.ogg-03eb1a6eb636d2c2fce0e91c5cd4a369.oggstr"
+
+[deps]
+
+source_file="res://Scenes/Carte/woosh.ogg"
+dest_files=[ "res://.import/woosh.ogg-03eb1a6eb636d2c2fce0e91c5cd4a369.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0
