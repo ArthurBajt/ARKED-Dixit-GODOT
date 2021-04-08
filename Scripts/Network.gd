@@ -243,7 +243,6 @@ remote func appliquePoseCarte(idJoueur: int, carte: String):
 	
 # =================================================
 # Chat
-
 signal updateChat
 
 func envoieMessage(msg):
