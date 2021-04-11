@@ -220,7 +220,7 @@ remotesync func declareChangementConteur(idJoueur):
 # Chat
 signal updateChat
 func envoieMessage(msg):
-	rpc("messageRecu", dataStruct.nom , msg)
+	rpc("messageRecu", id, msg)
 	
 remotesync func messageRecu(id, msg):
 	emit_signal("updateChat", id, msg)
