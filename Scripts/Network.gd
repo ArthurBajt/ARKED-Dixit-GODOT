@@ -80,7 +80,7 @@ remotesync func _lobby_ajouteUtilisateur(idUtilisateur: int, curentData: Diction
 	
 	On met a jour les Utilisateur deja presents et leurs données"""
 	if curentData == {}:
-		utilisateurs[idUtilisateur] = dataStruct.duplicate()
+		utilisateurs[idUtilisateur] = curentData.duplicate()
 	else :
 		utilisateurs[idUtilisateur] = curentData.duplicate()
 	
