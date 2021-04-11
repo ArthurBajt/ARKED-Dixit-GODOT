@@ -21,14 +21,11 @@ var ui
 var uiConteur
 var uiChat: Chat
 
-func setConteur(idJoueur):
-	self.estConteur = self.id == idJoueur
-	if estLocal():
-		self.uiConteur.afficheUiConteur(self.estConteur)
 
 	
 func _ready():
 	Network.connect("ChangementConteur", self, "setConteur")
+	Network.connect("updateTheme",self,"changeTheme")
 
 
 func init(idJoueur: int, plateauDePartie):
@@ -92,3 +89,18 @@ func retireCarte(carte: Carte):
 	if carte in self.main:
 		self.main.erase(carte)
 		self.mainRoot.remove_child(carte)
+		
+
+# ===========
+# UI
+func setConteur(idJoueur):
+	self.estConteur = self.id == idJoueur
+	if estLocal():
+		self.uiConteur.afficheUiConteur(self.estConteur)
+		
+func changeTheme(theme, nomConteur):
+	if estLocal():
+		if(self.estConteur):
+			self.ui.changeTheme(theme)
+		else:
+			self.ui.changeTheme(theme, false, nomConteur)

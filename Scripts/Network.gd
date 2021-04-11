@@ -225,4 +225,12 @@ func envoieMessage(msg):
 remotesync func messageRecu(id, msg):
 	emit_signal("updateChat", id, msg)
 
+# =================================================
+# Theme
+signal updateTheme
+func defineTheme(theme):
+	rpc("changeTheme", theme, dataStruct.nom)
+	
+remotesync func changeTheme(theme, nomConteur):
+	emit_signal("updateTheme", theme, nomConteur)
 
