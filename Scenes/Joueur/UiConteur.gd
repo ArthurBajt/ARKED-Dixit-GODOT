@@ -34,6 +34,7 @@ func valideTheme():
 		print(theme)
 		self.visible = false
 		isChoisingTheme = false
+		Network.defineTheme(theme)
 	else:
 		# Animation d'erreur
 		for _i in range(0,2):
