@@ -1,7 +1,7 @@
 extends Node
 
 
-var isDebug: bool = false setget setDebug
+var isDebug: bool = true setget setDebug
 
 
 func setDebug(value: bool):
