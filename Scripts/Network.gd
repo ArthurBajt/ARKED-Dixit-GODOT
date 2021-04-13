@@ -71,7 +71,8 @@ remote func _lobby_declareUtilisateur(idUtilisateur: int):
 	le serveur signal a tt les utilisateur déjà présents
 	qu'un nv Utilisateur s'est connecté."""
 	rpc("_lobby_ajouteUtilisateur", idUtilisateur, dataStruct.duplicate())
-	rpc("_lobby_ajouteUtilisateur", 1, utilisateurs[1])
+	for usId in utilisateurs:
+		rpc_id(idUtilisateur,"_lobby_ajouteUtilisateur", usId, utilisateurs[usId])
 
 remotesync func _lobby_ajouteUtilisateur(idUtilisateur: int, curentData: Dictionary = {}):
 	""" Le serveur a declarer l'arrivee d'un nv Utilisateur
@@ -146,11 +147,12 @@ func partie_setChargee():
 
 remotesync func _partie_declareChargee(idJoeuur: int):
 	""" """
+	print("pouet : ", idJoeuur )
 	rpc("_partie_appliqueChargee", idJoeuur)
 
 
 
-remote func _partie_appliqueChargee(idJoueur: int):
+remotesync func _partie_appliqueChargee(idJoueur: int):
 	if idJoueur == id:
 		data.estDansPartie = true
 	utilisateurs[idJoueur].estDansPartie = true

@@ -9,6 +9,7 @@ func _ready():
 	_initDeck()
 
 
+
 func piocher(joueur: Joueur):
 	""" Donne une carte a un joueur """
 	if deck.size() == 0:
@@ -20,4 +21,7 @@ func piocher(joueur: Joueur):
 
 func _initDeck():
 	deck = R.getDeck()
+	randomize()
 	deck.shuffle()
+
+	print(deck)
