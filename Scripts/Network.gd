@@ -191,13 +191,8 @@ remotesync func _joueurPiocheCarte(idJoueur: int, carte: String):
 signal JoueurPoseCarte(idJoueur, nomCarte)
 
 func posercarte(idJoueur: int, carte: String):
-	rpc("declarePoseCarte", idJoueur, carte)
-
-
-remotesync func declarePoseCarte(idJoueur: int, carte: String):
 	rpc("appliquePoseCarte", idJoueur, carte)
-
-
+	
 remotesync func appliquePoseCarte(idJoueur: int, carte: String):
 	if idJoueur == self.id:
 		self.data.cartesPlateau[idJoueur] = carte
