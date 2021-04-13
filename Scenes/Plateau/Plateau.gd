@@ -26,7 +26,7 @@ func init(joueursDeLaPartie: Array, cartesMax: int = 6):
 	joueurs = joueursDeLaPartie
 	estHote = Network.id == 1
 	_initPioche()
-	nbCarteJoueur = min(joueurs.size() +2, cartesMax)
+	nbCarteJoueur = 6 # min(joueurs.size() +2, cartesMax)
 	
 	if estHote:
 		Network.connect("JoueursDansPartie", self, "lancePartie")
