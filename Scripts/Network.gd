@@ -220,10 +220,10 @@ remotesync func declareChangementConteur(idJoueur):
 # Chat
 signal updateChat
 func envoieMessage(msg):
-	rpc("messageRecu", id, msg)
+	rpc("messageRecu", self.data.nom , msg)
 	
-remotesync func messageRecu(id, msg):
-	emit_signal("updateChat", id, msg)
+remotesync func messageRecu(pseudo, msg):
+	emit_signal("updateChat", pseudo, msg)
 
 # =================================================
 # Theme
