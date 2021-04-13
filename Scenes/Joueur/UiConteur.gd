@@ -10,7 +10,7 @@ onready var background = $Background
 
 
 func _ready():
-	pass # Replace with function body.
+	self.mouse_filter = Control.MOUSE_FILTER_IGNORE
 
 
 func afficheUiConteur(isConteur):

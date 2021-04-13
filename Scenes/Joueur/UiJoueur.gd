@@ -5,6 +5,7 @@ onready var labelPoints = $VBoxContainer/LabelPoints
 onready var labelConteur = $VBoxContainer/LabelConteur
 
 func _ready():
+	self.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	labelNom.text = R.getString("labelNom") % str(Network.id)
 	labelPoints.text = R.getString("labelPoints") % str( Network.data.points )
 	labelConteur.text = R.getString("labelConteur")
