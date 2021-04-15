@@ -6,7 +6,7 @@
 [ext_resource path="res://Scenes/Carte/AnimationTree.gd" type="Script" id=4]
 
 [sub_resource type="QuadMesh" id=1]
-size = Vector2( 0.65, 1 )
+size = Vector2( 0.68, 1 )
 
 [sub_resource type="SpatialMaterial" id=2]
 flags_unshaded = true
@@ -19,7 +19,6 @@ extents = Vector3( 0.32, 0.48, 0.02 )
 [sub_resource type="Animation" id=4]
 resource_name = "Apparait"
 length = 0.7
-loop = true
 tracks/0/type = "bezier"
 tracks/0/path = NodePath("Mesh:rotation_degrees:x")
 tracks/0/interp = 1
@@ -84,7 +83,6 @@ tracks/5/keys = {
 [sub_resource type="Animation" id=5]
 resource_name = "Cachee"
 length = 0.1
-loop = true
 tracks/0/type = "bezier"
 tracks/0/path = NodePath("Mesh:translation:x")
 tracks/0/interp = 1
@@ -272,7 +270,6 @@ tracks/8/keys = {
 [sub_resource type="Animation" id=7]
 resource_name = "DansMain"
 length = 0.1
-loop = true
 tracks/0/type = "bezier"
 tracks/0/path = NodePath("Mesh:translation:x")
 tracks/0/interp = 1
@@ -460,7 +457,6 @@ tracks/8/keys = {
 [sub_resource type="Animation" id=9]
 resource_name = "Decouverte"
 length = 0.1
-loop = true
 tracks/0/type = "bezier"
 tracks/0/path = NodePath("Mesh:translation:x")
 tracks/0/interp = 1
@@ -647,7 +643,6 @@ tracks/8/keys = {
 
 [sub_resource type="Animation" id=11]
 length = 0.1
-loop = true
 tracks/0/type = "bezier"
 tracks/0/path = NodePath("Mesh:translation:x")
 tracks/0/interp = 1
@@ -742,7 +737,6 @@ tracks/8/keys = {
 [sub_resource type="Animation" id=12]
 resource_name = "NonExistante"
 length = 0.1
-loop = true
 tracks/0/type = "bezier"
 tracks/0/path = NodePath("Mesh:translation:x")
 tracks/0/interp = 1
@@ -1119,7 +1113,6 @@ transform = Transform( 0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, 0, 0, 0 )
 script = ExtResource( 1 )
 
 [node name="Mesh" type="Spatial" parent="."]
-transform = Transform( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
 
 [node name="CarteRecto" type="MeshInstance" parent="Mesh"]
 transform = Transform( -1, -1.4243e-14, -8.74228e-08, -8.74228e-08, 1.62921e-07, 1, 0, 1, -1.62921e-07, 0, 0, 0 )
