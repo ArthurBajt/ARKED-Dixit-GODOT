@@ -189,6 +189,7 @@ remotesync func _joueurPiocheCarte(idJoueur: int, carte: String):
 # Plateau
 
 signal JoueurPoseCarte(idJoueur, nomCarte)
+signal APoseCarte()
 
 func posercarte(idJoueur: int, carte: String):
 	rpc("appliquePoseCarte", idJoueur, carte)
@@ -201,6 +202,7 @@ remotesync func appliquePoseCarte(idJoueur: int, carte: String):
 	self.utilisateurs[idJoueur].cartesPlateau[idJoueur] = carte
 	self.utilisateurs[idJoueur].main.erase(carte)
 	emit_signal("JoueurPoseCarte", idJoueur, carte)
+	emit_signal("APoseCarte", idJoueur)
 	
 signal ChangementConteur
 
@@ -208,10 +210,15 @@ func changeConteur(idJoueur):
 	rpc("declareChangementConteur", idJoueur)
 	
 remotesync func declareChangementConteur(idJoueur):
-	emit_signal("ChangementConteur", idJoueur)
 	self.data.estConteur= idJoueur == self.id
 	for usId in self.utilisateurs:
-		self.utilisateurs[usId].estConteur= usId == idJoueur
+		if usId == idJoueur:
+			self.utilisateurs[usId].etat = Globals.EtatJoueur.SELECTION_CARTE_THEME
+		else:
+			self.utilisateurs[usId].etat = Globals.EtatJoueur.ATTENTE_CHOIX_THEME
+		self.utilisateurs[usId].estConteur = usId == idJoueur
+	emit_signal("ChangementConteur", idJoueur)
+			
 
 # =================================================
 # Chat

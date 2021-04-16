@@ -5,7 +5,9 @@ var isChoisingTheme: bool = false
 
 
 onready var vboxConteur = $VBoxContainer
+onready var labelIndicator = $VBoxContainer/LabelChoixTheme
 onready var lineEditTheme = $VBoxContainer/HBoxContainer/LineEditTheme
+onready var hboxConteur = $VBoxContainer/HBoxContainer
 onready var background = $Background
 
 
@@ -15,9 +17,25 @@ func _ready():
 
 func afficheUiConteur(isConteur):
 	isChoisingTheme = isConteur
-	self.visible = isConteur
+	if(isConteur):
+		labelIndicator.text = "Choisissez le thème..."
+	else:
+		labelIndicator.text = "En attente de la selection du conteur..."
+	
+	hboxConteur.visible = isConteur
+	self.visible = !isConteur
+	
+func afficheChoixConteur():
+	self.visible = true
 
+func attendreSelections():
+	self.visible = true
+	hboxConteur.visible = false
+	labelIndicator.text = "En attente de la selection des autres joueurs"
 
+func enlever():
+	self.visible = false
+	
 func _input(event):
 	if(event is InputEventKey):
 		if isChoisingTheme and event.pressed and event.scancode == KEY_ENTER:

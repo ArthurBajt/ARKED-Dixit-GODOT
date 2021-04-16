@@ -21,11 +21,12 @@ var ui
 var uiConteur
 var uiChat: Chat
 
-
+var etat: int
 	
 func _ready():
 	Network.connect("ChangementConteur", self, "setConteur")
 	Network.connect("updateTheme",self,"changeTheme")
+	Network.connect("APoseCarte",self,"selectionneChoixTheme")
 
 
 func init(idJoueur: int, plateauDePartie):
@@ -33,7 +34,8 @@ func init(idJoueur: int, plateauDePartie):
 	self.estLocal = Network.id == idJoueur
 	self.plateau = plateauDePartie
 	self.main = []
-	self.estConteur
+	self.estConteur = false
+	self.etat = Globals.EtatJoueur.ATTENTE_CHOIX_THEME
 	
 	
 	if self.estLocal():
@@ -99,8 +101,22 @@ func setConteur(idJoueur):
 		self.uiConteur.afficheUiConteur(self.estConteur)
 		
 func changeTheme(theme, nomConteur):
+	if(self.estConteur):
+		self.etat = Globals.EtatJoueur.ATTENTE_SELECTIONS
+	else:
+		self.etat = Globals.EtatJoueur.SELECTION_CARTE
 	if estLocal():
 		if(self.estConteur):
 			self.ui.changeTheme(theme)
+			self.uiConteur.attendreSelections()
 		else:
 			self.ui.changeTheme(theme, false, nomConteur)
+			self.uiConteur.enlever()
+
+func selectionneChoixTheme(idJoueur):
+	if(self.estLocal()):
+		if(self.estConteur && self.id == idJoueur):
+			self.etat = Globals.EtatJoueur.CHOIX_THEME
+			self.uiConteur.afficheChoixConteur()
+		elif(self.id == idJoueur):
+			self.uiConteur.attendreSelections()
