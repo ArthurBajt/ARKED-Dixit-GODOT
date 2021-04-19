@@ -59,12 +59,18 @@ func piocheCarte(nomCarte: String):
 	
 	if estLocal:
 		instanceCarte.connect("carteCliquee", self, "localPoseCarte")
+	
+	instanceCarte.estDansMain = true
+	instanceCarte.estSurPlateau =  false
 
 
 func localPoseCarte(carte):
 	Network.posercarte(self.id, carte.nom)
 	carte.disconnect("carteCliquee", self, "localPoseCarte")
 	carte.peutEtreHover = false
+	
+	carte.estDansMain = false
+	carte.estSurPlateau =  true
 
 
 
