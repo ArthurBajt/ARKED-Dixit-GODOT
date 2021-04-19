@@ -142,7 +142,10 @@ signal JoueursDansPartie
 
 func partie_setChargee():
 	"""Un est appelée quand un joueur a charger la scenen de dela partie."""
-	rpc("_partie_declareChargee", id)
+	if id!=1:
+		rpc_id(1, "_partie_declareChargee", id)
+	else:
+		_partie_declareChargee(1)
 
 
 remotesync func _partie_declareChargee(idJoeuur: int):
