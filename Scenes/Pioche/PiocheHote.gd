@@ -24,4 +24,4 @@ func _initDeck():
 	randomize()
 	deck.shuffle()
 
-	print(deck)
+
