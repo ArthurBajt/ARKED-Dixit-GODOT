@@ -28,6 +28,7 @@ material/0 = null
 [node name="Table" type="Spatial" parent="Scene/Decor"]
 
 [node name="MeshInstance" type="MeshInstance" parent="Scene/Decor/Table"]
+transform = Transform( 3, 0, 0, 0, 1, 0, 0, 0, 3, 0, 0, 0 )
 mesh = SubResource( 2 )
 material/0 = SubResource( 3 )
 

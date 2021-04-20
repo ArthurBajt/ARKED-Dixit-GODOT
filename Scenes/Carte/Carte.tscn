@@ -302,39 +302,39 @@ tracks/5/keys = {
 [sub_resource type="AnimationNodeAnimation" id=8]
 animation = "cache_decouverte"
 
-[sub_resource type="AnimationNodeAnimation" id=13]
+[sub_resource type="AnimationNodeAnimation" id=9]
 animation = "dansMain"
 
 [sub_resource type="AnimationNodeAnimation" id=10]
 animation = "dansMain_cachee"
 
-[sub_resource type="AnimationNodeAnimation" id=14]
+[sub_resource type="AnimationNodeAnimation" id=11]
 animation = "decouverte_disparait"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=12]
+switch_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=13]
+switch_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=14]
+switch_mode = 2
 
 [sub_resource type="AnimationNodeStateMachineTransition" id=15]
 switch_mode = 2
 
-[sub_resource type="AnimationNodeStateMachineTransition" id=16]
-switch_mode = 2
-
-[sub_resource type="AnimationNodeStateMachineTransition" id=17]
-switch_mode = 2
-
-[sub_resource type="AnimationNodeStateMachineTransition" id=18]
-switch_mode = 2
-
-[sub_resource type="AnimationNodeStateMachine" id=11]
+[sub_resource type="AnimationNodeStateMachine" id=16]
 states/cache_decouverte/node = SubResource( 8 )
 states/cache_decouverte/position = Vector2( 542, 128 )
-states/dansMain/node = SubResource( 13 )
+states/dansMain/node = SubResource( 9 )
 states/dansMain/position = Vector2( 450, 40 )
 states/dansMain_cachee/node = SubResource( 10 )
 states/dansMain_cachee/position = Vector2( 280, 128 )
-states/decouverte_disparait/node = SubResource( 14 )
+states/decouverte_disparait/node = SubResource( 11 )
 states/decouverte_disparait/position = Vector2( 951, 132 )
-transitions = [ "dansMain", "dansMain_cachee", SubResource( 15 ), "dansMain_cachee", "cache_decouverte", SubResource( 16 ), "cache_decouverte", "decouverte_disparait", SubResource( 17 ), "decouverte_disparait", "dansMain", SubResource( 18 ) ]
+transitions = [ "dansMain", "dansMain_cachee", SubResource( 12 ), "dansMain_cachee", "cache_decouverte", SubResource( 13 ), "cache_decouverte", "decouverte_disparait", SubResource( 14 ), "decouverte_disparait", "dansMain", SubResource( 15 ) ]
 
-[sub_resource type="AnimationNodeStateMachinePlayback" id=12]
+[sub_resource type="AnimationNodeStateMachinePlayback" id=17]
 
 [node name="Carte" type="Spatial"]
 script = ExtResource( 1 )
@@ -364,10 +364,10 @@ anims/dansMain_cachee = SubResource( 6 )
 anims/decouverte_disparait = SubResource( 7 )
 
 [node name="AnimationTree" type="AnimationTree" parent="."]
-tree_root = SubResource( 11 )
+tree_root = SubResource( 16 )
 anim_player = NodePath("../AnimationPlayer")
 active = true
-parameters/playback = SubResource( 12 )
+parameters/playback = SubResource( 17 )
 [connection signal="input_event" from="Mesh/Area" to="." method="_on_Area_input_event"]
 [connection signal="mouse_entered" from="Mesh/Area" to="." method="_on_Area_mouse_entered"]
 [connection signal="mouse_exited" from="Mesh/Area" to="." method="_on_Area_mouse_exited"]

@@ -73,12 +73,14 @@ func _fairePoserCarte(idJoueur: int, nomCarte: String):
 
 func ajouteCartePlateau(carte: Carte, transform = null):
 	self.cartes.append(carte)
+	for child in rootCartes.get_children():
+		child.translate(Vector3(5, 0, 0))
 	self.rootCartes.add_child(carte)
 	
 	if transform != null:
 		carte.global_transform = transform
 	
-	carte.positionCible = Vector3(1, 0, 0) * (self.cartes.size() -1)
+	carte.positionCible = Vector3(0.55, 0, 0) * -(self.cartes.size() - 1)
 	
 
 #================

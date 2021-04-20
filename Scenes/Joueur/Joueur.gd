@@ -26,7 +26,7 @@ var etat: int
 func _ready():
 	Network.connect("ChangementConteur", self, "setConteur")
 	Network.connect("updateTheme",self,"changeTheme")
-	Network.connect("APoseCarte",self,"selectionneChoixTheme")
+	Network.connect("APoseCarte",self,"carteSelectectionnee")
 
 
 func init(idJoueur: int, plateauDePartie):
@@ -113,10 +113,14 @@ func changeTheme(theme, nomConteur):
 			self.ui.changeTheme(theme, false, nomConteur)
 			self.uiConteur.enlever()
 
-func selectionneChoixTheme(idJoueur):
-	if(self.estLocal()):
-		if(self.estConteur && self.id == idJoueur):
+func carteSelectectionnee(idJoueur):
+	# Si le joueur a bien posé la carte et qu'il est local
+	if(self.estLocal() && self.id == idJoueur):
+		# Alors si il est conteur
+		if(self.estConteur):
+			# On lui demande le choix du theme
 			self.etat = Globals.EtatJoueur.CHOIX_THEME
 			self.uiConteur.afficheChoixConteur()
-		elif(self.id == idJoueur):
+		else:
+			# Sinon il attends le conteur
 			self.uiConteur.attendreSelections()
