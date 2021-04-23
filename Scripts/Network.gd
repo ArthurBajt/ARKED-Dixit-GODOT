@@ -205,11 +205,13 @@ remotesync func appliquePoseCarte(idJoueur: int, carte: String):
 	self.utilisateurs[idJoueur].cartesPlateau[idJoueur] = carte
 	self.utilisateurs[idJoueur].main.erase(carte)
 	
-	for usId in self.utilisateurs:
-		if(!self.utilisateurs[usId].estConteur):
-			self.utilisateurs[usId].etat = Globals.EtatJoueur.ATTENTE_VOTES
+	if(!self.utilisateurs[idJoueur].estConteur):
+		self.utilisateurs[idJoueur].etat = Globals.EtatJoueur.ATTENTE_SELECTIONS
+	else:
+		self.utilisateurs[idJoueur].etat = Globals.EtatJoueur.CHOIX_THEME
 	
-
+		
+	
 	emit_signal("JoueurPoseCarte", idJoueur, carte)
 	emit_signal("APoseCarte", idJoueur)
 	
@@ -257,16 +259,17 @@ func verifEtat():
 	var nbJoueur = utilisateurs.size()
 	var compteur = 0
 	for usId in self.utilisateurs:
-		if (!self.utilisateurs[usId].estConteur and self.utilisateurs[usId].etat==Globals.EtatJoueur.ATTENTE_VOTES):
+		if (self.utilisateurs[usId].etat==Globals.EtatJoueur.ATTENTE_SELECTIONS):
 			compteur+=1
-		if (compteur == nbJoueur-1):
-			print("on est là")
-			for chercheCompteur in self.utilisateurs:
-#				if self.utilisateurs[chercheCompteur].estConteur:
-#					print("pouet")
-#				print(self.utilisateurs[chercheCompteur].etat)
-				print("V1 Etat de %s [%s]: %s" % [utilisateurs[usId].nom, usId,utilisateurs[usId].etat])
-#					self.utilisateurs[chercheCompteur].etat==Globals.EtatJoueur.ATTENTE_VOTES
+		if (compteur == nbJoueur):
+			for user in self.utilisateurs:
+				if self.utilisateurs[user].estConteur:
+					self.utilisateurs[user].etat=Globals.EtatJoueur.ATTENTE_VOTES
+				else:
+					self.utilisateurs[user].etat=Globals.EtatJoueur.VOTE
+					
+				print("V1 Etat de %s [%s]: %s" % [utilisateurs[user].nom, user,utilisateurs[user].etat])
+
 
 	for usId in self.utilisateurs:
 		print("V2 Etat de %s [%s]: %s" % [utilisateurs[usId].nom, usId,utilisateurs[usId].etat])
