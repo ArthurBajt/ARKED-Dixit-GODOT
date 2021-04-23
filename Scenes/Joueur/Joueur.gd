@@ -124,3 +124,8 @@ func carteSelectectionnee(idJoueur):
 		else:
 			# Sinon il attends le conteur
 			self.uiConteur.attendreSelections()
+			self.etat = Globals.EtatJoueur.ATTENTE_VOTES
+
+		Network.verifEtat()
+
+	

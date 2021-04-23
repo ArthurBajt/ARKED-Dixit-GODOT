@@ -115,7 +115,7 @@ func lobby_lancerPartie():
 	""" Permet a l'hote de la partie de démarer le jeu pour tt les utilisateurs"""
 	if id == 1 and _peutLancerPartie():
 		rpc("_lobby_lancePartie")
-#####ICI LORIS C'EST PEUT ETRE LA QUE CA VA BUGGER######
+
 
 remotesync func _lobby_lancePartie():
 	""" Signal a tt les utilisateurs du lobby que la partie commence."""
@@ -204,6 +204,12 @@ remotesync func appliquePoseCarte(idJoueur: int, carte: String):
 	
 	self.utilisateurs[idJoueur].cartesPlateau[idJoueur] = carte
 	self.utilisateurs[idJoueur].main.erase(carte)
+	
+	for usId in self.utilisateurs:
+		if(!self.utilisateurs[usId].estConteur):
+			self.utilisateurs[usId].etat = Globals.EtatJoueur.ATTENTE_VOTES
+	
+
 	emit_signal("JoueurPoseCarte", idJoueur, carte)
 	emit_signal("APoseCarte", idJoueur)
 	
@@ -239,5 +245,29 @@ func defineTheme(theme):
 	rpc("changeTheme", theme, self.data.nom)
 	
 remotesync func changeTheme(theme, nomConteur):
+	for usId in self.utilisateurs:
+		if(self.utilisateurs[usId].estConteur):
+			self.utilisateurs[usId].etat = Globals.EtatJoueur.ATTENTE_SELECTIONS
+		else:
+			self.utilisateurs[usId].etat = Globals.EtatJoueur.SELECTION_CARTE
+		
 	emit_signal("updateTheme", theme, nomConteur)
+	
+func verifEtat():
+	var nbJoueur = utilisateurs.size()
+	var compteur = 0
+	for usId in self.utilisateurs:
+		if (!self.utilisateurs[usId].estConteur and self.utilisateurs[usId].etat==Globals.EtatJoueur.ATTENTE_VOTES):
+			compteur+=1
+		if (compteur == nbJoueur-1):
+			print("on est là")
+			for chercheCompteur in self.utilisateurs:
+#				if self.utilisateurs[chercheCompteur].estConteur:
+#					print("pouet")
+#				print(self.utilisateurs[chercheCompteur].etat)
+				print("V1 Etat de %s [%s]: %s" % [utilisateurs[usId].nom, usId,utilisateurs[usId].etat])
+#					self.utilisateurs[chercheCompteur].etat==Globals.EtatJoueur.ATTENTE_VOTES
+
+	for usId in self.utilisateurs:
+		print("V2 Etat de %s [%s]: %s" % [utilisateurs[usId].nom, usId,utilisateurs[usId].etat])
 
