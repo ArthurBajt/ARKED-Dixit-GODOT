@@ -21,11 +21,12 @@ var ui
 var uiConteur
 var uiChat: Chat
 
-
+var etat: int
 	
 func _ready():
 	Network.connect("ChangementConteur", self, "setConteur")
 	Network.connect("updateTheme",self,"changeTheme")
+	Network.connect("APoseCarte",self,"carteSelectectionnee")
 
 
 func init(idJoueur: int, plateauDePartie):
@@ -33,7 +34,8 @@ func init(idJoueur: int, plateauDePartie):
 	self.estLocal = Network.id == idJoueur
 	self.plateau = plateauDePartie
 	self.main = []
-	self.estConteur
+	self.estConteur = false
+	self.etat = Globals.EtatJoueur.ATTENTE_CHOIX_THEME
 	
 	
 	if self.estLocal():
@@ -105,8 +107,31 @@ func setConteur(idJoueur):
 		self.uiConteur.afficheUiConteur(self.estConteur)
 		
 func changeTheme(theme, nomConteur):
+	if(self.estConteur):
+		self.etat = Globals.EtatJoueur.ATTENTE_SELECTIONS
+	else:
+		self.etat = Globals.EtatJoueur.SELECTION_CARTE
 	if estLocal():
 		if(self.estConteur):
 			self.ui.changeTheme(theme)
+			self.uiConteur.attendreSelections()
 		else:
 			self.ui.changeTheme(theme, false, nomConteur)
+			self.uiConteur.enlever()
+
+func carteSelectectionnee(idJoueur):
+	# Si le joueur a bien posé la carte et qu'il est local
+	if(self.estLocal() && self.id == idJoueur):
+		# Alors si il est conteur
+		if(self.estConteur):
+			# On lui demande le choix du theme
+			self.etat = Globals.EtatJoueur.CHOIX_THEME
+			self.uiConteur.afficheChoixConteur()
+		else:
+			# Sinon il attends le conteur
+			self.uiConteur.attendreSelections()
+			self.etat = Globals.EtatJoueur.ATTENTE_SELECTIONS
+
+		Network.verifEtat()
+
+	

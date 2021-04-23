@@ -4,7 +4,7 @@ extends Node
 onready var nodeJoueurs = $Scene/Joueurs
 var joueurs: Array = []
 const JOUEUR_INSTANCE = preload("res://Scenes/Joueur/Joueur.tscn")
-const JOUEUR_POSITION: Vector3 = Vector3(0, 0, -5)
+const JOUEUR_POSITION: Vector3 = Vector3(0, 0, -8)
 
 onready var plateau = $Scene/Plateau
 
