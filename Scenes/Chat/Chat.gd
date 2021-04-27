@@ -17,7 +17,14 @@ onready var ChatDisplay = $ChatDisplay
 func _ready():
 	self.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	Network.connect("updateChat", self, "afficheUpdateChat") # Replace with function body.
+<<<<<<< Updated upstream
 	MessageBox.visible = !MessageBox.visible
+=======
+<<<<<<< HEAD
+=======
+	MessageBox.visible = !MessageBox.visible
+>>>>>>> Chat
+>>>>>>> Stashed changes
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -31,29 +38,66 @@ func _on_Chat_pressed():
 
 func _on_Message1_pressed():
 	Network.envoieMessage(message1.get_text())
+<<<<<<< Updated upstream
 	MessageBox.visible = !MessageBox.visible
+=======
+<<<<<<< HEAD
+=======
+	MessageBox.visible = !MessageBox.visible
+>>>>>>> Chat
+>>>>>>> Stashed changes
 
 
 func _on_Message2_pressed():
 	Network.envoieMessage(message2.get_text())
+<<<<<<< Updated upstream
 	MessageBox.visible = !MessageBox.visible
+=======
+<<<<<<< HEAD
+=======
+	MessageBox.visible = !MessageBox.visible
+>>>>>>> Chat
+>>>>>>> Stashed changes
 
 
 func _on_Message3_pressed():
 	Network.envoieMessage(message3.get_text())
+<<<<<<< Updated upstream
 	MessageBox.visible = !MessageBox.visible
+=======
+<<<<<<< HEAD
+=======
+	MessageBox.visible = !MessageBox.visible
+>>>>>>> Chat
+>>>>>>> Stashed changes
 
 
 func _on_Message4_pressed():
 	Network.envoieMessage(message4.get_text())
+<<<<<<< Updated upstream
 	MessageBox.visible = !MessageBox.visible
 	
 func afficheUpdateChat(name, msg):
 	ChatDisplay.text += "%s: %s \n" % [name,msg]
+=======
+<<<<<<< HEAD
+	
+func afficheUpdateChat(id, msg):
+	ChatDisplay.text += "msg de %s : %s \n" % [id,msg]
+=======
+	MessageBox.visible = !MessageBox.visible
+	
+func afficheUpdateChat(id, msg):
+	ChatDisplay.text += "[%s]: %s \n" % [id,msg]
+>>>>>>> Stashed changes
 	AutoScroll()
 	
 func AutoScroll():
 	var cl = ChatDisplay.get_line_count()
 	ChatDisplay.cursor_set_line(cl)
+<<<<<<< Updated upstream
 
 # =================================================
+=======
+>>>>>>> Chat
+>>>>>>> Stashed changes
