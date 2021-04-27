@@ -70,9 +70,6 @@ func localPoseCarte(carte):
 	Network.posercarte(self.id, carte.nom)
 	carte.disconnect("carteCliquee", self, "localPoseCarte")
 	carte.peutEtreHover = false
-	
-	carte.estDansMain = false
-	carte.estSurPlateau =  true
 
 
 
