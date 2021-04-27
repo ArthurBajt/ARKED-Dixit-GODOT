@@ -72,7 +72,7 @@ func piocheCarte(nomCarte: String):
 	instanceCarte.init(nomCarte, estLocal(), estLocal())
 	main += [instanceCarte]
 	
-	instanceCarte.positionCible = Vector3(0.7*(main.size()-1), 0, 0)
+	instanceCarte.positionCible = Vector3(-0.6+0.5*(main.size()-1), 0, 0)
 	
 	if estLocal:
 		instanceCarte.connect("carteCliquee", self, "localPoseCarte")
