@@ -17,3 +17,22 @@ enum EtatJoueur {
 
 func setDebug(value: bool):
 	isDebug = value
+
+
+func quitter():
+	get_tree().quit()
+
+
+# ==================
+#	Options
+
+func optionAffiche():
+	""" Si on fait une Ui pour des options """
+	print("affiche options")
+	pass
+
+
+func optionCache():
+	""" Si on fait une Ui pour des options, on la cache. """
+	print("cache options")
+	pass
