@@ -37,6 +37,9 @@ material/0 = SubResource( 3 )
 [node name="Plateau" parent="Scene" instance=ExtResource( 2 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.04439, 0 )
 
+[node name="Camera" type="Camera" parent="Scene"]
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 3.28625, 0 )
+
 [node name="Ui" type="Control" parent="."]
 margin_right = 40.0
 margin_bottom = 40.0
