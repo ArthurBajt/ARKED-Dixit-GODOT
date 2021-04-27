@@ -87,6 +87,9 @@ func ajouteCartePlateau(carte: Carte, transform = null):
 	carte.rotation_degrees.z = 180
 	carte.positionCible = Vector3(0.28, 0, 0) * -(self.cartes.size() - 1)
 	
+	carte.estDansMain = false
+	carte.estSurPlateau =  true
+	
 
 #================
 #	getters et trucs utiles toi même tu sais
