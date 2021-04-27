@@ -20,6 +20,8 @@ var cartes: Array = []
 func _ready():
 	Network.connect("joueurApiocherCarte", self, "_on_joueurApiocherCarte")
 	Network.connect("JoueurPoseCarte", self, "_fairePoserCarte")
+	Network.connect("carteVotee", self, "aVoteCarte")
+	Network.connect("voirRes", self, "voirRes")
 
 
 func init(joueursDeLaPartie: Array, cartesMax: int = 6):
@@ -89,7 +91,14 @@ func ajouteCartePlateau(carte: Carte, transform = null):
 	
 	carte.estDansMain = false
 	carte.estSurPlateau =  true
-	
+
+func aVoteCarte(idJoueur):
+	if(idJoueur == Network.id):
+		self.getJoueur(idJoueur).aVote()
+		
+func voirRes():
+	for j in self.joueurs:
+		j.voirRes()
 
 #================
 #	getters et trucs utiles toi même tu sais

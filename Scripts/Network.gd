@@ -40,8 +40,10 @@ const dataStruct = {nom = "",
 					estDansPartie = false,
 					main = [],
 					cartesPlateau = {},
+					cartesVotees = {},
 					points = 0,
 					estConteur = false}
+
 
 
 signal nvUtilisateur(idUtilisateur)
@@ -175,7 +177,18 @@ func _sontJoueursDansPartie()->bool:
 			return false
 	return true
 
+func voteCarte(carte, idJoueur):
+	rpc("joueurVoteCarte", carte, idJoueur)
 
+signal carteVotee(idJoueur)
+
+remotesync func joueurVoteCarte(carte,idJoueur):
+	if(idJoueur == self.id):
+		self.date.cartesVotee[idJoueur] = carte
+	
+	self.utilisateurs[idJoueur].cartesVotee[idJoueur] = carte
+	self.utilisateurs[idJoueur].etat = Globals.EtatJoueur.ATTENTE_VOTES
+	emit_signal("carteVotee", idJoueur)
 # =================================================
 # Cartes
 
@@ -258,14 +271,17 @@ remotesync func changeTheme(theme, nomConteur):
 			self.utilisateurs[usId].etat = Globals.EtatJoueur.SELECTION_CARTE
 		
 	emit_signal("updateTheme", theme, nomConteur)
-	
-func verifEtat():
+
+signal voirRes
+func verifEtat(etat):
 	var nbJoueur = utilisateurs.size()
 	var compteur = 0
 	for usId in self.utilisateurs:
-		if (self.utilisateurs[usId].etat==Globals.EtatJoueur.ATTENTE_SELECTIONS):
+		if (self.utilisateurs[usId].etat==etat):
 			compteur+=1
-		if (compteur == nbJoueur):
+	
+	if (compteur == nbJoueur):
+		if(etat==Globals.EtatJoueur.ATTENTE_SELECTIONS):
 			for user in self.utilisateurs:
 				if self.utilisateurs[user].estConteur:
 					self.utilisateurs[user].etat=Globals.EtatJoueur.ATTENTE_VOTES
@@ -273,8 +289,11 @@ func verifEtat():
 					self.utilisateurs[user].etat=Globals.EtatJoueur.VOTE
 					
 				print("V1 Etat de %s [%s]: %s" % [utilisateurs[user].nom, user,utilisateurs[user].etat])
-
+		
+		elif(etat==Globals.EtatJoueur.ATTENTE_VOTES):
+			for user in self.utilisateurs:
+				self.utilisateurs[user].etat = Globals.EtatJoueur.VOIR_RESULTAT
+			emit_signal("voirRes")
 
 	for usId in self.utilisateurs:
 		print("V2 Etat de %s [%s]: %s" % [utilisateurs[usId].nom, usId,utilisateurs[usId].etat])
-

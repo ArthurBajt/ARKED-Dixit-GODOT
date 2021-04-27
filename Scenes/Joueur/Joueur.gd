@@ -129,6 +129,14 @@ func carteSelectectionnee(idJoueur):
 			self.uiConteur.attendreSelections()
 			self.etat = Globals.EtatJoueur.ATTENTE_SELECTIONS
 
-		Network.verifEtat()
+		Network.verifEtat(Globals.EtatJoueur.ATTENTE_SELECTIONS)
 
+func aVote():
+	if(self.estLocal()):
+		self.etat = Globals.EtatJoueur.ATTENTE_VOTES
+		self.uiConteur.attendreVotes()
+	Network.verifEtat(Globals.EtatJoueur.ATTENTE_VOTES)
 	
+func voirRes():
+	if(estLocal()):
+		self.uiConteur.enlever()

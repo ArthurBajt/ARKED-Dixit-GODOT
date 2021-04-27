@@ -32,6 +32,11 @@ func attendreSelections():
 	self.visible = true
 	hboxConteur.visible = false
 	labelIndicator.text = "En attente de la selection des autres joueurs"
+	
+func attendreVotes():
+	self.visible = true
+	hboxConteur.visible = false
+	labelIndicator.text = "En attente de tous les votes"
 
 func enlever():
 	self.visible = false

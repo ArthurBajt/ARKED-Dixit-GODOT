@@ -22,7 +22,7 @@ var estDansMain: bool = false
 var estSurPlateau: bool  = false
 
 func _ready():
-	pass
+	self.connect("carteVotee", Network, "voteCarte")
 
 
 func _process(delta):
@@ -78,7 +78,12 @@ func _on_Area_mouse_exited():
 
 # si on clique sur la carte
 signal carteCliquee(laCarte)
+signal carteVotee(laCarte, idJoueur)
+
 func _on_Area_input_event(camera, event, click_position, click_normal, shape_idx):
 	if event is InputEventMouseButton:
 		if event.button_index == BUTTON_LEFT and event.pressed == true:
-			emit_signal("carteCliquee", self)
+			if(self.estDansMain):
+				emit_signal("carteCliquee", self)
+			if(self.estSurPlateau):
+				emit_signal("carteVotee", self, Network.id)
