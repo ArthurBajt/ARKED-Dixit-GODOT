@@ -28,18 +28,24 @@ _global_script_classes=[ {
 "class": "Pioche",
 "language": "GDScript",
 "path": "res://Scenes/Pioche/Pioche.gd"
+}, {
+"base": "Control",
+"class": "TransitionScene",
+"language": "GDScript",
+"path": "res://Scenes/TransitionScene/TransitionScene.gd"
 } ]
 _global_script_class_icons={
 "Carte": "",
 "Chat": "",
 "Joueur": "",
-"Pioche": ""
+"Pioche": "",
+"TransitionScene": ""
 }
 
 [application]
 
 config/name="ARKED-Dixit-GODOT"
-run/main_scene="res://Scenes/Menu/Menu.tscn"
+run/main_scene="res://Scenes/MenuPrincipal/MenuPrincipal.tscn"
 config/icon="res://icon.png"
 config/windows_native_icon="res://icone.ico"
 
@@ -49,6 +55,7 @@ Globals="*res://Scripts/Globals.gd"
 Network="*res://Scripts/Network.gd"
 R="*res://Scripts/R.gd"
 Debug="*res://Scripts/Debug.gd"
+Transition="*res://Scripts/Transition.gd"
 
 [display]
 

@@ -24,8 +24,7 @@ func initUi():
 #	Sigaux
 
 func _on_BtnJouer_pressed():
-#	Todo: faire un truc plus propre <3
-	get_tree().change_scene("res://Scenes/Menu/Menu.tscn")
+	Transition.transitionVers("res://Scenes/Menu/Menu.tscn")
 
 
 func _on_BtnOptions_pressed():
