@@ -12,10 +12,14 @@ var positionCible: Vector3
 onready var mesh: Spatial = $Mesh
 onready var verso: MeshInstance = $Mesh/CarteVerso
 
+onready var animation = $AnimationTree
+
 
 var peutEtreHover: bool = false setget setPeutEtreHover
 var hover: bool = false
 
+var estDansMain: bool = false
+var estSurPlateau: bool  = false
 
 func _ready():
 	pass
@@ -25,10 +29,14 @@ func _process(delta):
 	if self.translation != positionCible:
 		self.translation = lerp(self.translation, self.positionCible, 5*delta)
 	
-	if self.peutEtreHover and self.hover:
-		self.mesh.translation = lerp(self.mesh.translation, Vector3(0, 0.08, 0), 5*delta)
-	else:
-		self.mesh.translation = lerp(self.mesh.translation, Vector3.ZERO, 0.5*delta)
+	if self.estDansMain:
+		if self.peutEtreHover and self.hover:
+			self.animation.setAnimationCible( "Hoover" )
+		else:
+			self.animation.setAnimationCible( "DansMain" )
+	
+	elif self.estSurPlateau:
+		self.animation.setAnimationCible( "Cachee" )
 
 
 func init(nom, visible: bool = true, estHover: bool= true, positionDepart: Vector3 = Vector3.ZERO, positionCible: Vector3 = Vector3.ZERO):

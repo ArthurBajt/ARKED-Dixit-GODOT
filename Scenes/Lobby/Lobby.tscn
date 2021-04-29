@@ -45,5 +45,6 @@ text = "Lancer"
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
 [connection signal="pressed" from="Control/VBoxContainer/ButtonPret" to="." method="_on_ButtonPret_pressed"]
 [connection signal="pressed" from="Control/VBoxContainer/ButtonLancer" to="." method="_on_ButtonLancer_pressed"]

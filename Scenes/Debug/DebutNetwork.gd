@@ -1,9 +1,11 @@
 extends Node
 
+onready var nodeUi = $UI
 onready var labelId = $UI/LabelId
 onready var labelUtilisateurs = $UI/labelUtilisateurs
 
 func _ready():
+	nodeUi.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	print(Network.dataStruct)
 	pass
 

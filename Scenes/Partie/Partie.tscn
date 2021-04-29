@@ -28,6 +28,7 @@ material/0 = null
 [node name="Table" type="Spatial" parent="Scene/Decor"]
 
 [node name="MeshInstance" type="MeshInstance" parent="Scene/Decor/Table"]
+transform = Transform( 3, 0, 0, 0, 1, 0, 0, 0, 3, 0, 0, 0 )
 mesh = SubResource( 2 )
 material/0 = SubResource( 3 )
 
@@ -35,6 +36,9 @@ material/0 = SubResource( 3 )
 
 [node name="Plateau" parent="Scene" instance=ExtResource( 2 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.04439, 0 )
+
+[node name="Camera" type="Camera" parent="Scene"]
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 3.28625, 0 )
 
 [node name="Ui" type="Control" parent="."]
 margin_right = 40.0

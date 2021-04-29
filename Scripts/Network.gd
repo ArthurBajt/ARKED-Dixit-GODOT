@@ -70,23 +70,18 @@ remote func _lobby_declareUtilisateur(idUtilisateur: int):
 	""" Quand un utilisateur se déclare,
 	le serveur signal a tt les utilisateur déjà présents
 	qu'un nv Utilisateur s'est connecté."""
+	rpc("_lobby_ajouteUtilisateur", idUtilisateur, dataStruct.duplicate())
 	for usId in utilisateurs:
-		if usId != 1:
-			rpc_id(usId, "_lobby_ajouteUtilisateur", idUtilisateur,dataStruct.duplicate())
-			rpc_id(idUtilisateur, "_lobby_ajouteUtilisateur", usId, utilisateurs[usId])
-		else:
-			_lobby_ajouteUtilisateur(idUtilisateur, dataStruct.duplicate())
-			rpc_id(idUtilisateur, "_lobby_ajouteUtilisateur", 1, utilisateurs[1])
+		rpc_id(idUtilisateur,"_lobby_ajouteUtilisateur", usId, utilisateurs[usId])
 
-
-remote func _lobby_ajouteUtilisateur(idUtilisateur: int, curentData: Dictionary = {}):
+remotesync func _lobby_ajouteUtilisateur(idUtilisateur: int, curentData: Dictionary = {}):
 	""" Le serveur a declarer l'arrivee d'un nv Utilisateur
 	ou
 	Nous somme un client arrivant sur le serveur
 	
 	On met a jour les Utilisateur deja presents et leurs données"""
 	if curentData == {}:
-		utilisateurs[idUtilisateur] = dataStruct.duplicate()
+		utilisateurs[idUtilisateur] = curentData.duplicate()
 	else :
 		utilisateurs[idUtilisateur] = curentData.duplicate()
 	
@@ -96,23 +91,17 @@ remote func _lobby_ajouteUtilisateur(idUtilisateur: int, curentData: Dictionary 
 func lobby_setStatu(statu: bool):
 	""" Permet a un client de changer son statu, si il est pret ou nn."""
 	self.data.estPret = statu
-	
-	if id != 1:
-		rpc_id(1, "_lobby_declareStatu", id, statu)
-	else:
-		_lobby_declareStatu(id, statu)
+	rpc("_lobby_declareStatu", id, statu)
 
 
-remote func _lobby_declareStatu(idUtilisateur: int, statu: bool):
+
+remotesync func _lobby_declareStatu(idUtilisateur: int, statu: bool):
 	""" Permet au serveur de mettre a jour le statu d'un utilisateur pour tt les autres."""
-	for usId in utilisateurs:
-		if usId != 1:
-			rpc_id(usId, "_lobby_appliquerStatu", idUtilisateur, statu)
-		else:
-			_lobby_appliquerStatu(idUtilisateur, statu)
+	rpc("_lobby_appliquerStatu", idUtilisateur, statu)
 
 
-remote func _lobby_appliquerStatu(idUtilisateur: int, statu: bool):
+
+remotesync func _lobby_appliquerStatu(idUtilisateur: int, statu: bool):
 	""" change le statu d'un joueur"""
 	if (not "estPret" in utilisateurs[idUtilisateur]) or (utilisateurs[idUtilisateur].estPret != statu):
 		emit_signal("nvStatuUtilisateur", idUtilisateur, statu)
@@ -124,15 +113,11 @@ remote func _lobby_appliquerStatu(idUtilisateur: int, statu: bool):
 
 func lobby_lancerPartie():
 	""" Permet a l'hote de la partie de démarer le jeu pour tt les utilisateurs"""
-	if id == 1:
-		if _peutLancerPartie():
-			_lobby_lancePartie()
-			for usId in utilisateurs:
-				if usId != 1:
-					rpc_id(usId, "_lobby_lancePartie")
+	if id == 1 and _peutLancerPartie():
+		rpc("_lobby_lancePartie")
 
 
-remote func _lobby_lancePartie():
+remotesync func _lobby_lancePartie():
 	""" Signal a tt les utilisateurs du lobby que la partie commence."""
 	emit_signal("partieLancee")
 
@@ -157,33 +142,35 @@ signal JoueursDansPartie
 
 func partie_setChargee():
 	"""Un est appelée quand un joueur a charger la scenen de dela partie."""
-	if id != 1:
+	if id!=1:
 		rpc_id(1, "_partie_declareChargee", id)
 	else:
 		_partie_declareChargee(1)
 
 
-remote func _partie_declareChargee(idJoeuur: int):
+remotesync func _partie_declareChargee(idJoeuur: int):
 	""" """
-	for usId in utilisateurs:
-		if usId != 1:
-			rpc_id(usId, "_partie_appliqueChargee", idJoeuur)
-		else:
-			_partie_appliqueChargee(idJoeuur)
+	print("pouet : ", idJoeuur )
+	rpc("_partie_appliqueChargee", idJoeuur)
 
 
-remote func _partie_appliqueChargee(idJoueur: int):
+
+remotesync func _partie_appliqueChargee(idJoueur: int):
 	if idJoueur == id:
 		data.estDansPartie = true
 	utilisateurs[idJoueur].estDansPartie = true
 	
 	if id == 1 and _sontJoueursDansPartie():
-		emit_signal("JoueursDansPartie")
 		print("--JoueursDansPartie--")
+		
+		emit_signal("JoueursDansPartie")
+
 
 
 func _sontJoueursDansPartie()->bool:
+	print(utilisateurs.size())
 	for usId in utilisateurs:
+		print(usId)
 		if not utilisateurs[usId].estDansPartie:
 			return false
 	return true
@@ -195,14 +182,11 @@ func _sontJoueursDansPartie()->bool:
 signal joueurApiocherCarte(id, carte)
 
 func joueurPioche(idJoueur: int, carte: String):
-	for usId in utilisateurs:
-		if usId != 1:
-			rpc_id(usId, "_joueurPiocheCarte", idJoueur, carte)
-		else:
-			_joueurPiocheCarte(idJoueur, carte)
+	rpc("_joueurPiocheCarte", idJoueur, carte)
 
 
-remote func _joueurPiocheCarte(idJoueur: int, carte: String):
+
+remotesync func _joueurPiocheCarte(idJoueur: int, carte: String):
 	if idJoueur == id:
 		self.data.main = self.data.main + [carte]
 	utilisateurs[idJoueur].main = utilisateurs[idJoueur].main + [carte]
@@ -212,30 +196,28 @@ remote func _joueurPiocheCarte(idJoueur: int, carte: String):
 # Plateau
 
 signal JoueurPoseCarte(idJoueur, nomCarte)
+signal APoseCarte()
 
 func posercarte(idJoueur: int, carte: String):
-	if id != 1:
-		rpc_id(1, "declarePoseCarte", idJoueur, carte)
-	else:
-		declarePoseCarte(idJoueur, carte)
-
-
-remote func declarePoseCarte(idJoueur: int, carte: String):
-	for usId in utilisateurs:
-		if usId != 1:
-			rpc_id(usId, "appliquePoseCarte", idJoueur, carte)
-		else:
-			appliquePoseCarte(idJoueur, carte)
-
-
-remote func appliquePoseCarte(idJoueur: int, carte: String):
+	rpc("appliquePoseCarte", idJoueur, carte)
+	
+remotesync func appliquePoseCarte(idJoueur: int, carte: String):
 	if idJoueur == self.id:
 		self.data.cartesPlateau[idJoueur] = carte
 		self.data.main.erase(carte)
 	
 	self.utilisateurs[idJoueur].cartesPlateau[idJoueur] = carte
 	self.utilisateurs[idJoueur].main.erase(carte)
+	
+	if(!self.utilisateurs[idJoueur].estConteur):
+		self.utilisateurs[idJoueur].etat = Globals.EtatJoueur.ATTENTE_SELECTIONS
+	else:
+		self.utilisateurs[idJoueur].etat = Globals.EtatJoueur.CHOIX_THEME
+	
+		
+	
 	emit_signal("JoueurPoseCarte", idJoueur, carte)
+	emit_signal("APoseCarte", idJoueur)
 	
 signal ChangementConteur
 
@@ -243,18 +225,56 @@ func changeConteur(idJoueur):
 	rpc("declareChangementConteur", idJoueur)
 	
 remotesync func declareChangementConteur(idJoueur):
-	emit_signal("ChangementConteur", idJoueur)
 	self.data.estConteur= idJoueur == self.id
 	for usId in self.utilisateurs:
-		self.utilisateurs[usId].estConteur= usId == idJoueur
+		if usId == idJoueur:
+			self.utilisateurs[usId].etat = Globals.EtatJoueur.SELECTION_CARTE_THEME
+		else:
+			self.utilisateurs[usId].etat = Globals.EtatJoueur.ATTENTE_CHOIX_THEME
+		self.utilisateurs[usId].estConteur = usId == idJoueur
+	emit_signal("ChangementConteur", idJoueur)
+			
 
 # =================================================
 # Chat
 signal updateChat
 func envoieMessage(msg):
-	rpc("messageRecu", dataStruct.nom , msg)
+	rpc("messageRecu", self.data.nom , msg)
 	
-remotesync func messageRecu(id, msg):
-	emit_signal("updateChat", id, msg)
+remotesync func messageRecu(pseudo, msg):
+	emit_signal("updateChat", pseudo, msg)
 
+# =================================================
+# Theme
+signal updateTheme
+func defineTheme(theme):
+	rpc("changeTheme", theme, self.data.nom)
+	
+remotesync func changeTheme(theme, nomConteur):
+	for usId in self.utilisateurs:
+		if(self.utilisateurs[usId].estConteur):
+			self.utilisateurs[usId].etat = Globals.EtatJoueur.ATTENTE_SELECTIONS
+		else:
+			self.utilisateurs[usId].etat = Globals.EtatJoueur.SELECTION_CARTE
+		
+	emit_signal("updateTheme", theme, nomConteur)
+	
+func verifEtat():
+	var nbJoueur = utilisateurs.size()
+	var compteur = 0
+	for usId in self.utilisateurs:
+		if (self.utilisateurs[usId].etat==Globals.EtatJoueur.ATTENTE_SELECTIONS):
+			compteur+=1
+		if (compteur == nbJoueur):
+			for user in self.utilisateurs:
+				if self.utilisateurs[user].estConteur:
+					self.utilisateurs[user].etat=Globals.EtatJoueur.ATTENTE_VOTES
+				else:
+					self.utilisateurs[user].etat=Globals.EtatJoueur.VOTE
+					
+				print("V1 Etat de %s [%s]: %s" % [utilisateurs[user].nom, user,utilisateurs[user].etat])
+
+
+	for usId in self.utilisateurs:
+		print("V2 Etat de %s [%s]: %s" % [utilisateurs[usId].nom, usId,utilisateurs[usId].etat])
 

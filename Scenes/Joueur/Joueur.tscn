@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Scenes/Joueur/Joueur.gd" type="Script" id=1]
 
@@ -24,6 +24,8 @@ height = 1.0
 radial_segments = 8
 rings = 5
 
+[sub_resource type="CapsuleMesh" id=6]
+
 [node name="Joueur" type="Spatial"]
 script = ExtResource( 1 )
 
@@ -40,19 +42,24 @@ mesh = SubResource( 3 )
 material/0 = null
 
 [node name="CameraPos" type="Spatial" parent="."]
-transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 2, 0.625631 )
+transform = Transform( -1, 0, -1.50996e-07, 0, 1, 0, 1.50996e-07, 0, -1, 0, 2, 0.625631 )
 
 [node name="MainRoot" type="Spatial" parent="CameraPos"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.541904, -0.562368, -0.939376 )
 
 [node name="MeshRoot" type="Spatial" parent="."]
 
-[node name="MeshInstance" type="MeshInstance" parent="MeshRoot"]
+[node name="Body" type="MeshInstance" parent="MeshRoot"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
 mesh = SubResource( 4 )
 material/0 = null
 
-[node name="MeshInstance2" type="MeshInstance" parent="MeshRoot"]
+[node name="Head" type="MeshInstance" parent="MeshRoot"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.05242, 0 )
 mesh = SubResource( 5 )
+material/0 = null
+
+[node name="MeshInstance3" type="MeshInstance" parent="MeshRoot"]
+transform = Transform( 0.01, 0, 0, 0, 0.5, 0, 0, 0, 0.1, 0, 2.48389, 0.18893 )
+mesh = SubResource( 6 )
 material/0 = null

@@ -26,7 +26,7 @@ func init(joueursDeLaPartie: Array, cartesMax: int = 6):
 	joueurs = joueursDeLaPartie
 	estHote = Network.id == 1
 	_initPioche()
-	nbCarteJoueur = min(joueurs.size() +2, cartesMax)
+	nbCarteJoueur = 6
 	
 	if estHote:
 		Network.connect("JoueursDansPartie", self, "lancePartie")
@@ -43,6 +43,7 @@ func _initPioche():
 	pioche = nodePioche
 
 func lancePartie():
+	
 	distribuCarte()
 	Network.changeConteur(self.joueurs[0].id)
 
@@ -73,12 +74,21 @@ func _fairePoserCarte(idJoueur: int, nomCarte: String):
 
 func ajouteCartePlateau(carte: Carte, transform = null):
 	self.cartes.append(carte)
+	for child in rootCartes.get_children():
+		print(child)
+		child.positionCible.x += 0.28
 	self.rootCartes.add_child(carte)
 	
 	if transform != null:
 		carte.global_transform = transform
 	
-	carte.positionCible = Vector3(1, 0, 0) * (self.cartes.size() -1)
+	carte.rotation_degrees.x = 0
+	carte.rotation_degrees.y = 0
+	carte.rotation_degrees.z = 180
+	carte.positionCible = Vector3(0.28, 0, 0) * -(self.cartes.size() - 1)
+	
+	carte.estDansMain = false
+	carte.estSurPlateau =  true
 	
 
 #================
