@@ -145,7 +145,7 @@ text = ">"
 [node name="ButtonFermer" type="Button" parent="HBoxContainer/Panel"]
 margin_right = 50.0
 margin_bottom = 66.0
-rect_min_size = Vector2( 50, 50 )
+rect_min_size = Vector2( 66, 66 )
 custom_fonts/font = ExtResource( 4 )
 text = "X"
 __meta__ = {

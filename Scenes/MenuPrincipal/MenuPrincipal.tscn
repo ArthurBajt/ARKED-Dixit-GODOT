@@ -1,11 +1,12 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
-[ext_resource path="res://Scenes/MenuPrincipal/simons_town_rocks_2k.hdr" type="Texture" id=1]
+[ext_resource path="res://Scenes/MenuPrincipal/dikhololo_night_2k.hdr" type="Texture" id=1]
 [ext_resource path="res://Scenes/MenuPrincipal/Mesh/MenuPrincipal_Mesh.escn" type="PackedScene" id=2]
 [ext_resource path="res://Assets/Font/CatChild_titre_128.tres" type="DynamicFont" id=3]
 [ext_resource path="res://Scenes/MenuPrincipal/MenuPrincipal.gd" type="Script" id=4]
 [ext_resource path="res://Assets/Font/CatChild_base_12.tres" type="DynamicFont" id=5]
 [ext_resource path="res://Assets/Font/CatChild_base_48.tres" type="DynamicFont" id=6]
+[ext_resource path="res://Scenes/Camera/Camera.tscn" type="PackedScene" id=7]
 
 [sub_resource type="PanoramaSky" id=1]
 panorama = ExtResource( 1 )
@@ -26,11 +27,17 @@ script = ExtResource( 4 )
 [node name="WorldEnvironment" type="WorldEnvironment" parent="3dRoot/Mesh"]
 environment = SubResource( 2 )
 
+[node name="Lights" type="Spatial" parent="3dRoot/Mesh"]
+
+[node name="DirectionalLight" type="DirectionalLight" parent="3dRoot/Mesh/Lights"]
+transform = Transform( 0.878802, -0.365532, 0.306746, 0.22255, 0.882587, 0.41414, -0.422111, -0.295681, 0.856969, 4.11209, 20, 11 )
+light_color = Color( 0.776471, 0.545098, 0.294118, 1 )
+shadow_enabled = true
+
 [node name="CamRoot" type="Spatial" parent="3dRoot"]
 
-[node name="Camera" type="Camera" parent="3dRoot/CamRoot"]
-transform = Transform( 0.850453, 0.070802, 0.521264, 0, 0.990901, -0.134592, -0.526051, 0.114464, 0.842715, 4.91194, 0.921814, 6.58778 )
-fov = 60.0
+[node name="Camera2" parent="3dRoot/CamRoot" instance=ExtResource( 7 )]
+transform = Transform( 0.850453, 0.070802, 0.521264, 0, 0.990901, -0.134592, -0.526051, 0.114464, 0.842715, 4.912, 0.922, 6.588 )
 
 [node name="Ui" type="Control" parent="."]
 margin_right = 40.0
@@ -40,10 +47,10 @@ __meta__ = {
 }
 
 [node name="Titre" type="Label" parent="Ui"]
-margin_left = 130.108
-margin_top = 87.6812
-margin_right = 443.108
-margin_bottom = 244.681
+margin_left = 68.1994
+margin_top = 52.7584
+margin_right = 381.199
+margin_bottom = 209.758
 custom_fonts/font = ExtResource( 3 )
 text = "Dixit"
 align = 1
