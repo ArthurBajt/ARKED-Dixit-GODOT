@@ -13,6 +13,7 @@ albedo_color = Color( 0.678431, 0.556863, 0.556863, 1 )
 
 [node name="Partie" type="Node"]
 script = ExtResource( 1 )
+musiquePath = "res://Assets/Songs/pippin-the-hunchback-kevin-macleod.ogg"
 
 [node name="Scene" type="Spatial" parent="."]
 

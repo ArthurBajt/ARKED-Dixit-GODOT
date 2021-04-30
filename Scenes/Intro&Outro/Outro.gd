@@ -5,6 +5,7 @@ func _ready():
 	$Ui/ColorRect/VBoxContainer/outroMessage.text = R.getString("outroMessage")
 	$AnimationPlayer.connect("animation_finished", self, "skip")
 	$AnimationPlayer.play("outro")
+	Music.stop()
 
 
 func _input(event):

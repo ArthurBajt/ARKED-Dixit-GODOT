@@ -4,11 +4,14 @@ onready var lineEditPseudo = $Ui/VBoxContainer/HBoxContainer/inputPseudo
 onready var buttonCreer = $Ui/VBoxContainer/HBoxContainer2/ButtonCreer
 onready var buttonRejoindre = $Ui/VBoxContainer/HBoxContainer2/ButtonRejoindre
 
+export(String, FILE, "*.ogg") var musiquePath
+
 var player_name = ""
 
 func _ready():
 	buttonCreer.text = R.getString("buttonCreer")
 	buttonRejoindre.text = R.getString("buttonRejoindre")
+	Music.setMusic(self.musiquePath)
 
 
 func _on_ButtonCreer_pressed():
