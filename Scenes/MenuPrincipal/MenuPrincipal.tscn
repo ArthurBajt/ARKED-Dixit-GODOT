@@ -32,8 +32,36 @@ environment = SubResource( 2 )
 
 [node name="DirectionalLight" type="DirectionalLight" parent="3dRoot/Mesh/Lights"]
 transform = Transform( 0.763383, -0.465824, 0.447497, 0.100073, 0.769702, 0.630511, -0.638147, -0.436539, 0.634194, 3.85164, 19.7204, 10.601 )
-light_color = Color( 0.776471, 0.545098, 0.294118, 1 )
+light_color = Color( 1, 0.8, 0.588235, 1 )
 shadow_enabled = true
+
+[node name="OmniLight" type="OmniLight" parent="3dRoot/Mesh/Lights"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.424776, 2.33674, -15.4284 )
+light_color = Color( 0.898039, 0.47451, 1, 1 )
+light_energy = 2.0
+omni_range = 10.0
+omni_attenuation = 1.62451
+
+[node name="OmniLight2" type="OmniLight" parent="3dRoot/Mesh/Lights"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.99827, 2.84939, 15.3904 )
+light_color = Color( 0.47451, 1, 0.505882, 1 )
+light_energy = 2.0
+omni_range = 10.0
+omni_attenuation = 1.62451
+
+[node name="OmniLight3" type="OmniLight" parent="3dRoot/Mesh/Lights"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -11.5687, 2.33674, 8.63762 )
+light_color = Color( 0.898039, 0.47451, 1, 1 )
+light_energy = 2.0
+omni_range = 10.0
+omni_attenuation = 1.62451
+
+[node name="OmniLight4" type="OmniLight" parent="3dRoot/Mesh/Lights"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 12.5024, 2.36638, 10.4355 )
+light_color = Color( 0.898039, 0.47451, 1, 1 )
+light_energy = 2.0
+omni_range = 10.0
+omni_attenuation = 1.62451
 
 [node name="CamRoot" type="Spatial" parent="3dRoot"]
 
