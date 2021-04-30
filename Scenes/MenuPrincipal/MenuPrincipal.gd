@@ -3,9 +3,11 @@ extends Node
 onready var camRoot = $"3dRoot/CamRoot"
 var vitesseRotation = 0.02
 
+export(String, FILE, "*.ogg") var musiquePath
 
 func _ready():
 	initUi()
+	Music.setMusic(self.musiquePath)
 
 func _physics_process(delta):
 	self.camRoot.rotation.y += self.vitesseRotation * delta

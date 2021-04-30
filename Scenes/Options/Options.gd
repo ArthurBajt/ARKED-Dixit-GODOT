@@ -24,3 +24,25 @@ func cache():
 
 func _on_ButtonFermer_pressed():
 	self.cache()
+
+
+#==========================
+#	Changement
+
+# Son
+# VOLUME
+onready var busVolume = AudioServer.get_bus_index("Master")
+func _on_SliderVolume_value_changed(value):
+	AudioServer.set_bus_volume_db( self.busVolume, value )
+
+
+# MUSIQUE
+onready var busMusic = AudioServer.get_bus_index("Music")
+func _on_SliderMusique_value_changed(value):
+	AudioServer.set_bus_volume_db( self.busMusic, value )
+
+
+# SFX
+onready var busSfx = AudioServer.get_bus_index("Sfx")
+func _on_SliderSfx_value_changed(value):
+	AudioServer.set_bus_volume_db( self.busSfx, value )
