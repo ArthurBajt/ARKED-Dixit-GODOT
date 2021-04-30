@@ -1150,6 +1150,10 @@ active = true
 parameters/playback = SubResource( 38 )
 script = ExtResource( 4 )
 
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.15
+one_shot = true
+
 [connection signal="input_event" from="Mesh/Area" to="." method="_on_Area_input_event"]
 [connection signal="mouse_entered" from="Mesh/Area" to="." method="_on_Area_mouse_entered"]
 [connection signal="mouse_exited" from="Mesh/Area" to="." method="_on_Area_mouse_exited"]

@@ -11,7 +11,6 @@ var positionCible: Vector3
 
 onready var mesh: Spatial = $Mesh
 onready var verso: MeshInstance = $Mesh/CarteVerso
-
 onready var animation = $AnimationTree
 
 
@@ -79,6 +78,14 @@ func _on_Area_mouse_exited():
 # si on clique sur la carte
 signal carteCliquee(laCarte)
 func _on_Area_input_event(camera, event, click_position, click_normal, shape_idx):
-	if event is InputEventMouseButton:
+	if event is InputEventMouseButton and not Globals.isMobile:
 		if event.button_index == BUTTON_LEFT and event.pressed == true:
 			emit_signal("carteCliquee", self)
+	if event is InputEventMouseButton and Globals.isMobile:
+		if event.button_index == BUTTON_LEFT and event.pressed == true:
+			self.hover = !self.hover
+	if event is InputEventScreenDrag:
+		if event.relative.y > event.position.y:
+			emit_signal("carteCliquee", self)
+
+
