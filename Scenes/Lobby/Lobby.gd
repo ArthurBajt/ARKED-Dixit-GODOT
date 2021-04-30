@@ -22,7 +22,7 @@ func _on_ButtonLancer_pressed():
 
 
 func _versPartie():
-	get_tree().change_scene("res://Scenes/Partie/Partie.tscn")
+	Transition.transitionVers("res://Scenes/Partie/Partie.tscn")
 
 func adaptTextButtonPret():
 	if(self.estPret):
