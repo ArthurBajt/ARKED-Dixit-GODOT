@@ -3,7 +3,7 @@ extends Node
 
 var isDebug: bool = true setget setDebug
 
-var isMobile:bool = true
+var isMobile:bool = false
 
 enum EtatJoueur {
 				SELECTION_CARTE_THEME, 		# Conteur			0

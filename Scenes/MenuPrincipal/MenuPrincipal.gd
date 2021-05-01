@@ -11,12 +11,14 @@ func _physics_process(delta):
 	self.camRoot.rotation.y += self.vitesseRotation * delta
 
 func _input(event):  # On check au début si c'est un tel ou un pc
-	if event is InputEventMouseButton:
+	"""if event is InputEventMouseButton:
 		Globals.isMobile = false
-		print("pc")
+		print("pc détecté")
+		print(Globals.isMobile)"""
 	if event is InputEventScreenTouch:
 		Globals.isMobile = true
-		print("telephone")
+		print("telephone détecté")
+		print(Globals.isMobile)
 
 func initUi():
 	$Ui/Titre.text = R.getString("titreJeu")

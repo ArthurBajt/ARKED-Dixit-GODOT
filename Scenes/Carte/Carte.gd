@@ -70,10 +70,12 @@ func setPeutEtreHover(val: bool):
 
 # Si on survole la carte
 func _on_Area_mouse_entered():
-	self.hover = true
+	if not Globals.isMobile:
+		self.hover = true
 
 func _on_Area_mouse_exited():
-	self.hover = false
+	if not Globals.isMobile:
+		self.hover = false
 
 # si on clique sur la carte
 signal carteCliquee(laCarte)
@@ -81,11 +83,12 @@ func _on_Area_input_event(camera, event, click_position, click_normal, shape_idx
 	if event is InputEventMouseButton and not Globals.isMobile:
 		if event.button_index == BUTTON_LEFT and event.pressed == true:
 			emit_signal("carteCliquee", self)
-	if event is InputEventMouseButton and Globals.isMobile:
-		if event.button_index == BUTTON_LEFT and event.pressed == true:
+			print("oh")
+	if event is InputEventScreenTouch and Globals.isMobile:
+		#if event.button_index == BUTTON_LEFT and event.pressed == true:
 			self.hover = !self.hover
 	if event is InputEventScreenDrag:
-		if event.relative.y > event.position.y:
+		#if event.relative.y > event.position.y:  # marche pas avec la condition
 			emit_signal("carteCliquee", self)
 
 
