@@ -10,9 +10,12 @@ onready var mainRoot = $CameraPos/MainRoot
 
 onready var cameraPos: Spatial = $CameraPos
 
+
+
 onready var matiereTete=$MeshRoot/Head.get_surface_material(0)
 onready var matiereCorps=$MeshRoot/Body.get_surface_material(0)
 onready var matiereChapeau=$MeshRoot/MeshInstance3.get_surface_material(0)
+
 
 onready var tete=$MeshRoot/Head
 onready var corps=$MeshRoot/Body
@@ -70,7 +73,7 @@ func init(idJoueur: int, plateauDePartie):
 		corps.set_surface_material(0,matiereCorps)
 		tete.set_surface_material(0,matiereTete)
 		chapeau.set_surface_material(0,matiereChapeau)
-				
+
 func _input(event):
 	# Pour changer de cam lorsque l'on utilise les fleches
 	if event is InputEventKey:
@@ -159,5 +162,20 @@ func carteSelectectionnee(idJoueur):
 			self.etat = Globals.EtatJoueur.ATTENTE_SELECTIONS
 
 		Network.verifEtat()
+	
 
 	
+func PionJoueur(ScX,ScY,ScZ,PosX, PosY, PosZ, rX, rY, rZ):
+	var mesh=$MeshRoot.duplicate()
+	self.add_child(mesh)
+
+
+	mesh.set_scale(Vector3(ScX,ScY,ScZ))
+	mesh.transform.origin.x=PosX
+	mesh.transform.origin.y=PosY
+	mesh.transform.origin.z=PosZ
+	mesh.rotate_x(rX)
+	mesh.rotate_x(rY)
+	mesh.rotate_x(rZ)
+
+
