@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://Scenes/Joueur/Joueur.gd" type="Script" id=1]
 
@@ -18,13 +18,19 @@ rings = 8
 top_radius = 0.2
 bottom_radius = 0.2
 
-[sub_resource type="SphereMesh" id=5]
+[sub_resource type="SpatialMaterial" id=5]
+
+[sub_resource type="SphereMesh" id=6]
+material = SubResource( 5 )
 radius = 0.5
 height = 1.0
 radial_segments = 8
 rings = 5
 
-[sub_resource type="CapsuleMesh" id=6]
+[sub_resource type="SpatialMaterial" id=7]
+
+[sub_resource type="CapsuleMesh" id=8]
+material = SubResource( 7 )
 
 [node name="Joueur" type="Spatial"]
 script = ExtResource( 1 )
@@ -56,10 +62,15 @@ material/0 = null
 
 [node name="Head" type="MeshInstance" parent="MeshRoot"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.05242, 0 )
-mesh = SubResource( 5 )
+mesh = SubResource( 6 )
 material/0 = null
 
-[node name="MeshInstance3" type="MeshInstance" parent="MeshRoot"]
-transform = Transform( 0.01, 0, 0, 0, 0.5, 0, 0, 0, 0.1, 0, 2.48389, 0.18893 )
-mesh = SubResource( 6 )
+[node name="RightEar" type="MeshInstance" parent="MeshRoot/Head"]
+transform = Transform( 0.01, 0, 0, 0, 0.5, 0, 0, 0, 0.1, 0, 0.45, 0.2 )
+mesh = SubResource( 8 )
+material/0 = null
+
+[node name="LeftEar" type="MeshInstance" parent="MeshRoot/Head"]
+transform = Transform( 0.01, 0, 0, 0, 0.5, 0, 0, 0, 0.1, 0, 0.45, -0.2 )
+mesh = SubResource( 8 )
 material/0 = null

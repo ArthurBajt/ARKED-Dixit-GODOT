@@ -21,6 +21,8 @@ var hover: bool = false
 var estDansMain: bool = false
 var estSurPlateau: bool  = false
 
+var joueurQuiAPose: int
+
 func _ready():
 	self.connect("carteVotee", Network, "voteCarte")
 
@@ -84,6 +86,7 @@ func _on_Area_input_event(camera, event, click_position, click_normal, shape_idx
 	if event is InputEventMouseButton:
 		if event.button_index == BUTTON_LEFT and event.pressed == true:
 			if(self.estDansMain):
+				self.joueurQuiAPose = Network.id
 				emit_signal("carteCliquee", self)
-			if(self.estSurPlateau):
+			if(self.estSurPlateau && self.joueurQuiAPose != Network.id):
 				emit_signal("carteVotee", self, Network.id)

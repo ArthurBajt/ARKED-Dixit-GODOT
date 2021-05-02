@@ -27,6 +27,7 @@ func _ready():
 	Network.connect("ChangementConteur", self, "setConteur")
 	Network.connect("updateTheme",self,"changeTheme")
 	Network.connect("APoseCarte",self,"carteSelectectionnee")
+	Network.connect("voirRes",self,"voirRes")
 
 
 func init(idJoueur: int, plateauDePartie):
@@ -140,3 +141,4 @@ func aVote():
 func voirRes():
 	if(estLocal()):
 		self.uiConteur.enlever()
+	self.etat = Globals.EtatJoueur.VOIR_RESULTAT
