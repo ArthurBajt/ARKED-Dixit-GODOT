@@ -1,0 +1,134 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://Scenes/MenuPrincipal/dikhololo_night_2k.hdr" type="Texture" id=1]
+[ext_resource path="res://Scenes/MenuPrincipal/Mesh/MenuPrincipal_Mesh.escn" type="PackedScene" id=2]
+[ext_resource path="res://Assets/Font/CatChild_titre_128.tres" type="DynamicFont" id=3]
+[ext_resource path="res://Scenes/MenuPrincipal/MenuPrincipal.gd" type="Script" id=4]
+[ext_resource path="res://Assets/Font/CatChild_base_12.tres" type="DynamicFont" id=5]
+[ext_resource path="res://Assets/Font/CatChild_base_48.tres" type="DynamicFont" id=6]
+[ext_resource path="res://Scenes/Camera/Camera.tscn" type="PackedScene" id=7]
+
+[sub_resource type="PanoramaSky" id=1]
+panorama = ExtResource( 1 )
+
+[sub_resource type="Environment" id=2]
+background_mode = 2
+background_sky = SubResource( 1 )
+
+[node name="MenuPrincipal" type="Node"]
+script = ExtResource( 4 )
+musiquePath = "res://Assets/Songs/teller-of-the-tales-kevin-macleod.ogg"
+
+[node name="3dRoot" type="Spatial" parent="."]
+
+[node name="Mesh" type="Spatial" parent="3dRoot"]
+
+[node name="MenuPrincipal_Mesh" parent="3dRoot/Mesh" instance=ExtResource( 2 )]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="3dRoot/Mesh"]
+environment = SubResource( 2 )
+
+[node name="Lights" type="Spatial" parent="3dRoot/Mesh"]
+
+[node name="DirectionalLight" type="DirectionalLight" parent="3dRoot/Mesh/Lights"]
+transform = Transform( 0.763383, -0.465824, 0.447497, 0.100073, 0.769702, 0.630511, -0.638147, -0.436539, 0.634194, 3.85164, 19.7204, 10.601 )
+light_color = Color( 1, 0.8, 0.588235, 1 )
+shadow_enabled = true
+
+[node name="OmniLight" type="OmniLight" parent="3dRoot/Mesh/Lights"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.424776, 2.33674, -15.4284 )
+light_color = Color( 0.898039, 0.47451, 1, 1 )
+light_energy = 2.0
+omni_range = 10.0
+omni_attenuation = 1.62451
+
+[node name="OmniLight2" type="OmniLight" parent="3dRoot/Mesh/Lights"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.99827, 2.84939, 15.3904 )
+light_color = Color( 0.47451, 1, 0.505882, 1 )
+light_energy = 2.0
+omni_range = 10.0
+omni_attenuation = 1.62451
+
+[node name="OmniLight3" type="OmniLight" parent="3dRoot/Mesh/Lights"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -11.5687, 2.33674, 8.63762 )
+light_color = Color( 0.898039, 0.47451, 1, 1 )
+light_energy = 2.0
+omni_range = 10.0
+omni_attenuation = 1.62451
+
+[node name="OmniLight4" type="OmniLight" parent="3dRoot/Mesh/Lights"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 12.5024, 2.36638, 10.4355 )
+light_color = Color( 0.898039, 0.47451, 1, 1 )
+light_energy = 2.0
+omni_range = 10.0
+omni_attenuation = 1.62451
+
+[node name="CamRoot" type="Spatial" parent="3dRoot"]
+
+[node name="Camera2" parent="3dRoot/CamRoot" instance=ExtResource( 7 )]
+transform = Transform( 0.850453, 0.070802, 0.521264, 0, 0.990901, -0.134592, -0.526051, 0.114464, 0.842715, 4.912, 0.922, 6.588 )
+
+[node name="Ui" type="Control" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Titre" type="Label" parent="Ui"]
+margin_left = 68.1994
+margin_top = 52.7584
+margin_right = 381.199
+margin_bottom = 209.758
+custom_fonts/font = ExtResource( 3 )
+text = "Dixit"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Copyright" type="Label" parent="Ui"]
+margin_left = 639.041
+margin_top = 686.055
+margin_right = 1264.04
+margin_bottom = 701.055
+custom_fonts/font = ExtResource( 5 )
+text = "Illustrations tirées du jeu Dixit Origins. Un jeu de Jean-Louis Roubira, illustré par Clément Lefèvre et édité par Libellud.©"
+
+[node name="BtnJouer" type="Button" parent="Ui"]
+margin_left = 87.6813
+margin_top = 316.784
+margin_right = 205.681
+margin_bottom = 382.784
+custom_fonts/font = ExtResource( 6 )
+text = "Jouer"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="BtnOptions" type="Button" parent="Ui"]
+margin_left = 87.6812
+margin_top = 400.222
+margin_right = 229.681
+margin_bottom = 466.222
+custom_fonts/font = ExtResource( 6 )
+text = "Option"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="BtnQuit" type="Button" parent="Ui"]
+margin_left = 15.5563
+margin_top = 642.053
+margin_right = 161.556
+margin_bottom = 708.053
+custom_fonts/font = ExtResource( 6 )
+text = "Quitter"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[connection signal="pressed" from="Ui/BtnJouer" to="." method="_on_BtnJouer_pressed"]
+[connection signal="pressed" from="Ui/BtnOptions" to="." method="_on_BtnOptions_pressed"]
+[connection signal="pressed" from="Ui/BtnQuit" to="." method="_on_BtnQuit_pressed"]

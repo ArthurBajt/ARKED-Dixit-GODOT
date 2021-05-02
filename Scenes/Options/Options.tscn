@@ -1,0 +1,154 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Assets/Font/CatChild_base_64.tres" type="DynamicFont" id=1]
+[ext_resource path="res://Scenes/Options/Options.gd" type="Script" id=2]
+[ext_resource path="res://Assets/Font/CatChild_base_48.tres" type="DynamicFont" id=4]
+
+[node name="Options" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0, 0, 0, 0.784314 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+alignment = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Panel" type="Panel" parent="HBoxContainer"]
+margin_left = 390.0
+margin_right = 890.0
+margin_bottom = 720.0
+rect_min_size = Vector2( 500, 500 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/Panel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+alignment = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="LabelTitre" type="Label" parent="HBoxContainer/Panel/VBoxContainer"]
+margin_top = 194.0
+margin_right = 500.0
+margin_bottom = 273.0
+custom_fonts/font = ExtResource( 1 )
+text = "Options"
+align = 1
+valign = 1
+
+[node name="LabelVolume" type="Label" parent="HBoxContainer/Panel/VBoxContainer"]
+margin_top = 277.0
+margin_right = 500.0
+margin_bottom = 337.0
+custom_fonts/font = ExtResource( 4 )
+text = "Volume"
+align = 1
+valign = 1
+
+[node name="HBoxVolume" type="HBoxContainer" parent="HBoxContainer/Panel/VBoxContainer"]
+margin_top = 341.0
+margin_right = 500.0
+margin_bottom = 357.0
+alignment = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="SliderVolume" type="HSlider" parent="HBoxContainer/Panel/VBoxContainer/HBoxVolume"]
+margin_left = 160.0
+margin_right = 340.0
+margin_bottom = 16.0
+rect_min_size = Vector2( 180, 0 )
+min_value = -50.0
+max_value = 0.0
+step = 0.5
+
+[node name="LabelMusique" type="Label" parent="HBoxContainer/Panel/VBoxContainer"]
+margin_top = 361.0
+margin_right = 500.0
+margin_bottom = 421.0
+custom_fonts/font = ExtResource( 4 )
+text = "Musique"
+align = 1
+valign = 1
+
+[node name="HBoxMusique" type="HBoxContainer" parent="HBoxContainer/Panel/VBoxContainer"]
+margin_top = 425.0
+margin_right = 500.0
+margin_bottom = 441.0
+alignment = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="SliderMusique" type="HSlider" parent="HBoxContainer/Panel/VBoxContainer/HBoxMusique"]
+margin_left = 160.0
+margin_right = 340.0
+margin_bottom = 16.0
+rect_min_size = Vector2( 180, 0 )
+min_value = -50.0
+max_value = 0.0
+step = 0.5
+
+[node name="LabelSfx" type="Label" parent="HBoxContainer/Panel/VBoxContainer"]
+margin_top = 445.0
+margin_right = 500.0
+margin_bottom = 505.0
+custom_fonts/font = ExtResource( 4 )
+text = "SFX"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBoxSfx" type="HBoxContainer" parent="HBoxContainer/Panel/VBoxContainer"]
+margin_top = 509.0
+margin_right = 500.0
+margin_bottom = 525.0
+alignment = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="SliderSfx" type="HSlider" parent="HBoxContainer/Panel/VBoxContainer/HBoxSfx"]
+margin_left = 160.0
+margin_right = 340.0
+margin_bottom = 16.0
+rect_min_size = Vector2( 180, 0 )
+min_value = -50.0
+max_value = 0.0
+step = 0.5
+
+[node name="ButtonFermer" type="Button" parent="HBoxContainer/Panel"]
+margin_right = 50.0
+margin_bottom = 66.0
+rect_min_size = Vector2( 66, 66 )
+custom_fonts/font = ExtResource( 4 )
+text = "X"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[connection signal="value_changed" from="HBoxContainer/Panel/VBoxContainer/HBoxVolume/SliderVolume" to="." method="_on_SliderVolume_value_changed"]
+[connection signal="value_changed" from="HBoxContainer/Panel/VBoxContainer/HBoxMusique/SliderMusique" to="." method="_on_SliderMusique_value_changed"]
+[connection signal="value_changed" from="HBoxContainer/Panel/VBoxContainer/HBoxSfx/SliderSfx" to="." method="_on_SliderSfx_value_changed"]
+[connection signal="pressed" from="HBoxContainer/Panel/ButtonFermer" to="." method="_on_ButtonFermer_pressed"]

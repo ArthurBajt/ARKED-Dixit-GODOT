@@ -1,6 +1,21 @@
 {
   "test": "Un txt pour tester",
 
+  "titreJeu": "ARKED Dixit",
+  "copyright": "Illustrations tirées du jeu Dixit Origins. Un jeu de Jean-Louis Roubira, illustré par Clément Lefèvre et édité par Libellud©",
+
+  "introDisclamer": "Ce jeu est une preuve de concept pour un projet universitaire.\nIl n'est pas destiné à être distribué.",
+  
+  "outroMessage": "Merci d'avoir jouer.",
+
+  "btnJouer": "Jouer",
+  "btnOptions": "Options",
+  "btnQuitter": "Quitter",
+
+  "optionsTitre":"Options",
+  "optionsMusique":"Musique",
+  "optionsSfx":"SFX",
+
   "buttonCreer": "Créer une partie",
   "buttonRejoindre": "Rejoindre une partie en local",
 

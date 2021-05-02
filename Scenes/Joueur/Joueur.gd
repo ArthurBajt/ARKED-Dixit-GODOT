@@ -10,6 +10,7 @@ onready var mainRoot = $CameraPos/MainRoot
 
 onready var cameraPos: Spatial = $CameraPos
 
+onready var CAM_MID = get_node("/root/Partie/Scene/Camera")
 const NODE_CAM = preload("res://Scenes/Joueur/CameraJoueur.tscn")
 const NODE_UI = preload("res://Scenes/Joueur/UiJoueur.tscn")
 const NODE_UI_CONTEUR = preload("res://Scenes/Joueur/UiConteur.tscn")
@@ -20,6 +21,7 @@ var estConteur: bool = false
 var ui 
 var uiConteur
 var uiChat: Chat
+var myCam
 
 var etat: int
 	
@@ -29,7 +31,6 @@ func _ready():
 	Network.connect("APoseCarte",self,"carteSelectectionnee")
 	Network.connect("voirRes",self,"voirRes")
 
-
 func init(idJoueur: int, plateauDePartie):
 	self.id = idJoueur
 	self.estLocal = Network.id == idJoueur
@@ -37,6 +38,7 @@ func init(idJoueur: int, plateauDePartie):
 	self.main = []
 	self.estConteur = false
 	self.etat = Globals.EtatJoueur.ATTENTE_CHOIX_THEME
+	self.myCam = null
 	
 	
 	if self.estLocal():
@@ -50,6 +52,19 @@ func init(idJoueur: int, plateauDePartie):
 		self.add_child(uiConteur)
 		self.ui = NODE_UI.instance()
 		self.add_child(ui)
+		self.myCam = cam
+
+func _input(event):
+	# Pour changer de cam lorsque l'on utilise les fleches
+	if event is InputEventKey:
+		if event.pressed and event.scancode == KEY_UP:
+			if(self.myCam.current == true):
+				self.myCam.current = false
+				CAM_MID.current = true
+		if event.pressed and event.scancode == KEY_DOWN:
+			if(self.CAM_MID.current == true):
+				CAM_MID.current = false
+				self.myCam.current = true
 
 
 func piocheCarte(nomCarte: String):
@@ -58,7 +73,7 @@ func piocheCarte(nomCarte: String):
 	instanceCarte.init(nomCarte, estLocal(), estLocal())
 	main += [instanceCarte]
 	
-	instanceCarte.positionCible = Vector3(0.7*(main.size()-1), 0, 0)
+	instanceCarte.positionCible = Vector3(-0.6+0.5*(main.size()-1), 0, 0)
 	
 	if estLocal:
 		instanceCarte.connect("carteCliquee", self, "localPoseCarte")
@@ -71,10 +86,6 @@ func localPoseCarte(carte):
 	Network.posercarte(self.id, carte.nom)
 	carte.disconnect("carteCliquee", self, "localPoseCarte")
 	carte.peutEtreHover = false
-
-
-
-
 
 #================
 #	getters et trucs utiles toi même tu sais

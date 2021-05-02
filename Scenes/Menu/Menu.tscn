@@ -4,6 +4,7 @@
 
 [node name="Menu" type="Node"]
 script = ExtResource( 1 )
+musiquePath = "res://Assets/Songs/teller-of-the-tales-kevin-macleod.ogg"
 
 [node name="Ui" type="Control" parent="."]
 anchor_right = 1.0
@@ -93,6 +94,7 @@ text = "Rejoindre"
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
 [connection signal="text_changed" from="Ui/VBoxContainer/HBoxContainer/inputPseudo" to="." method="_on_inputPseudo_text_changed"]
 [connection signal="pressed" from="Ui/VBoxContainer/HBoxContainer2/ButtonCreer" to="." method="_on_ButtonCreer_pressed"]
 [connection signal="pressed" from="Ui/VBoxContainer/HBoxContainer2/ButtonRejoindre" to="." method="_on_ButtonRejoindre_pressed"]
