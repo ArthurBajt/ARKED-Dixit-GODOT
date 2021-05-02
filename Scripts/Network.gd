@@ -194,7 +194,7 @@ signal carteVotee(idJoueur)
 
 remotesync func joueurVoteCarte(carte,idJoueur):
 	if(idJoueur == self.id):
-		self.date.cartesVotee[idJoueur] = carte
+		self.data.cartesVotee[idJoueur] = carte
 	
 	self.utilisateurs[idJoueur].cartesVotee[idJoueur] = carte
 	self.utilisateurs[idJoueur].etat = Globals.EtatJoueur.ATTENTE_VOTES
