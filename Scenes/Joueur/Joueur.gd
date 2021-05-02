@@ -10,6 +10,17 @@ onready var mainRoot = $CameraPos/MainRoot
 
 onready var cameraPos: Spatial = $CameraPos
 
+
+
+onready var matiereTete=$MeshRoot/Head.get_surface_material(0)
+onready var matiereCorps=$MeshRoot/Body.get_surface_material(0)
+onready var matiereChapeau=$MeshRoot/MeshInstance3.get_surface_material(0)
+
+
+onready var tete=$MeshRoot/Head
+onready var corps=$MeshRoot/Body
+onready var chapeau=$MeshRoot/MeshInstance3
+
 onready var CAM_MID = get_node("/root/Partie/Scene/Camera")
 const NODE_CAM = preload("res://Scenes/Joueur/CameraJoueur.tscn")
 const NODE_UI = preload("res://Scenes/Joueur/UiJoueur.tscn")
@@ -30,6 +41,8 @@ func _ready():
 	Network.connect("updateTheme",self,"changeTheme")
 	Network.connect("APoseCarte",self,"carteSelectectionnee")
 
+
+
 func init(idJoueur: int, plateauDePartie):
 	self.id = idJoueur
 	self.estLocal = Network.id == idJoueur
@@ -38,6 +51,7 @@ func init(idJoueur: int, plateauDePartie):
 	self.estConteur = false
 	self.etat = Globals.EtatJoueur.ATTENTE_CHOIX_THEME
 	self.myCam = null
+
 	
 	
 	if self.estLocal():
@@ -52,6 +66,13 @@ func init(idJoueur: int, plateauDePartie):
 		self.ui = NODE_UI.instance()
 		self.add_child(ui)
 		self.myCam = cam
+		
+		matiereTete.set_albedo(Network.couleurJoueurLocal(id))
+		matiereChapeau.set_albedo(Network.couleurJoueurLocal(id))
+		matiereCorps.set_albedo(Network.couleurJoueurLocal(id))
+		corps.set_surface_material(0,matiereCorps)
+		tete.set_surface_material(0,matiereTete)
+		chapeau.set_surface_material(0,matiereChapeau)
 
 func _input(event):
 	# Pour changer de cam lorsque l'on utilise les fleches
@@ -141,5 +162,20 @@ func carteSelectectionnee(idJoueur):
 			self.etat = Globals.EtatJoueur.ATTENTE_SELECTIONS
 
 		Network.verifEtat()
+	
 
 	
+func PionJoueur(ScX,ScY,ScZ,PosX, PosY, PosZ, rX, rY, rZ):
+	var mesh=$MeshRoot.duplicate()
+	self.add_child(mesh)
+
+
+	mesh.set_scale(Vector3(ScX,ScY,ScZ))
+	mesh.transform.origin.x=PosX
+	mesh.transform.origin.y=PosY
+	mesh.transform.origin.z=PosZ
+	mesh.rotate_x(rX)
+	mesh.rotate_x(rY)
+	mesh.rotate_x(rZ)
+
+
