@@ -10,6 +10,11 @@ func _ready():
 	$HBoxContainer/Panel/VBoxContainer/LabelTitre.text = R.getString("optionsTitre")
 	$HBoxContainer/Panel/VBoxContainer/LabelMusique.text = R.getString("optionsMusique")
 	$HBoxContainer/Panel/VBoxContainer/LabelSfx.text = R.getString("optionsSfx")
+	
+	$HBoxContainer/Panel/VBoxContainer/HBoxVolume/SliderVolume.value = AudioServer.get_bus_volume_db( self.busVolume )
+	$HBoxContainer/Panel/VBoxContainer/HBoxMusique/SliderMusique.value = AudioServer.get_bus_volume_db( self.busMusic )
+	$HBoxContainer/Panel/VBoxContainer/HBoxSfx/SliderSfx.value = AudioServer.get_bus_volume_db( self.busSfx ) 
+	
 
 
 func affiche():
