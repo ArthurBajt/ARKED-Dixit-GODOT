@@ -121,16 +121,17 @@ func lobby_lancerPartie():
 
 remotesync func _lobby_lancePartie():
 	""" Signal a tt les utilisateurs du lobby que la partie commence."""
-	var tabCouleur=[Color.rebeccapurple,Color.cadetblue,Color.red,Color.maroon,Color.green,Color.orange]
-	randomize()
-	tabCouleur.shuffle()
-	for usId in utilisateurs:
-		var couleurTemp=tabCouleur.pop_front()
-
-		utilisateurs[usId].couleur=couleurTemp
-
+	
+	rpc("assigneCouleur")
 	emit_signal("partieLancee")
 
+remotesync func assigneCouleur():
+	var tabCouleur=[Color.rebeccapurple,Color.orange,Color.maroon,Color.cadetblue,Color.red,Color.green]
+#	randomize()
+#	tabCouleur.shuffle()
+	for usId in utilisateurs:
+		var couleurTemp=tabCouleur.pop_front()
+		utilisateurs[usId].couleur=couleurTemp
 
 func _peutLancerPartie()->bool:
 	""" True si on peut lancer la partie """
@@ -288,11 +289,9 @@ func verifEtat():
 	for usId in self.utilisateurs:
 		print("V2 Etat de %s [%s]: %s" % [utilisateurs[usId].nom, usId,utilisateurs[usId].etat])
 
-func couleurJoueurLocal(idJoueur):
-	print("c'est mon id", idJoueur)
-	for usId in utilisateurs:
-		print("les id joeurs", usId)
-		if usId == idJoueur:
+func couleurJoueur(idJoueur):
 
+	for usId in utilisateurs:
+		if usId == idJoueur:
 			return utilisateurs[usId].couleur
 		
