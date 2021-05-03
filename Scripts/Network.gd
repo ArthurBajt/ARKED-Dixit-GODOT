@@ -126,12 +126,11 @@ remotesync func _lobby_lancePartie():
 	emit_signal("partieLancee")
 
 remotesync func assigneCouleur():
-	var tabCouleur=[Color.rebeccapurple,Color.cadetblue,Color.red,Color.maroon,Color.green,Color.orange]
+	var tabCouleur=[Color.rebeccapurple,Color.orange,Color.maroon,Color.cadetblue,Color.red,Color.green]
 #	randomize()
 #	tabCouleur.shuffle()
 	for usId in utilisateurs:
 		var couleurTemp=tabCouleur.pop_front()
-
 		utilisateurs[usId].couleur=couleurTemp
 
 func _peutLancerPartie()->bool:

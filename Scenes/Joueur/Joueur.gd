@@ -46,7 +46,7 @@ func _ready():
 
 func init(idJoueur: int, plateauDePartie):
 	self.id = idJoueur
-	self.estLocal = Network.id == idJoueur
+	self.estLocal = idJoueur
 	self.plateau = plateauDePartie
 	self.main = []
 	self.estConteur = false
@@ -54,8 +54,18 @@ func init(idJoueur: int, plateauDePartie):
 	self.myCam = null
 	self.couleur = Color.black
 
+	if !estLocal():
+		print("yuit")
+		print("Id para ", idJoueur)
+		print("couleur jouueur ", Network.couleurJoueur(idJoueur))
+		matiereTete.set_albedo(Network.couleurJoueur(idJoueur))
+		matiereChapeau.set_albedo(Network.couleurJoueur(idJoueur))
+		matiereCorps.set_albedo(Network.couleurJoueur(idJoueur))
+		corps.set_surface_material(0,matiereCorps)
+		tete.set_surface_material(0,matiereTete)
+		chapeau.set_surface_material(0,matiereChapeau)
 
-	if self.estLocal():
+	if estLocal():
 		var cam: Camera = NODE_CAM.instance()
 		cameraPos.add_child(cam)
 		cam.set_current(true)
@@ -68,7 +78,7 @@ func init(idJoueur: int, plateauDePartie):
 		self.add_child(ui)
 		self.myCam = cam
 		self.couleur = Network.couleurJoueur(self.id)
-		print(self.couleur)
+		print("couleur locale",self.couleur)
 		
 		matiereTete.set_albedo(self.couleur)
 		matiereChapeau.set_albedo(self.couleur)
