@@ -35,7 +35,7 @@ func _instancierJoueurs():
 		joueurs.append(j)
 	
 	joueurs.sort_custom(TrieJoueurs, "sort")
-
+	
 
 func _placerJoueurs():
 	""" """
@@ -45,3 +45,23 @@ func _placerJoueurs():
 		j.translation = JOUEUR_POSITION.rotated(Vector3.UP, deg2rad( angle ))
 		j.rotation = Vector3(0, deg2rad( angle ), 0)
 		angle += 360 / nbJoueurs
+
+func PionJoueur(idJoueur, ScX,ScY,ScZ,PosX, PosY, PosZ, rX, rY, rZ):
+	for joueur in nodeJoueurs.get_children():
+		if joueur != null:
+			if joueur.getId()==idJoueur:
+				var pion=joueur.get_node("MeshRoot").duplicate()
+
+				pion.set_scale(Vector3(ScX,ScY,ScZ))
+				pion.transform.origin.x=PosX
+				pion.transform.origin.y=PosY
+				pion.transform.origin.z=PosZ
+				pion.rotate_x(rX)
+				pion.rotate_x(rY)
+				pion.rotate_x(rZ)
+
+				$Scene/Pions.add_child(pion)
+
+func clearPions():
+	for pion in $Scene/Pions:
+		pion.queue_free()

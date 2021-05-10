@@ -135,6 +135,8 @@ func estLocal()-> bool:
 	""" Renvoie si les joueur est local (aka le joueur que les client est) """
 	return self.id == Network.id
 
+func getId():
+	return self.id
 
 func retireCarte(carte: Carte):
 	if carte in self.main:
