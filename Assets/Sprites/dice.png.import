@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/simons_town_rocks_2k.hdr-89ebdf64a1f7f4721073d4eed042475e.stex"
+path="res://.import/dice.png-a4baf2cd6173bf5bc554bffd38898d11.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Scenes/MenuPrincipal/simons_town_rocks_2k.hdr"
-dest_files=[ "res://.import/simons_town_rocks_2k.hdr-89ebdf64a1f7f4721073d4eed042475e.stex" ]
+source_file="res://Assets/Sprites/dice.png"
+dest_files=[ "res://.import/dice.png-a4baf2cd6173bf5bc554bffd38898d11.stex" ]
 
 [params]
 
