@@ -23,7 +23,7 @@ func afficheUiConteur(isConteur):
 		labelIndicator.text = "En attente de la selection du conteur..."
 	
 	hboxConteur.visible = isConteur
-	self.visible = !isConteur
+	self.visible = isConteur
 	
 func afficheChoixConteur():
 	self.visible = true

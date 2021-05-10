@@ -22,6 +22,7 @@ func _ready():
 	Network.connect("JoueurPoseCarte", self, "_fairePoserCarte")
 	Network.connect("carteVotee", self, "aVoteCarte")
 	Network.connect("voirRes", self, "voirRes")
+	Network.connect("giveVoteurs",self,"afficheVoteurs")
 
 
 func init(joueursDeLaPartie: Array, cartesMax: int = 6):
@@ -100,6 +101,12 @@ func voirRes():
 	for j in self.joueurs:
 		j.voirRes()
 
+func afficheVoteurs(carte,joueurs):
+	var j
+	for jId in joueurs:
+		j = self.getJoueur(jId)
+		j.PionJoueur(0.25,0.25,0.25,carte.transform.position.x,carte.transform.position.y,carte.transform.position.z,0,0,0)
+		
 #================
 #	getters et trucs utiles toi même tu sais
 func getJoueur(id: int):
@@ -112,6 +119,7 @@ func getJoueur(id: int):
 #	Conteur
 
 func changeConteur():
+	print("\n\n\n\nAAAAAAAAAAAAAAAAAAAAAAAAAa\n\n\n\n")
 	indexConteur+=1 % joueurs.size()
 	Network.changeConteur(indexConteur)
 

@@ -236,7 +236,7 @@ remotesync func appliquePoseCarte(idJoueur: int, carte: String):
 		self.utilisateurs[idJoueur].etat = Globals.EtatJoueur.ATTENTE_SELECTIONS
 	else:
 		self.utilisateurs[idJoueur].etat = Globals.EtatJoueur.CHOIX_THEME
-	
+	self.verifEtat(Globals.EtatJoueur.ATTENTE_SELECTIONS)
 		
 	
 	emit_signal("JoueurPoseCarte", idJoueur, carte)
@@ -257,6 +257,7 @@ remotesync func declareChangementConteur(idJoueur):
 		self.utilisateurs[usId].estConteur = usId == idJoueur
 	emit_signal("ChangementConteur", idJoueur)
 			
+
 
 # =================================================
 # Chat
@@ -282,8 +283,12 @@ remotesync func changeTheme(theme, nomConteur):
 		
 	emit_signal("updateTheme", theme, nomConteur)
 
-signal voirRes
 func verifEtat(etat):
+	rpc("verifEtats",etat)
+
+signal vote
+signal voirRes
+remotesync func verifEtats(etat):
 	var nbJoueur = utilisateurs.size()
 	var compteur = 0
 	for usId in self.utilisateurs:
@@ -297,13 +302,15 @@ func verifEtat(etat):
 					self.utilisateurs[user].etat=Globals.EtatJoueur.ATTENTE_VOTES
 				else:
 					self.utilisateurs[user].etat=Globals.EtatJoueur.VOTE
+				emit_signal("vote")
 					
 				print("V1 Etat de %s [%s]: %s" % [utilisateurs[user].nom, user,utilisateurs[user].etat])
 		
 		elif(etat==Globals.EtatJoueur.ATTENTE_VOTES):
 			for user in self.utilisateurs:
 				self.utilisateurs[user].etat = Globals.EtatJoueur.VOIR_RESULTAT
-			emit_signal("voirRes")
+				emit_signal("voirRes")
+			self.afficheVoteurs()
 
 	for usId in self.utilisateurs:
 		print("V2 Etat de %s [%s]: %s" % [utilisateurs[usId].nom, usId,utilisateurs[usId].etat])
@@ -315,4 +322,19 @@ func couleurJoueurLocal(idJoueur):
 		if usId == idJoueur:
 
 			return utilisateurs[usId].couleur
-		
+
+func afficheVoteurs():
+	var cartes = []
+	for user in self.utilisateurs:
+		if(not(self.utilisateurs[id].cartesVotee[user] in cartes)):
+			cartes += [self.utilisateurs[id].cartesVotee[user]]
+	for c in cartes:
+		self.getVoteurs(c)
+
+signal giveVoteurs(carte, joueurs)
+remotesync func getVoteurs(carte):
+	var joueurs = []
+	for user in self.utilisateurs:
+		if(self.utilisateurs[self.id].cartesVotee[user] == carte):
+			joueurs += [user]
+	emit_signal("giveVoteurs",carte,joueurs)

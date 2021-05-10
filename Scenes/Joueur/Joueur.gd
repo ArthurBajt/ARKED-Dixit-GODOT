@@ -40,7 +40,9 @@ func _ready():
 	Network.connect("ChangementConteur", self, "setConteur")
 	Network.connect("updateTheme",self,"changeTheme")
 	Network.connect("APoseCarte",self,"carteSelectectionnee")
+	Network.connect("vote",self,"peuxVoter")
 	Network.connect("voirRes",self,"voirRes")
+	Network.connect("carteVotee", self, "aVote")
 
 
 
@@ -60,12 +62,12 @@ func init(idJoueur: int, plateauDePartie):
 		cameraPos.add_child(cam)
 		cam.set_current(true)
 		# UI dans le joueur car c'est celui qui est en local qui en a besoin
-		self.uiChat = NODE_CHAT.instance()
-		self.add_child(uiChat)
 		self.uiConteur = NODE_UI_CONTEUR.instance()
 		self.add_child(uiConteur)
 		self.ui = NODE_UI.instance()
 		self.add_child(ui)
+		self.uiChat = NODE_CHAT.instance()
+		self.add_child(uiChat)
 		self.myCam = cam
 		
 		matiereTete.set_albedo(Network.couleurJoueurLocal(id))
@@ -87,7 +89,26 @@ func _input(event):
 				CAM_MID.current = false
 				self.myCam.current = true
 
-
+func _process(delta):
+	if(estLocal()):
+		if(self.etat == Globals.EtatJoueur.SELECTION_CARTE_THEME):
+			self.uiConteur.enlever()
+		if(self.etat == Globals.EtatJoueur.CHOIX_THEME):
+			self.uiConteur.afficheUiConteur(self.estConteur)
+		if(self.etat == Globals.EtatJoueur.ATTENTE_CHOIX_THEME):
+			self.uiConteur.attendreSelections()
+		if(self.etat == Globals.EtatJoueur.SELECTION_CARTE):
+			self.uiConteur.enlever()
+		if(self.etat == Globals.EtatJoueur.ATTENTE_SELECTIONS):
+			self.uiConteur.attendreSelections()
+		if(self.etat == Globals.EtatJoueur.VOTE):
+			print("Je vote")
+			self.uiConteur.enlever()
+		if(self.etat == Globals.EtatJoueur.ATTENTE_VOTES):
+			self.uiConteur.attendreVotes()
+		if(self.etat == Globals.EtatJoueur.VOIR_RESULTAT):
+			self.uiConteur.enlever()
+		
 func piocheCarte(nomCarte: String):
 	var instanceCarte = NODE_CARTE.instance()
 	mainRoot.add_child(instanceCarte)
@@ -107,6 +128,13 @@ func localPoseCarte(carte):
 	Network.posercarte(self.id, carte.nom)
 	carte.disconnect("carteCliquee", self, "localPoseCarte")
 	carte.peutEtreHover = false
+	if(not(self.estConteur)):
+		self.uiConteur.enlever()
+		self.etat = Globals.EtatJoueur.ATTENTE_SELECTIONS
+	else:
+		self.uiConteur.afficheUiConteur(self.estConteur)
+		self.etat = Globals.EtatJoueur.CHOIX_THEME
+	Network.verifEtat(Globals.EtatJoueur.ATTENTE_SELECTIONS)
 
 #================
 #	getters et trucs utiles toi même tu sais
@@ -119,7 +147,7 @@ func getCarte(nom: String):
 
 
 func estLocal()-> bool:
-	""" Renvoie si les joueur est local (aka le joueur que les client est) """
+	""" Renvoie si le joueur est local (aka le joueur que les client est) """
 	return self.id == Network.id
 
 
@@ -133,6 +161,10 @@ func retireCarte(carte: Carte):
 # UI
 func setConteur(idJoueur):
 	self.estConteur = self.id == idJoueur
+	if(self.estConteur):
+		self.etat = Globals.EtatJoueur.SELECTION_CARTE_THEME
+	else:
+		self.etat = Globals.EtatJoueur.ATTENTE_CHOIX_THEME
 	if estLocal():
 		self.uiConteur.afficheUiConteur(self.estConteur)
 		
@@ -163,16 +195,34 @@ func carteSelectectionnee(idJoueur):
 			self.etat = Globals.EtatJoueur.ATTENTE_SELECTIONS
 		Network.verifEtat(Globals.EtatJoueur.ATTENTE_SELECTIONS)
 
-func aVote():
-	if(self.estLocal()):
+func peuxVoter():
+	print("Suis je conteur ? ", self.estConteur)
+	if(self.estConteur):
+		self.etat = Globals.EtatJoueur.ATTENTE_VOTES
+	else:
+		self.etat = Globals.EtatJoueur.VOTE
+	if(estLocal()):
+		self.myCam.current = false
+		CAM_MID.current = true
+		print(self.estConteur)
+		if(!self.estConteur):
+			print("Je ne suis pas conteur")
+			self.uiConteur.enlever()
+		else:
+			self.uiConteur.attendreVotes()
+	Network.verifEtat(Globals.EtatJoueur.ATTENTE_VOTES)
+	
+func aVote(idJoueur):
+	if(self.estLocal() and idJoueur == self.id):
 		self.etat = Globals.EtatJoueur.ATTENTE_VOTES
 		self.uiConteur.attendreVotes()
 	Network.verifEtat(Globals.EtatJoueur.ATTENTE_VOTES)
 	
 func voirRes():
+	self.etat = Globals.EtatJoueur.VOIR_RESULTAT
 	if(estLocal()):
 		self.uiConteur.enlever()
-	self.etat = Globals.EtatJoueur.VOIR_RESULTAT
+	# Attribution des points
 
 func PionJoueur(ScX,ScY,ScZ,PosX, PosY, PosZ, rX, rY, rZ):
 	var mesh=$MeshRoot.duplicate()
