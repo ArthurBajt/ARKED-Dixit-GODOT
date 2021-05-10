@@ -16,6 +16,11 @@
   "optionsMusique":"Musique",
   "optionsSfx":"SFX",
 
+  "panelJouer": "Jouer",
+  "panelJouerPseudo": "Pseudo :",
+  "errPseudo": "Ce pseudo n'est pas valide !",
+  "panelJouerCreer": "Creer une partie.\nEt laisser vos amis la rejoindre.",
+  "panelJouerRejoindre": "Rejoingnez une partie déjà existante.",
   "buttonCreer": "Créer une partie",
   "buttonRejoindre": "Rejoindre une partie en local",
 

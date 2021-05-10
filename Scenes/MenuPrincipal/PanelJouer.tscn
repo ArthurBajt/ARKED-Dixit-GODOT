@@ -1,0 +1,158 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://Assets/Font/CatChild_base_48.tres" type="DynamicFont" id=1]
+[ext_resource path="res://Assets/Font/CatChild_base_24.tres" type="DynamicFont" id=2]
+[ext_resource path="res://Assets/Sprites/logo_host.png" type="Texture" id=3]
+[ext_resource path="res://Assets/Sprites/logo_join.png" type="Texture" id=4]
+[ext_resource path="res://Assets/Sprites/dice.png" type="Texture" id=5]
+[ext_resource path="res://Assets/Font/CatChild_base_12.tres" type="DynamicFont" id=6]
+[ext_resource path="res://Scenes/MenuPrincipal/PanelJouer.gd" type="Script" id=7]
+
+[node name="PanelJouer" type="Panel"]
+margin_right = 687.0
+margin_bottom = 493.0
+script = ExtResource( 7 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="LabelPanel" type="Label" parent="VBoxContainer"]
+margin_right = 687.0
+margin_bottom = 60.0
+custom_fonts/font = ExtResource( 1 )
+text = "Jouer"
+align = 1
+
+[node name="HBoxPseudo" type="HBoxContainer" parent="VBoxContainer"]
+margin_top = 64.0
+margin_right = 687.0
+margin_bottom = 112.0
+alignment = 1
+
+[node name="Labelpseudo" type="Label" parent="VBoxContainer/HBoxPseudo"]
+margin_left = 141.0
+margin_top = 9.0
+margin_right = 221.0
+margin_bottom = 39.0
+custom_fonts/font = ExtResource( 2 )
+text = "pseudo :"
+align = 1
+
+[node name="VSeparator" type="VSeparator" parent="VBoxContainer/HBoxPseudo"]
+modulate = Color( 1, 1, 1, 0 )
+margin_left = 225.0
+margin_right = 240.0
+margin_bottom = 48.0
+rect_min_size = Vector2( 15, 0 )
+
+[node name="EditPseudo" type="TextEdit" parent="VBoxContainer/HBoxPseudo"]
+margin_left = 244.0
+margin_right = 494.0
+margin_bottom = 48.0
+rect_min_size = Vector2( 250, 45 )
+custom_fonts/font = ExtResource( 2 )
+text = "Un nom"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ImgPseudoAleatoire" type="TextureRect" parent="VBoxContainer/HBoxPseudo"]
+margin_left = 498.0
+margin_right = 546.0
+margin_bottom = 48.0
+texture = ExtResource( 5 )
+
+[node name="LabelErrpseudo" type="Label" parent="VBoxContainer"]
+modulate = Color( 1, 0, 0, 1 )
+margin_top = 116.0
+margin_right = 687.0
+margin_bottom = 146.0
+custom_fonts/font = ExtResource( 2 )
+text = "Err : ougaBouga"
+align = 1
+
+[node name="HBoxLancer" type="HBoxContainer" parent="VBoxContainer"]
+margin_top = 150.0
+margin_right = 687.0
+margin_bottom = 450.0
+rect_min_size = Vector2( 0, 300 )
+alignment = 1
+
+[node name="VBoxCreer" type="VBoxContainer" parent="VBoxContainer/HBoxLancer"]
+margin_left = 69.0
+margin_right = 324.0
+margin_bottom = 300.0
+alignment = 2
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/HBoxLancer/VBoxCreer"]
+margin_top = 15.0
+margin_right = 255.0
+margin_bottom = 241.0
+texture = ExtResource( 3 )
+
+[node name="LabelCreer" type="Label" parent="VBoxContainer/HBoxLancer/VBoxCreer"]
+margin_top = 245.0
+margin_right = 255.0
+margin_bottom = 260.0
+custom_fonts/font = ExtResource( 6 )
+text = "Bla bla bla"
+align = 1
+
+[node name="ButtonCreer" type="Button" parent="VBoxContainer/HBoxLancer/VBoxCreer"]
+margin_top = 264.0
+margin_right = 255.0
+margin_bottom = 300.0
+custom_fonts/font = ExtResource( 2 )
+text = "Creer Un Serveur"
+
+[node name="VSeparator" type="VSeparator" parent="VBoxContainer/HBoxLancer"]
+margin_left = 328.0
+margin_right = 358.0
+margin_bottom = 300.0
+rect_min_size = Vector2( 30, 0 )
+
+[node name="VBoxRejoindre" type="VBoxContainer" parent="VBoxContainer/HBoxLancer"]
+margin_left = 362.0
+margin_right = 617.0
+margin_bottom = 300.0
+alignment = 2
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/HBoxLancer/VBoxRejoindre"]
+margin_top = 15.0
+margin_right = 255.0
+margin_bottom = 241.0
+texture = ExtResource( 4 )
+
+[node name="LabelRejoindre" type="Label" parent="VBoxContainer/HBoxLancer/VBoxRejoindre"]
+margin_top = 245.0
+margin_right = 255.0
+margin_bottom = 260.0
+custom_fonts/font = ExtResource( 6 )
+text = "efzezef feduzefdftgygq"
+align = 1
+
+[node name="ButtonRejoindre" type="Button" parent="VBoxContainer/HBoxLancer/VBoxRejoindre"]
+margin_top = 264.0
+margin_right = 255.0
+margin_bottom = 300.0
+custom_fonts/font = ExtResource( 2 )
+text = "Rejoidre un serveur"
+
+[node name="ButtonFermer" type="Button" parent="."]
+margin_right = 44.0
+margin_bottom = 66.0
+custom_fonts/font = ExtResource( 1 )
+text = "X"
+
+[connection signal="text_changed" from="VBoxContainer/HBoxPseudo/EditPseudo" to="." method="_on_EditPseudo_text_changed"]
+[connection signal="gui_input" from="VBoxContainer/HBoxPseudo/ImgPseudoAleatoire" to="." method="_on_ImgPseudoAleatoire_gui_input"]
+[connection signal="pressed" from="VBoxContainer/HBoxLancer/VBoxCreer/ButtonCreer" to="." method="_on_ButtonCreer_pressed"]
+[connection signal="pressed" from="VBoxContainer/HBoxLancer/VBoxRejoindre/ButtonRejoindre" to="." method="_on_ButtonRejoindre_pressed"]
+[connection signal="pressed" from="ButtonFermer" to="." method="_on_ButtonFermer_pressed"]

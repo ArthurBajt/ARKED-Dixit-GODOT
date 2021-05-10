@@ -8,8 +8,9 @@
 [ext_resource path="res://Scenes/Lobby/Mesh/Porte.escn" type="PackedScene" id=6]
 [ext_resource path="res://Scenes/Camera/Camera.tscn" type="PackedScene" id=7]
 [ext_resource path="res://Assets/Sfx/Porte.ogg" type="AudioStream" id=8]
-[ext_resource path="res://Scenes/MenuPrincipal/dikhololo_night_2k.hdr" type="Texture" id=9]
+[ext_resource path="res://Scenes/MenuPrincipal/Mesh/dikhololo_night_2k.hdr" type="Texture" id=9]
 [ext_resource path="res://Scenes/Lobby/Mesh/backRoom.jpg" type="Texture" id=10]
+
 
 [sub_resource type="CubeMesh" id=4]
 
