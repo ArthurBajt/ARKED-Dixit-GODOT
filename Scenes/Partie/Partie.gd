@@ -29,8 +29,9 @@ func _instancierJoueurs():
 	for usId in Network.utilisateurs:
 		var j = JOUEUR_INSTANCE.instance()
 		
+
 		nodeJoueurs.add_child(j)
-		j.init(usId, plateau)
+		j.init(usId, plateau, Network.utilisateurs[usId].couleur)
 		joueurs.append(j)
 	
 	joueurs.sort_custom(TrieJoueurs, "sort")

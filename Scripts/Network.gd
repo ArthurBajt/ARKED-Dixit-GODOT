@@ -7,6 +7,7 @@ const MAX_UTILISATEURS: int = 99
 
 var id: int = 0
 
+var tabCouleur=[Color.rebeccapurple,Color.orange,Color.maroon,Color.cadetblue,Color.red,Color.green]
 
 
 func _ready():
@@ -122,16 +123,23 @@ func lobby_lancerPartie():
 remotesync func _lobby_lancePartie():
 	""" Signal a tt les utilisateurs du lobby que la partie commence."""
 	
-	rpc("assigneCouleur")
+	
+	assigneCouleur()
 	emit_signal("partieLancee")
 
-remotesync func assigneCouleur():
-	var tabCouleur=[Color.rebeccapurple,Color.orange,Color.maroon,Color.cadetblue,Color.red,Color.green]
-#	randomize()
-#	tabCouleur.shuffle()
+func assigneCouleur():
+
+
+	var i=0
+	var tabTemp=[]
 	for usId in utilisateurs:
+		tabTemp.append(usId)
+	
+	tabTemp.sort()
+	for usId in tabTemp:
 		var couleurTemp=tabCouleur.pop_front()
 		utilisateurs[usId].couleur=couleurTemp
+
 
 func _peutLancerPartie()->bool:
 	""" True si on peut lancer la partie """
@@ -161,7 +169,7 @@ func partie_setChargee():
 
 remotesync func _partie_declareChargee(idJoeuur: int):
 	""" """
-	print("pouet : ", idJoeuur )
+
 	rpc("_partie_appliqueChargee", idJoeuur)
 
 
@@ -172,16 +180,16 @@ remotesync func _partie_appliqueChargee(idJoueur: int):
 	utilisateurs[idJoueur].estDansPartie = true
 	
 	if id == 1 and _sontJoueursDansPartie():
-		print("--JoueursDansPartie--")
+
 		
 		emit_signal("JoueursDansPartie")
 
 
 
 func _sontJoueursDansPartie()->bool:
-	print(utilisateurs.size())
+
 	for usId in utilisateurs:
-		print(usId)
+
 		if not utilisateurs[usId].estDansPartie:
 			return false
 	return true
