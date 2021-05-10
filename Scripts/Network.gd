@@ -6,6 +6,7 @@ const MAX_UTILISATEURS: int = 99
 
 
 var id: int = 0
+var nom = ""
 
 var tabCouleur=[Color.rebeccapurple,Color.orange,Color.maroon,Color.cadetblue,Color.red,Color.green]
 
@@ -17,7 +18,8 @@ func _ready():
 
 func creerServeur(player_name):
 	""" Creer un serveur """
-	dataStruct.nom = player_name
+#	dataStruct.nom = player_name
+	self.nom = player_name
 	var peer = NetworkedMultiplayerENet.new()
 	peer.create_server(DEFAUT_PORT, MAX_UTILISATEURS)
 	get_tree().set_network_peer(peer)
@@ -25,7 +27,8 @@ func creerServeur(player_name):
 	
 func rejoindreServeur(player_name):
 	""" Fait rejoindre un serveur à un utilisateur"""
-	dataStruct.nom = player_name
+#	dataStruct.nom = player_name
+	self.nom = player_name
 	var peer = NetworkedMultiplayerENet.new()
 	peer.create_client(DEFAUT_IP, DEFAUT_PORT)
 	get_tree().set_network_peer(peer)
@@ -63,19 +66,27 @@ func _lobby_se_declarer():
 	
 	else:
 		id = get_tree().get_network_unique_id()
-		rpc_id(1, "_lobby_declareUtilisateur", id)
 	
 	self.data = dataStruct.duplicate()
+	self.data.nom = self.nom
+	
 	utilisateurs[id] = dataStruct.duplicate()
+	utilisateurs[id].nom = self.nom
+	
+	if id > 1 :
+		rpc_id(1, "_lobby_declareUtilisateur", id, self.data)
 
 
-remote func _lobby_declareUtilisateur(idUtilisateur: int):
+remote func _lobby_declareUtilisateur(idUtilisateur: int, curentData:Dictionary ):
 	""" Quand un utilisateur se déclare,
 	le serveur signal a tt les utilisateur déjà présents
 	qu'un nv Utilisateur s'est connecté."""
-	rpc("_lobby_ajouteUtilisateur", idUtilisateur, dataStruct.duplicate())
+	
+#	rpc("_lobby_ajouteUtilisateur", idUtilisateur, dataStruct.duplicate())
+	rpc("_lobby_ajouteUtilisateur", idUtilisateur, curentData.duplicate() )
 	for usId in utilisateurs:
 		rpc_id(idUtilisateur,"_lobby_ajouteUtilisateur", usId, utilisateurs[usId])
+
 
 remotesync func _lobby_ajouteUtilisateur(idUtilisateur: int, curentData: Dictionary = {}):
 	""" Le serveur a declarer l'arrivee d'un nv Utilisateur
@@ -83,10 +94,7 @@ remotesync func _lobby_ajouteUtilisateur(idUtilisateur: int, curentData: Diction
 	Nous somme un client arrivant sur le serveur
 	
 	On met a jour les Utilisateur deja presents et leurs données"""
-	if curentData == {}:
-		utilisateurs[idUtilisateur] = curentData.duplicate()
-	else :
-		utilisateurs[idUtilisateur] = curentData.duplicate()
+	utilisateurs[idUtilisateur] = curentData.duplicate()
 	
 	emit_signal("nvUtilisateur", idUtilisateur)
 
@@ -103,15 +111,15 @@ remotesync func _lobby_declareStatu(idUtilisateur: int, statu: bool):
 	rpc("_lobby_appliquerStatu", idUtilisateur, statu)
 
 
-
 remotesync func _lobby_appliquerStatu(idUtilisateur: int, statu: bool):
 	""" change le statu d'un joueur"""
-	if (not "estPret" in utilisateurs[idUtilisateur]) or (utilisateurs[idUtilisateur].estPret != statu):
-		emit_signal("nvStatuUtilisateur", idUtilisateur, statu)
+#	if (not "estPret" in utilisateurs[idUtilisateur]) or (utilisateurs[idUtilisateur].estPret != statu):
+#		emit_signal("nvStatuUtilisateur", idUtilisateur, statu)
 	
 	utilisateurs[idUtilisateur].estPret = statu
 	if id == idUtilisateur:
 		data.estPret = statu
+	emit_signal("nvStatuUtilisateur", idUtilisateur, statu)
 
 
 func lobby_lancerPartie():
