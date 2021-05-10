@@ -17,6 +17,8 @@ func _ready():
 	Network.connect("nvStatuUtilisateur", self, "joueurNvStatut")
 	buttonLancer.visible = Network.id == 1
 	
+	$Control/HBoxContainer/LayoutJoueur/LabelListe.text = R.getString("lobbyListe")
+	
 	self.recupereJoueurs()
 
 #==============================
@@ -51,9 +53,11 @@ func majPeutLancer():
 	if self.peutLancer:
 		self.buttonLancer.modulate = Color(1.0, 1.0, 1.0)
 		self.buttonLancer.disabled = false
+		self.buttonLancer.text = R.getString("lobbylancer")
 	else:
 		self.buttonLancer.modulate = Color(1.0, 0.0, 0.0)
 		self.buttonLancer.disabled = true
+		self.buttonLancer.text = R.getString("lobbyAttendre")
 
 #==============================
 func _on_ButtonPret_pressed():
@@ -66,4 +70,11 @@ func _on_ButtonLancer_pressed():
 
 
 func _versPartie():
+	$Control.visible = false
+	$AnimationPlayer.play("Entre")
+	var timer = Timer.new()
+	timer.wait_time = 1.8
+	self.add_child(timer)
+	timer.start()
+	yield(timer, "timeout")
 	Transition.transitionVers("res://Scenes/Partie/Partie.tscn")

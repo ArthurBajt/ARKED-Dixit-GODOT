@@ -22,6 +22,10 @@
   "lobbyPasPret": "Pas prêt",
   "lobbyPret": "Prêt",
 
+  "lobbyListe": "Liste de Joueurs :",
+  "lobbylancer": "Lancer",
+  "lobbyAttendre": "En Attente",
+
 
   "labelNom": "Je suis le joueur : %s .",
   "labelPoints": "Et j'ai %s point(s).",
