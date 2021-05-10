@@ -39,15 +39,18 @@ func _on_ButtonFermer_pressed():
 onready var busVolume = AudioServer.get_bus_index("Master")
 func _on_SliderVolume_value_changed(value):
 	AudioServer.set_bus_volume_db( self.busVolume, value )
+	AudioServer.set_bus_mute( self.busVolume, value <= -50)
 
 
 # MUSIQUE
 onready var busMusic = AudioServer.get_bus_index("Music")
 func _on_SliderMusique_value_changed(value):
 	AudioServer.set_bus_volume_db( self.busMusic, value )
+	AudioServer.set_bus_mute( self.busMusic, value <= -50)
 
 
 # SFX
 onready var busSfx = AudioServer.get_bus_index("Sfx")
 func _on_SliderSfx_value_changed(value):
 	AudioServer.set_bus_volume_db( self.busSfx, value )
+	AudioServer.set_bus_mute( self.busSfx, value <= -50)
