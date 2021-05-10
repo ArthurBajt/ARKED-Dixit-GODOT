@@ -4,6 +4,7 @@
 
 [node name="Menu" type="Node"]
 script = ExtResource( 1 )
+musiquePath = "res://Assets/Songs/teller-of-the-tales-kevin-macleod.ogg"
 
 [node name="Ui" type="Control" parent="."]
 anchor_right = 1.0

@@ -8,10 +8,11 @@ const JOUEUR_POSITION: Vector3 = Vector3(0, 0, -8)
 
 onready var plateau = $Scene/Plateau
 
-
+export(String, FILE, "*.ogg") var musiquePath
 
 
 func _ready():
+	Music.setMusic(self.musiquePath)
 	_instancierJoueurs()
 	_placerJoueurs()
 	plateau.init(joueurs)

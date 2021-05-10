@@ -25,6 +25,16 @@ _global_script_classes=[ {
 "path": "res://Scenes/Joueur/Joueur.gd"
 }, {
 "base": "Node",
+"class": "MusicPlayer",
+"language": "GDScript",
+"path": "res://Scenes/MusicPlayer/MusicPlayer.gd"
+}, {
+"base": "Node",
+"class": "Options",
+"language": "GDScript",
+"path": "res://Scenes/Options/Options.gd"
+}, {
+"base": "Node",
 "class": "Pioche",
 "language": "GDScript",
 "path": "res://Scenes/Pioche/Pioche.gd"
@@ -38,6 +48,8 @@ _global_script_class_icons={
 "Carte": "",
 "Chat": "",
 "Joueur": "",
+"MusicPlayer": "",
+"Options": "",
 "Pioche": "",
 "TransitionScene": ""
 }
@@ -45,7 +57,7 @@ _global_script_class_icons={
 [application]
 
 config/name="ARKED-Dixit-GODOT"
-run/main_scene="res://Scenes/MenuPrincipal/MenuPrincipal.tscn"
+run/main_scene="res://Scenes/Intro&Outro/Intro.tscn"
 config/icon="res://icon.png"
 config/windows_native_icon="res://icone.ico"
 
@@ -56,6 +68,7 @@ Network="*res://Scripts/Network.gd"
 R="*res://Scripts/R.gd"
 Debug="*res://Scripts/Debug.gd"
 Transition="*res://Scripts/Transition.gd"
+Music="*res://Scripts/Music.gd"
 
 [display]
 

@@ -17,24 +17,32 @@ enum EtatJoueur {
 				ATTENTE_PROCHAINE_MANCHE	# Conteur & Joueur	8
 				}
 
+
+func _ready():
+	self.options = self.NODE_OPTIONS.instance()
+	get_parent().call_deferred("add_child", self.options)
+
+
 func setDebug(value: bool):
 	isDebug = value
 
 
 func quitter():
-	get_tree().quit()
+	Transition.transitionVers("res://Scenes/Intro&Outro/Outro.tscn")
 
 
 # ==================
 #	Options
+const NODE_OPTIONS = preload("res://Scenes/Options/Options.tscn")
+var options: Options
 
 func optionAffiche():
 	""" Si on fait une Ui pour des options """
-	print("affiche options")
+	self.options.affiche()
 	pass
 
 
 func optionCache():
 	""" Si on fait une Ui pour des options, on la cache. """
-	print("cache options")
+	self.options.cache()
 	pass
