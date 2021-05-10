@@ -12,14 +12,9 @@ onready var cameraPos: Spatial = $CameraPos
 
 
 
-onready var matiereTete=$MeshRoot/Head.get_surface_material(0)
-onready var matiereCorps=$MeshRoot/Body.get_surface_material(0)
-onready var matiereChapeau=$MeshRoot/MeshInstance3.get_surface_material(0)
 
 
-onready var tete=$MeshRoot/Head
-onready var corps=$MeshRoot/Body
-onready var chapeau=$MeshRoot/MeshInstance3
+
 
 onready var CAM_MID = get_node("/root/Partie/Scene/Camera")
 const NODE_CAM = preload("res://Scenes/Joueur/CameraJoueur.tscn")
@@ -33,7 +28,7 @@ var ui
 var uiConteur
 var uiChat: Chat
 var myCam
-var couleur
+
 
 var etat: int
 	
@@ -44,26 +39,30 @@ func _ready():
 
 
 
-func init(idJoueur: int, plateauDePartie):
+func init(idJoueur: int, plateauDePartie, couleurJoueur):
 	self.id = idJoueur
-	self.estLocal = idJoueur
+	self.estLocal = estLocal()
 	self.plateau = plateauDePartie
 	self.main = []
 	self.estConteur = false
 	self.etat = Globals.EtatJoueur.ATTENTE_CHOIX_THEME
 	self.myCam = null
-	self.couleur = Color.black
+
+	var tete=$MeshRoot/Head
+	var corps=$MeshRoot/Body
+	var chapeau=$MeshRoot/MeshInstance3
+	
+	var material = SpatialMaterial.new()
+	material.set_albedo(couleurJoueur)
+	
+
 
 	if !estLocal():
-		print("yuit")
-		print("Id para ", idJoueur)
-		print("couleur jouueur ", Network.couleurJoueur(idJoueur))
-		matiereTete.set_albedo(Network.couleurJoueur(idJoueur))
-		matiereChapeau.set_albedo(Network.couleurJoueur(idJoueur))
-		matiereCorps.set_albedo(Network.couleurJoueur(idJoueur))
-		corps.set_surface_material(0,matiereCorps)
-		tete.set_surface_material(0,matiereTete)
-		chapeau.set_surface_material(0,matiereChapeau)
+		
+
+		corps.set_material_override(material)
+		tete.set_material_override(material)
+		chapeau.set_material_override(material)
 
 	if estLocal():
 		var cam: Camera = NODE_CAM.instance()
@@ -77,18 +76,14 @@ func init(idJoueur: int, plateauDePartie):
 		self.ui = NODE_UI.instance()
 		self.add_child(ui)
 		self.myCam = cam
-		self.couleur = Network.couleurJoueur(self.id)
-		print("couleur locale",self.couleur)
-		
-		matiereTete.set_albedo(self.couleur)
-		matiereChapeau.set_albedo(self.couleur)
-		matiereCorps.set_albedo(self.couleur)
-		corps.set_surface_material(0,matiereCorps)
-		tete.set_surface_material(0,matiereTete)
-		chapeau.set_surface_material(0,matiereChapeau)
-		
+
 
 		
+		corps.set_material_override(material)
+		tete.set_material_override(material)
+		chapeau.set_material_override(material)
+		
+
 
 
 
@@ -125,6 +120,7 @@ func localPoseCarte(carte):
 	carte.disconnect("carteCliquee", self, "localPoseCarte")
 	carte.peutEtreHover = false
 
+
 #================
 #	getters et trucs utiles toi même tu sais
 
@@ -139,6 +135,8 @@ func estLocal()-> bool:
 	""" Renvoie si les joueur est local (aka le joueur que les client est) """
 	return self.id == Network.id
 
+func getId():
+	return self.id
 
 func retireCarte(carte: Carte):
 	if carte in self.main:
@@ -180,20 +178,4 @@ func carteSelectectionnee(idJoueur):
 			self.etat = Globals.EtatJoueur.ATTENTE_SELECTIONS
 
 		Network.verifEtat()
-	
-
-	
-func PionJoueur(ScX,ScY,ScZ,PosX, PosY, PosZ, rX, rY, rZ):
-	var mesh=$MeshRoot.duplicate()
-	self.add_child(mesh)
-
-
-	mesh.set_scale(Vector3(ScX,ScY,ScZ))
-	mesh.transform.origin.x=PosX
-	mesh.transform.origin.y=PosY
-	mesh.transform.origin.z=PosZ
-	mesh.rotate_x(rX)
-	mesh.rotate_x(rY)
-	mesh.rotate_x(rZ)
-
 
