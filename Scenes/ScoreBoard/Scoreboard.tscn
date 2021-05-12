@@ -1,0 +1,103 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Assets/Font/CatChild_base_64.tres" type="DynamicFont" id=1]
+
+[sub_resource type="ShaderMaterial" id=1]
+
+[sub_resource type="QuadMesh" id=2]
+material = SubResource( 1 )
+size = Vector2( 700, 1000 )
+
+[node name="Node2D" type="Node2D"]
+position = Vector2( 106, 65 )
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="."]
+modulate = Color( 0.478431, 0.109804, 0.109804, 1 )
+position = Vector2( 8, 4 )
+mesh = SubResource( 2 )
+
+[node name="Label" type="Label" parent="."]
+margin_left = -346.757
+margin_top = -467.837
+margin_right = 361.243
+margin_bottom = -310.837
+custom_fonts/font = ExtResource( 1 )
+text = "Classement"
+align = 1
+valign = 1
+percent_visible = -0.1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ItemList" type="ItemList" parent="."]
+margin_left = -232.351
+margin_top = -238.485
+margin_right = 269.649
+margin_bottom = 275.515
+custom_colors/guide_color = Color( 0, 0, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ReferenceRect" type="ReferenceRect" parent="ItemList"]
+margin_right = 499.0
+margin_bottom = 70.0
+border_color = Color( 0, 0, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ReferenceRect2" type="ReferenceRect" parent="ItemList"]
+margin_top = 75.0
+margin_right = 499.0
+margin_bottom = 145.0
+border_color = Color( 0, 0, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ReferenceRect3" type="ReferenceRect" parent="ItemList"]
+margin_top = 147.621
+margin_right = 499.0
+margin_bottom = 217.621
+border_color = Color( 0, 0, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ReferenceRect4" type="ReferenceRect" parent="ItemList"]
+margin_top = 223.108
+margin_right = 499.0
+margin_bottom = 293.108
+border_color = Color( 0, 0, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ReferenceRect5" type="ReferenceRect" parent="ItemList"]
+margin_top = 440.759
+margin_right = 499.0
+margin_bottom = 510.759
+border_color = Color( 0, 0, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ReferenceRect6" type="ReferenceRect" parent="ItemList"]
+margin_top = 372.893
+margin_right = 499.0
+margin_bottom = 442.893
+border_color = Color( 0, 0, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ReferenceRect7" type="ReferenceRect" parent="ItemList"]
+margin_top = 299.081
+margin_right = 499.0
+margin_bottom = 369.081
+border_color = Color( 0, 0, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}

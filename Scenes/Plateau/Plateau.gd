@@ -20,6 +20,7 @@ var cartes: Array = []
 func _ready():
 	Network.connect("joueurApiocherCarte", self, "_on_joueurApiocherCarte")
 	Network.connect("JoueurPoseCarte", self, "_fairePoserCarte")
+	
 
 
 func init(joueursDeLaPartie: Array, cartesMax: int = 6):
