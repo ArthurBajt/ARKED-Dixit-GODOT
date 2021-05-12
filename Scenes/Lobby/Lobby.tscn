@@ -11,15 +11,14 @@
 [ext_resource path="res://Scenes/MenuPrincipal/Mesh/dikhololo_night_2k.hdr" type="Texture" id=9]
 [ext_resource path="res://Scenes/Lobby/Mesh/backRoom.jpg" type="Texture" id=10]
 
+[sub_resource type="CubeMesh" id=1]
 
-[sub_resource type="CubeMesh" id=4]
+[sub_resource type="QuadMesh" id=2]
 
-[sub_resource type="QuadMesh" id=5]
-
-[sub_resource type="VisualShaderNodeTexture" id=6]
+[sub_resource type="VisualShaderNodeTexture" id=3]
 texture = ExtResource( 10 )
 
-[sub_resource type="VisualShader" id=7]
+[sub_resource type="VisualShader" id=4]
 code = "shader_type spatial;
 render_mode specular_schlick_ggx;
 
@@ -49,22 +48,21 @@ void light() {
 }
 "
 graph_offset = Vector2( -134, 118.5 )
-nodes/fragment/2/node = SubResource( 6 )
+nodes/fragment/2/node = SubResource( 3 )
 nodes/fragment/2/position = Vector2( 68, 240 )
 nodes/fragment/connections = PoolIntArray( 2, 0, 0, 0 )
 
-[sub_resource type="ShaderMaterial" id=8]
-shader = SubResource( 7 )
+[sub_resource type="ShaderMaterial" id=5]
+shader = SubResource( 4 )
 
-[sub_resource type="PanoramaSky" id=2]
+[sub_resource type="PanoramaSky" id=6]
 panorama = ExtResource( 9 )
 
-[sub_resource type="Environment" id=3]
+[sub_resource type="Environment" id=7]
 background_mode = 2
-background_sky = SubResource( 2 )
+background_sky = SubResource( 6 )
 
-[sub_resource type="Animation" id=1]
-resource_name = "Entre"
+[sub_resource type="Animation" id=8]
 length = 3.5
 tracks/0/type = "bezier"
 tracks/0/path = NodePath("Root3d/Camera:translation:x")
@@ -258,7 +256,7 @@ __meta__ = {
 
 [node name="OmbreCouloir" type="MeshInstance" parent="Root3d/Mesh"]
 transform = Transform( 1, 0, 0, 0, 20, 0, 0, 0, 28, 4.95507, -3.57612, -31.137 )
-mesh = SubResource( 4 )
+mesh = SubResource( 1 )
 material/0 = null
 __meta__ = {
 "_edit_lock_": true
@@ -266,8 +264,8 @@ __meta__ = {
 
 [node name="Backroom" type="MeshInstance" parent="Root3d/Mesh"]
 transform = Transform( 10, 0, 0, 0, 10, 0, 0, 0, 10, 0, 4.00316, -62.2105 )
-mesh = SubResource( 5 )
-material/0 = SubResource( 8 )
+mesh = SubResource( 2 )
+material/0 = SubResource( 5 )
 
 [node name="Lights" type="Spatial" parent="Root3d/Mesh"]
 
@@ -279,7 +277,7 @@ omni_range = 36.1
 omni_attenuation = 2.92817
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="Root3d"]
-environment = SubResource( 3 )
+environment = SubResource( 7 )
 
 [node name="DirectionalLight" type="DirectionalLight" parent="Root3d"]
 transform = Transform( 0.735195, -0.48419, 0.474392, 0.100073, 0.769702, 0.630511, -0.670428, -0.416075, 0.614336, 3.85164, 19.7204, 10.601 )
@@ -290,7 +288,7 @@ shadow_enabled = true
 transform = Transform( 0.992208, -0.0210969, -0.122789, 0, 0.985559, -0.169332, 0.124589, 0.168013, 0.97788, -2.3814, 1.16989, 8.76686 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-anims/Entre = SubResource( 1 )
+anims/Entre = SubResource( 8 )
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 8 )
