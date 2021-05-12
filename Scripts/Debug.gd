@@ -1,6 +1,5 @@
 extends Node
 
-
 func _ready():
 	if Globals.isDebug:
 		var debugNet = load('res://Scenes/Debug/DebutNetwork.tscn')
