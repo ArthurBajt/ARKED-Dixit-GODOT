@@ -19,6 +19,8 @@ enum EtatJoueur {
 func _ready():
 	self.options = self.NODE_OPTIONS.instance()
 	get_parent().call_deferred("add_child", self.options)
+	
+	self.fov = self.FOV_DEFAUT
 
 
 func setDebug(value: bool):
@@ -44,3 +46,19 @@ func optionCache():
 	""" Si on fait une Ui pour des options, on la cache. """
 	self.options.cache()
 	pass
+
+#======================
+#	Fov dynamique pour diff ecrand
+
+signal fovChanged( val )
+const FOV_DEFAUT: float = 60.0
+const FOV_MIN: float = 25.0
+const FOV_MAX: float = 120.0
+var fov: float setget setFov
+
+
+func setFov( val: float ):
+	var newFov = max( self.FOV_MIN, min(val, self.FOV_MAX) )
+	if newFov != fov:
+		fov = newFov
+		emit_signal("fovChanged", fov)

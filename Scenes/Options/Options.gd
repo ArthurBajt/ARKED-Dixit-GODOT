@@ -13,7 +13,14 @@ func _ready():
 	
 	$HBoxContainer/Panel/VBoxContainer/HBoxVolume/SliderVolume.value = AudioServer.get_bus_volume_db( self.busVolume )
 	$HBoxContainer/Panel/VBoxContainer/HBoxMusique/SliderMusique.value = AudioServer.get_bus_volume_db( self.busMusic )
-	$HBoxContainer/Panel/VBoxContainer/HBoxSfx/SliderSfx.value = AudioServer.get_bus_volume_db( self.busSfx ) 
+	$HBoxContainer/Panel/VBoxContainer/HBoxSfx/SliderSfx.value = AudioServer.get_bus_volume_db( self.busSfx )
+	
+	$HBoxContainer/Panel/VBoxContainer/HBoxContainer/SliderTailleEcrand.min_value = Globals.FOV_MIN
+	$HBoxContainer/Panel/VBoxContainer/HBoxContainer/SliderTailleEcrand.max_value = Globals.FOV_MAX
+	$HBoxContainer/Panel/VBoxContainer/HBoxContainer/SliderTailleEcrand.value = Globals.FOV_DEFAUT
+	$HBoxContainer/Panel/VBoxContainer/HBoxContainer/SliderTailleEcrand.step = (Globals.FOV_MAX - Globals.FOV_MIN) / 15
+	
+	$HBoxContainer/Panel/VBoxContainer/HBoxContainer/SliderTailleEcrand.connect("value_changed", self, "changeFov")
 	
 
 
@@ -32,7 +39,7 @@ func _on_ButtonFermer_pressed():
 
 
 #==========================
-#	Changement
+#	Changement Son
 
 # Son
 # VOLUME
@@ -54,3 +61,17 @@ onready var busSfx = AudioServer.get_bus_index("Sfx")
 func _on_SliderSfx_value_changed(value):
 	AudioServer.set_bus_volume_db( self.busSfx, value )
 	AudioServer.set_bus_mute( self.busSfx, value <= -50)
+
+#==========================
+#	Changement Ecrand
+
+func changeFov(val):
+	Globals.setFov( $HBoxContainer/Panel/VBoxContainer/HBoxContainer/SliderTailleEcrand.value )
+
+
+func _on_ResetTailleEcrand_gui_input(event):
+	if event is InputEventMouseButton:
+		if event.pressed:
+			var fov = Globals.FOV_DEFAUT
+			$HBoxContainer/Panel/VBoxContainer/HBoxContainer/SliderTailleEcrand.value = fov
+			Globals.setFov(fov)
