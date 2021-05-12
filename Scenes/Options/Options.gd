@@ -15,6 +15,10 @@ func _ready():
 	$HBoxContainer/Panel/VBoxContainer/HBoxMusique/SliderMusique.value = AudioServer.get_bus_volume_db( self.busMusic )
 	$HBoxContainer/Panel/VBoxContainer/HBoxSfx/SliderSfx.value = AudioServer.get_bus_volume_db( self.busSfx )
 	
+	$HBoxContainer/Panel/VBoxContainer/LabelTailleEcrand.text = R.getString("optionTailleEcrand")
+	$HBoxContainer/Panel/VBoxContainer/HBoxContainer/ContainerGrandEcrand/LabelGrandEcrand.text = R.getString("optionTailleEcrandGrand")
+	$HBoxContainer/Panel/VBoxContainer/HBoxContainer/ContainerPetitEcrand/LabelPetitEcrand.text = R.getString("optionTailleEcrandPetit")
+	
 	$HBoxContainer/Panel/VBoxContainer/HBoxContainer/SliderTailleEcrand.min_value = Globals.FOV_MIN
 	$HBoxContainer/Panel/VBoxContainer/HBoxContainer/SliderTailleEcrand.max_value = Globals.FOV_MAX
 	$HBoxContainer/Panel/VBoxContainer/HBoxContainer/SliderTailleEcrand.value = Globals.FOV_DEFAUT

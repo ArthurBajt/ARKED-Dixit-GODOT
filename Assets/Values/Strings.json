@@ -15,6 +15,9 @@
   "optionsTitre":"Options",
   "optionsMusique":"Musique",
   "optionsSfx":"SFX",
+  "optionTailleEcrand": "Taille de l'ecrand :",
+  "optionTailleEcrandPetit": "Petit",
+  "optionTailleEcrandGrand": "Grand",
 
   "panelJouer": "Jouer",
   "panelJouerPseudo": "Pseudo :",
