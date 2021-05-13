@@ -70,6 +70,8 @@ func init(idJoueur: int, plateauDePartie):
 		self.add_child(uiChat)
 		self.myCam = cam
 		
+		self.uiConteur.attendreChoixConteur()
+		
 		matiereTete.set_albedo(Network.couleurJoueurLocal(id))
 		matiereChapeau.set_albedo(Network.couleurJoueurLocal(id))
 		matiereCorps.set_albedo(Network.couleurJoueurLocal(id))
@@ -89,25 +91,25 @@ func _input(event):
 				CAM_MID.current = false
 				self.myCam.current = true
 
-func _process(delta):
-	if(estLocal()):
-		if(self.etat == Globals.EtatJoueur.SELECTION_CARTE_THEME):
-			self.uiConteur.enlever()
-		if(self.etat == Globals.EtatJoueur.CHOIX_THEME):
-			self.uiConteur.afficheUiConteur(self.estConteur)
-		if(self.etat == Globals.EtatJoueur.ATTENTE_CHOIX_THEME):
-			self.uiConteur.attendreSelections()
-		if(self.etat == Globals.EtatJoueur.SELECTION_CARTE):
-			self.uiConteur.enlever()
-		if(self.etat == Globals.EtatJoueur.ATTENTE_SELECTIONS):
-			self.uiConteur.attendreSelections()
-		if(self.etat == Globals.EtatJoueur.VOTE):
-			print("Je vote")
-			self.uiConteur.enlever()
-		if(self.etat == Globals.EtatJoueur.ATTENTE_VOTES):
-			self.uiConteur.attendreVotes()
-		if(self.etat == Globals.EtatJoueur.VOIR_RESULTAT):
-			self.uiConteur.enlever()
+#func _process(delta):
+#	if(estLocal()):
+#		if(self.etat == Globals.EtatJoueur.SELECTION_CARTE_THEME):
+#			self.uiConteur.enlever()
+#		if(self.etat == Globals.EtatJoueur.CHOIX_THEME):
+#			self.uiConteur.afficheUiConteur(self.estConteur)
+#		if(self.etat == Globals.EtatJoueur.ATTENTE_CHOIX_THEME):
+#			self.uiConteur.attendreSelections()
+#		if(self.etat == Globals.EtatJoueur.SELECTION_CARTE):
+#			self.uiConteur.enlever()
+#		if(self.etat == Globals.EtatJoueur.ATTENTE_SELECTIONS):
+#			self.uiConteur.attendreSelections()
+#		if(self.etat == Globals.EtatJoueur.VOTE):
+#			print("Je vote")
+#			self.uiConteur.enlever()
+#		if(self.etat == Globals.EtatJoueur.ATTENTE_VOTES):
+#			self.uiConteur.attendreVotes()
+#		if(self.etat == Globals.EtatJoueur.VOIR_RESULTAT):
+#			self.uiConteur.enlever()
 		
 func piocheCarte(nomCarte: String):
 	var instanceCarte = NODE_CARTE.instance()
@@ -128,13 +130,6 @@ func localPoseCarte(carte):
 	Network.posercarte(self.id, carte.nom)
 	carte.disconnect("carteCliquee", self, "localPoseCarte")
 	carte.peutEtreHover = false
-	if(not(self.estConteur)):
-		self.uiConteur.enlever()
-		self.etat = Globals.EtatJoueur.ATTENTE_SELECTIONS
-	else:
-		self.uiConteur.afficheUiConteur(self.estConteur)
-		self.etat = Globals.EtatJoueur.CHOIX_THEME
-	Network.verifEtat(Globals.EtatJoueur.ATTENTE_SELECTIONS)
 
 #================
 #	getters et trucs utiles toi même tu sais
@@ -163,10 +158,12 @@ func setConteur(idJoueur):
 	self.estConteur = self.id == idJoueur
 	if(self.estConteur):
 		self.etat = Globals.EtatJoueur.SELECTION_CARTE_THEME
+		if(self.estLocal()):
+			self.uiConteur.enlever()
 	else:
+		if(self.estLocal()):
+				self.uiConteur.attendreChoixConteur()
 		self.etat = Globals.EtatJoueur.ATTENTE_CHOIX_THEME
-	if estLocal():
-		self.uiConteur.afficheUiConteur(self.estConteur)
 		
 func changeTheme(theme, nomConteur):
 	if(self.estConteur):
@@ -183,40 +180,41 @@ func changeTheme(theme, nomConteur):
 
 func carteSelectectionnee(idJoueur):
 	# Si le joueur a bien posé la carte et qu'il est local
-	if(self.estLocal() && self.id == idJoueur):
+	if(self.id == idJoueur):
 		# Alors si il est conteur
 		if(self.estConteur):
 			# On lui demande le choix du theme
 			self.etat = Globals.EtatJoueur.CHOIX_THEME
-			self.uiConteur.afficheChoixConteur()
+			if(self.estLocal()):
+				self.uiConteur.afficheUiConteur()
 		else:
 			# Sinon il attends le conteur
-			self.uiConteur.attendreSelections()
 			self.etat = Globals.EtatJoueur.ATTENTE_SELECTIONS
+			if(self.estLocal()):
+				self.uiConteur.attendreSelections()
 		Network.verifEtat(Globals.EtatJoueur.ATTENTE_SELECTIONS)
 
 func peuxVoter():
-	print("Suis je conteur ? ", self.estConteur)
+	print("Suis je conteur ? ", self.id, self.estConteur)
 	if(self.estConteur):
 		self.etat = Globals.EtatJoueur.ATTENTE_VOTES
+		if(estLocal()):
+			self.uiConteur.attendreVotes()
 	else:
 		self.etat = Globals.EtatJoueur.VOTE
+		if(estLocal()):
+			self.uiConteur.enlever()
 	if(estLocal()):
 		self.myCam.current = false
 		CAM_MID.current = true
-		print(self.estConteur)
-		if(!self.estConteur):
-			print("Je ne suis pas conteur")
-			self.uiConteur.enlever()
-		else:
-			self.uiConteur.attendreVotes()
 	Network.verifEtat(Globals.EtatJoueur.ATTENTE_VOTES)
 	
 func aVote(idJoueur):
-	if(self.estLocal() and idJoueur == self.id):
+	if(idJoueur == self.id):
 		self.etat = Globals.EtatJoueur.ATTENTE_VOTES
-		self.uiConteur.attendreVotes()
-	Network.verifEtat(Globals.EtatJoueur.ATTENTE_VOTES)
+		if(self.estLocal()):
+			self.uiConteur.attendreVotes()
+		Network.verifEtat(Globals.EtatJoueur.ATTENTE_VOTES)
 	
 func voirRes():
 	self.etat = Globals.EtatJoueur.VOIR_RESULTAT

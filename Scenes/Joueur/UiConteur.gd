@@ -15,28 +15,27 @@ func _ready():
 	self.mouse_filter = Control.MOUSE_FILTER_IGNORE
 
 
-func afficheUiConteur(isConteur):
-	isChoisingTheme = isConteur
-	if(isConteur):
-		labelIndicator.text = "Choisissez le thème..."
-	else:
-		labelIndicator.text = "En attente de la selection du conteur..."
+func afficheUiConteur():
+	isChoisingTheme = true
 	
-	hboxConteur.visible = isConteur
-	self.visible = isConteur
-	
-func afficheChoixConteur():
 	self.visible = true
+	hboxConteur.visible = true
+	labelIndicator.text = "Choisissez le thème..."
+	
+func attendreChoixConteur():
+	self.visible = true
+	hboxConteur.visible = false
+	labelIndicator.text = "En attente de la selection du conteur..."
 
 func attendreSelections():
 	self.visible = true
 	hboxConteur.visible = false
-	labelIndicator.text = "En attente de la selection des autres joueurs"
+	labelIndicator.text = "En attente de la selection des autres joueurs..."
 	
 func attendreVotes():
 	self.visible = true
 	hboxConteur.visible = false
-	labelIndicator.text = "En attente de tous les votes"
+	labelIndicator.text = "En attente de tous les votes..."
 
 func enlever():
 	self.visible = false

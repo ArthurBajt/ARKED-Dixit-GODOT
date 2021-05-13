@@ -125,6 +125,7 @@ func changeConteur():
 
 func setTheme(themezer):
 	self.theme = themezer
+	Network.verifEtat(Globals.EtatJoueur.ATTENTE_SELECTIONS)
 	
 func getTheme():
 	return self.theme
