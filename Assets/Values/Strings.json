@@ -24,8 +24,10 @@
   "errPseudo": "Ce pseudo n'est pas valide !",
   "panelJouerCreer": "Creer une partie.\nEt laisser vos amis la rejoindre.",
   "panelJouerRejoindre": "Rejoingnez une partie déjà existante.",
+  "panelJouerHost": "Hébergez une partie, et rassemblez vos amis\nautour d'un support. ",
   "buttonCreer": "Créer une partie",
   "buttonRejoindre": "Rejoindre une partie en local",
+  "buttonHost":"Héberger",
 
   "lobbyPasPret": "Pas prêt",
   "lobbyPret": "Prêt",

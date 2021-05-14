@@ -6,6 +6,7 @@ onready var errPseudo = $VBoxContainer/LabelErrpseudo
 
 func _ready():
 	self.initUi()
+	self.visible = false
 
 
 func initUi():
@@ -21,6 +22,9 @@ func initUi():
 	$VBoxContainer/HBoxLancer/VBoxRejoindre/LabelRejoindre.text = R.getString("panelJouerRejoindre")
 	$VBoxContainer/HBoxLancer/VBoxRejoindre/ButtonRejoindre.text = R.getString("buttonRejoindre")
 	
+	$VBoxContainer/HBoxLancer/VBoxHost/LabelHost.text = R.getString("panelJouerHost")
+	$VBoxContainer/HBoxLancer/VBoxHost/ButtonHost.text = R.getString("buttonHost")
+	
 	$VBoxContainer/HBoxLancer/VBoxCreer/ButtonCreer.disabled = true
 	$VBoxContainer/HBoxLancer/VBoxRejoindre/ButtonRejoindre.disabled = true
 
@@ -30,10 +34,12 @@ func verifPseudo()->bool:
 	
 	if not res:
 		self.errPseudo.text = R.getString("errPseudo")
+		self.editPseudo.modulate = Color.orange
 	
 	else:
 		self.errPseudo.text = ""
-	
+		self.editPseudo.modulate = Color.white
+
 	$VBoxContainer/HBoxLancer/VBoxCreer/ButtonCreer.disabled = not res
 	$VBoxContainer/HBoxLancer/VBoxRejoindre/ButtonRejoindre.disabled = not res
 	
@@ -61,6 +67,12 @@ func _on_ButtonRejoindre_pressed():
 
 func _on_EditPseudo_text_changed():
 	self.verifPseudo()
+
+
+func _on_ButtonHost_pressed():
+#	TODO : call à la fonction qui creer un serveur, puis transition vers le Lobby
+#	Transition.transitionVers("res://Scenes/Lobby/Lobby.tscn")
+	pass # Replace with function body.
 
 
 func _on_ButtonFermer_pressed():
