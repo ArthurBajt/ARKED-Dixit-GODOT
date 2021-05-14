@@ -91,8 +91,13 @@ func _input(event):
 				CAM_MID.current = false
 				self.myCam.current = true
 
-#func _process(delta):
-#	if(estLocal()):
+func _process(delta):
+	if(estLocal()):
+
+		print("----i----")
+		print("moi c'est ", id)
+		print("Mon etat est : ", self.etat)
+		print("Mon etat network est : ", Network.utilisateurs[id].etat)
 #		if(self.etat == Globals.EtatJoueur.SELECTION_CARTE_THEME):
 #			self.uiConteur.enlever()
 #		if(self.etat == Globals.EtatJoueur.CHOIX_THEME):
@@ -110,7 +115,9 @@ func _input(event):
 #			self.uiConteur.attendreVotes()
 #		if(self.etat == Globals.EtatJoueur.VOIR_RESULTAT):
 #			self.uiConteur.enlever()
-		
+#
+#		yield(get_tree().create_timer(8.0), "timeout")
+
 func piocheCarte(nomCarte: String):
 	var instanceCarte = NODE_CARTE.instance()
 	mainRoot.add_child(instanceCarte)
