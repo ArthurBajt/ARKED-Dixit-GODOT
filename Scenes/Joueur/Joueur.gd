@@ -93,6 +93,14 @@ func _input(event):
 
 #func _process(delta):
 #	if(estLocal()):
+#
+#		print("----i----")
+#		print("moi c'est ", id)
+#		print("Mon etat est : ", self.etat)
+#		print("Mon etat network est : ", Network.utilisateurs[id].etat)
+
+
+		
 #		if(self.etat == Globals.EtatJoueur.SELECTION_CARTE_THEME):
 #			self.uiConteur.enlever()
 #		if(self.etat == Globals.EtatJoueur.CHOIX_THEME):
@@ -130,6 +138,14 @@ func localPoseCarte(carte):
 	Network.posercarte(self.id, carte.nom)
 	carte.disconnect("carteCliquee", self, "localPoseCarte")
 	carte.peutEtreHover = false
+	
+	if(!self.estConteur):
+		self.uiConteur.enlever()
+		self.etat = Globals.EtatJoueur.ATTENTE_SELECTIONS
+	else:
+		self.uiConteur.afficheUiConteur()
+		self.etat= Globals.EtatJoueur.CHOIX_THEME
+	Network.verifEtat(Globals.EtatJoueur.ATTENTE_SELECTIONS)
 
 #================
 #	getters et trucs utiles toi même tu sais
@@ -201,14 +217,20 @@ func peuxVoter():
 		if(estLocal()):
 			self.uiConteur.attendreVotes()
 	else:
+		
+		
 		self.etat = Globals.EtatJoueur.VOTE
 		if(estLocal()):
+			
+			print("pouet")
+			
 			self.uiConteur.enlever()
 	if(estLocal()):
 		self.myCam.current = false
 		CAM_MID.current = true
 	Network.verifEtat(Globals.EtatJoueur.ATTENTE_VOTES)
 	
+
 func aVote(idJoueur):
 	if(idJoueur == self.id):
 		self.etat = Globals.EtatJoueur.ATTENTE_VOTES

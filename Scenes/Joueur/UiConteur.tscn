@@ -51,4 +51,5 @@ margin_right = 907.0
 margin_bottom = 30.0
 rect_min_size = Vector2( 30, 30 )
 text = "OK"
+
 [connection signal="pressed" from="VBoxContainer/HBoxContainer/OkButton" to="." method="_on_OkButton_pressed"]

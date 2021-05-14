@@ -182,7 +182,7 @@ remotesync func _partie_appliqueChargee(idJoueur: int):
 func _sontJoueursDansPartie()->bool:
 	print(utilisateurs.size())
 	for usId in utilisateurs:
-		print(usId)
+
 		if not utilisateurs[usId].estDansPartie:
 			return false
 	return true
@@ -196,7 +196,8 @@ remotesync func joueurVoteCarte(carte,idJoueur):
 	if(idJoueur == self.id):
 		self.data.cartesVotee[idJoueur] = carte
 	
-	self.utilisateurs[idJoueur].cartesVotee[idJoueur] = carte
+#	self.utilisateurs[idJoueur].cartesVotee[idJoueur] = carte
+
 	self.utilisateurs[idJoueur].etat = Globals.EtatJoueur.ATTENTE_VOTES
 	emit_signal("carteVotee", idJoueur)
 # =================================================
@@ -289,20 +290,27 @@ func verifEtat(etat):
 signal vote
 signal voirRes
 remotesync func verifEtats(etat):
+	
+
+	
 	var nbJoueur = utilisateurs.size()
 	var compteur = 0
 	for usId in self.utilisateurs:
 		if (self.utilisateurs[usId].etat==etat):
+		
 			compteur+=1
+			
 	
 	if (compteur == nbJoueur):
 		if(etat==Globals.EtatJoueur.ATTENTE_SELECTIONS):
 			for user in self.utilisateurs:
+				print("user  : ", user)
 				if self.utilisateurs[user].estConteur:
 					self.utilisateurs[user].etat=Globals.EtatJoueur.ATTENTE_VOTES
 				else:
 					self.utilisateurs[user].etat=Globals.EtatJoueur.VOTE
 				emit_signal("vote")
+
 					
 				print("V1 Etat de %s [%s]: %s" % [utilisateurs[user].nom, user,utilisateurs[user].etat])
 		
@@ -312,8 +320,8 @@ remotesync func verifEtats(etat):
 				emit_signal("voirRes")
 			self.afficheVoteurs()
 
-	for usId in self.utilisateurs:
-		print("V2 Etat de %s [%s]: %s" % [utilisateurs[usId].nom, usId,utilisateurs[usId].etat])
+#	for usId in self.utilisateurs:
+#		print("V2 Etat de %s [%s]: %s" % [utilisateurs[usId].nom, usId,utilisateurs[usId].etat])
 
 func couleurJoueurLocal(idJoueur):
 	print("c'est mon id", idJoueur)
