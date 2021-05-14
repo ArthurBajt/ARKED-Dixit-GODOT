@@ -6,7 +6,7 @@
 [ext_resource path="res://Assets/Set/PictureFrame/PictureFrame.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Assets/Sprites/BGs/chevalier_loris.jpg" type="Image" id=5]
 [ext_resource path="res://Assets/Sprites/BGs/chevalier_léo.jpg" type="Image" id=6]
-[ext_resource path="res://Scenes/Partie/Mesh/fireplace_1k.hdr" type="Texture" id=7]
+[ext_resource path="res://Assets/Hdri/fireplace_1k.hdr" type="Texture" id=7]
 [ext_resource path="res://Assets/Set/Flag/Flag.tscn" type="PackedScene" id=8]
 
 [sub_resource type="PanoramaSky" id=1]
@@ -25,18 +25,18 @@ musiquePath = "res://Assets/Songs/pippin-the-hunchback-kevin-macleod.ogg"
 [node name="Mesh" type="Spatial" parent="Scene"]
 
 [node name="ChevalierLoris" parent="Scene/Mesh" instance=ExtResource( 4 )]
-transform = Transform( 2.5, 0, 0, 0, 2.5, 0, 0, 0, 2.5, 0, 1, -7.49906 )
+transform = Transform( 2.5, 0, 0, 0, 2.5, 0, 0, 0, 2.5, 0, 1.22953, -5.9999 )
 image = ExtResource( 5 )
 
 [node name="ChevalierLeo" parent="Scene/Mesh" instance=ExtResource( 4 )]
-transform = Transform( -2.5, 0, -3.77489e-07, 0, 2.5, 0, 3.77489e-07, 0, -2.5, 0, 2.63108, 7.49204 )
+transform = Transform( -2.5, 0, -3.77489e-07, 0, 2.5, 0, 3.77489e-07, 0, -2.5, 0, 2.78379, 5.99301 )
 image = ExtResource( 6 )
 
 [node name="Flag" parent="Scene/Mesh" instance=ExtResource( 8 )]
-transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 1.45702, 3.33916, 7.48908 )
+transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 1.45702, 3.33916, 5.98526 )
 
 [node name="Flag2" parent="Scene/Mesh" instance=ExtResource( 8 )]
-transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -1.71899, 3.33916, 7.48908 )
+transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -1.71899, 3.33916, 5.98526 )
 
 [node name="Mesh_Partie" parent="Scene/Mesh" instance=ExtResource( 3 )]
 
