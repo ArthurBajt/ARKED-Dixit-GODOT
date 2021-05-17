@@ -82,16 +82,16 @@ func _lobby_se_declarer():
 func _retour_menu():
 	Transition.transitionVers("res://Scenes/MenuPrincipal/MenuPrincipal.tscn")
 
+signal decoJoueur(id)
 func _deconnexion_client(id):
-	pass
+	
+	utilisateurs.erase(id)
+	emit_signal("decoJoueur", id)
 	
 func _deconnexion_server():
 	erreur_connexion = R.getString("networkErrHoteQuitte")
 	print(erreur_connexion)
-#	for usId in utilisateurs:
-#		print(usId)
-#		if usId != 1:
-#			get_tree().peer.disconnect_peer(usId)
+
 	
 	get_tree().set_network_peer(null)
 

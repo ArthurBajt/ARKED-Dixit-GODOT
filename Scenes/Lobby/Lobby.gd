@@ -15,6 +15,7 @@ func _ready():
 	Network.connect("partieLancee", self, "_versPartie")
 	Network.connect("nvUtilisateur", self, "joueurCo")
 	Network.connect("nvStatuUtilisateur", self, "joueurNvStatut")
+	Network.connect("decoJoueur", self, "decoJoueur")
 	buttonLancer.visible = Network.id == 1
 	
 	$Control/HBoxContainer/LayoutJoueur/LabelListe.text = R.getString("lobbyListe")
@@ -38,6 +39,10 @@ func joueurCo(idJoueur):
 		instance.setPret( Network.utilisateurs[idJoueur].estPret )
 	self.majPeutLancer()
 
+func decoJoueur(idJoueur):
+	if idJoueur in self.joueurs.keys():
+		self.layoutJoueur.remove_child(self.joueurs[idJoueur])
+		self.joueurs.erase(idJoueur)
 
 func joueurNvStatut(idJoueur, statut):
 	if idJoueur in self.joueurs.keys():
