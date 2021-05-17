@@ -62,3 +62,15 @@ func setFov( val: float ):
 	if newFov != fov:
 		fov = newFov
 		emit_signal("fovChanged", fov)
+
+#======================
+#	Message d'erreurs
+
+onready var ERR_MESSAGE_NODE = preload("res://Scenes/ErrMessage/ErrMessage.tscn")
+
+func afficheErreur(erreur: String):
+	var errNode = self.ERR_MESSAGE_NODE.instance()
+	get_parent().call_deferred("add_child", errNode)
+	yield(get_tree(), "idle_frame")
+	errNode.setMessage(erreur)
+	get_parent().move_child( errNode, get_parent().get_child_count() )
