@@ -12,6 +12,7 @@ func _ready():
 	
 	if Network.erreur_connexion != null:
 		Globals.afficheErreur(Network.erreur_connexion)
+		Network.erreur_connexion = null
 
 func _physics_process(delta):
 	self.camRoot.rotation.y += self.vitesseRotation * delta
