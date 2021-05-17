@@ -11,11 +11,6 @@ onready var mainRoot = $CameraPos/MainRoot
 onready var cameraPos: Spatial = $CameraPos
 
 
-
-
-
-
-
 onready var CAM_MID = get_node("/root/Partie/Scene/Camera")
 const NODE_CAM = preload("res://Scenes/Joueur/CameraJoueur.tscn")
 const NODE_UI = preload("res://Scenes/Joueur/UiJoueur.tscn")

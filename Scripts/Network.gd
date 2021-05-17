@@ -40,6 +40,7 @@ func rejoindreServeur(player_name):
 var utilisateurs: Dictionary
 var data: Dictionary
 const dataStruct = {nom = "",
+					estPlateau = false,
 					estPret = false,
 					estDansPartie = false,
 					main = [],
@@ -48,7 +49,7 @@ const dataStruct = {nom = "",
 					estConteur = false,
 					couleur = Color.black
 					}
-
+var VuPlateau
 
 signal nvUtilisateur(idUtilisateur)
 signal nvStatuUtilisateur(idUtilisateur, statu)
@@ -63,15 +64,18 @@ func _lobby_se_declarer():
 	
 	if get_tree().is_network_server():
 		id = 1
-	
+		dataStruct.estPlateau = true
+		dataStruct.estPret = true
+		VuPlateau = dataStruct
 	else:
 		id = get_tree().get_network_unique_id()
 	
-	self.data = dataStruct.duplicate()
-	self.data.nom = self.nom
-	
-	utilisateurs[id] = dataStruct.duplicate()
-	utilisateurs[id].nom = self.nom
+	if dataStruct.estPlateau == false:
+		self.data = dataStruct.duplicate()
+		self.data.nom = self.nom
+		
+		utilisateurs[id] = dataStruct.duplicate()
+		utilisateurs[id].nom = self.nom
 	
 	if id > 1 :
 		rpc_id(1, "_lobby_declareUtilisateur", id, self.data)

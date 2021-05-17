@@ -4,6 +4,7 @@ extends Node
 onready var nodeJoueurs = $Scene/Joueurs
 var joueurs: Array = []
 const JOUEUR_INSTANCE = preload("res://Scenes/Joueur/Joueur.tscn")
+const VU_PLATEAU = preload("res://Scenes/VuPlateauCentrale/VuPlateau.tscn")
 const JOUEUR_POSITION: Vector3 = Vector3(0, 0, -8)
 
 onready var plateau = $Scene/Plateau
@@ -36,6 +37,9 @@ func _instancierJoueurs():
 		joueurs.append(j)
 	
 	joueurs.sort_custom(TrieJoueurs, "sort")
+	
+	var vuPlat = VU_PLATEAU.instance()
+	vuPlat.init(1,plateau)
 	
 
 func _placerJoueurs():
