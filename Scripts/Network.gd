@@ -40,7 +40,7 @@ const dataStruct = {nom = "",
 					estDansPartie = false,
 					main = [],
 					cartesPlateau = {},
-					cartesVotees = {},
+					carteVotee = null,
 					points = 0,
 					estConteur = false,
 					couleur = Color.black
@@ -188,18 +188,19 @@ func _sontJoueursDansPartie()->bool:
 	return true
 
 func voteCarte(carte, idJoueur):
-	rpc("joueurVoteCarte", carte, idJoueur)
+	rpc("joueurVoteCarte", carte.nom, idJoueur)
 
-signal carteVotee(idJoueur)
+signal carteVotee(nomCarte, idJoueur)
 
-remotesync func joueurVoteCarte(carte,idJoueur):
+remotesync func joueurVoteCarte(nomCarte,idJoueur):
+	print(nomCarte, " a été votée")
 	if(idJoueur == self.id):
-		self.data.cartesVotee[idJoueur] = carte
+		self.data.carteVotee = nomCarte
 	
-#	self.utilisateurs[idJoueur].cartesVotee[idJoueur] = carte
+	self.utilisateurs[idJoueur].carteVotee = nomCarte
 
 	self.utilisateurs[idJoueur].etat = Globals.EtatJoueur.ATTENTE_VOTES
-	emit_signal("carteVotee", idJoueur)
+	emit_signal("carteVotee", nomCarte, idJoueur)
 # =================================================
 # Cartes
 
@@ -317,7 +318,7 @@ remotesync func verifEtats(etat):
 		elif(etat==Globals.EtatJoueur.ATTENTE_VOTES):
 			for user in self.utilisateurs:
 				self.utilisateurs[user].etat = Globals.EtatJoueur.VOIR_RESULTAT
-				emit_signal("voirRes")
+			emit_signal("voirRes")
 			self.afficheVoteurs()
 
 #	for usId in self.utilisateurs:
@@ -332,17 +333,19 @@ func couleurJoueurLocal(idJoueur):
 			return utilisateurs[usId].couleur
 
 func afficheVoteurs():
-	var cartes = []
+	var nomCartes = []
 	for user in self.utilisateurs:
-		if(not(self.utilisateurs[id].cartesVotee[user] in cartes)):
-			cartes += [self.utilisateurs[id].cartesVotee[user]]
-	for c in cartes:
-		self.getVoteurs(c)
+		if(!self.utilisateurs[user].estConteur):
+			if(not(self.utilisateurs[user].carteVotee in nomCartes)):
+				nomCartes += [self.utilisateurs[id].carteVotee]
+	for c in nomCartes:
+		rpc("getVoteurs",c)
 
-signal giveVoteurs(carte, joueurs)
-remotesync func getVoteurs(carte):
+signal giveVoteurs(nomCarte, joueurs)
+remotesync func getVoteurs(nomCarte):
+	print(nomCarte)
 	var joueurs = []
 	for user in self.utilisateurs:
-		if(self.utilisateurs[self.id].cartesVotee[user] == carte):
+		if(self.utilisateurs[user].carteVotee == nomCarte):
 			joueurs += [user]
-	emit_signal("giveVoteurs",carte,joueurs)
+	emit_signal("giveVoteurs",nomCarte,joueurs)

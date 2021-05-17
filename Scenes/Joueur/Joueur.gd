@@ -6,6 +6,7 @@ var estLocal: bool = false
 
 var plateau
 var main: Array
+var carteVotee: Carte
 onready var mainRoot = $CameraPos/MainRoot
 
 onready var cameraPos: Spatial = $CameraPos
@@ -135,16 +136,17 @@ func piocheCarte(nomCarte: String):
 
 
 func localPoseCarte(carte):
-	Network.posercarte(self.id, carte.nom)
-	carte.disconnect("carteCliquee", self, "localPoseCarte")
-	carte.peutEtreHover = false
 	
 	if(!self.estConteur):
-		self.uiConteur.enlever()
+		self.uiConteur.attendreSelections()
 		self.etat = Globals.EtatJoueur.ATTENTE_SELECTIONS
 	else:
 		self.uiConteur.afficheUiConteur()
 		self.etat= Globals.EtatJoueur.CHOIX_THEME
+		
+	Network.posercarte(self.id, carte.nom)
+	carte.disconnect("carteCliquee", self, "localPoseCarte")
+	carte.peutEtreHover = false
 	Network.verifEtat(Globals.EtatJoueur.ATTENTE_SELECTIONS)
 
 #================
@@ -201,13 +203,9 @@ func carteSelectectionnee(idJoueur):
 		if(self.estConteur):
 			# On lui demande le choix du theme
 			self.etat = Globals.EtatJoueur.CHOIX_THEME
-			if(self.estLocal()):
-				self.uiConteur.afficheUiConteur()
 		else:
 			# Sinon il attends le conteur
 			self.etat = Globals.EtatJoueur.ATTENTE_SELECTIONS
-			if(self.estLocal()):
-				self.uiConteur.attendreSelections()
 		Network.verifEtat(Globals.EtatJoueur.ATTENTE_SELECTIONS)
 
 func peuxVoter():
@@ -231,8 +229,10 @@ func peuxVoter():
 	Network.verifEtat(Globals.EtatJoueur.ATTENTE_VOTES)
 	
 
-func aVote(idJoueur):
+func aVote(nomCarte, idJoueur):
+	print(idJoueur, " : ", self.id)
 	if(idJoueur == self.id):
+		self.carteVotee = nomCarte
 		self.etat = Globals.EtatJoueur.ATTENTE_VOTES
 		if(self.estLocal()):
 			self.uiConteur.attendreVotes()

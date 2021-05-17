@@ -20,6 +20,7 @@ var hover: bool = false
 
 var estDansMain: bool = false
 var estSurPlateau: bool  = false
+var cache: bool
 
 var joueurQuiAPose: int
 
@@ -38,8 +39,10 @@ func _process(delta):
 			self.animation.setAnimationCible( "DansMain" )
 	
 	elif self.estSurPlateau:
-		self.animation.setAnimationCible( "Cachee" )
-
+		if self.cache:
+			self.animation.setAnimationCible( "Cachee" )
+		else:
+			self.animation.setAnimationCible( "Decouverte" )
 
 func init(nom, visible: bool = true, estHover: bool= true, positionDepart: Vector3 = Vector3.ZERO, positionCible: Vector3 = Vector3.ZERO):
 	self.nom = nom
@@ -89,4 +92,5 @@ func _on_Area_input_event(camera, event, click_position, click_normal, shape_idx
 				self.joueurQuiAPose = Network.id
 				emit_signal("carteCliquee", self)
 			if(self.estSurPlateau && self.joueurQuiAPose != Network.id):
+				print(self, " a été votée")
 				emit_signal("carteVotee", self, Network.id)

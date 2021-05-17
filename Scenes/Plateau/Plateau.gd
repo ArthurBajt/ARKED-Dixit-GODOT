@@ -20,7 +20,7 @@ var cartes: Array = []
 func _ready():
 	Network.connect("joueurApiocherCarte", self, "_on_joueurApiocherCarte")
 	Network.connect("JoueurPoseCarte", self, "_fairePoserCarte")
-	Network.connect("carteVotee", self, "aVoteCarte")
+	Network.connect("vote", self, "voteMoment")
 	Network.connect("voirRes", self, "voirRes")
 	Network.connect("giveVoteurs",self,"afficheVoteurs")
 
@@ -92,20 +92,27 @@ func ajouteCartePlateau(carte: Carte, transform = null):
 	
 	carte.estDansMain = false
 	carte.estSurPlateau =  true
+	carte.cache = true
 
-func aVoteCarte(idJoueur):
-	if(idJoueur == Network.id):
-		self.getJoueur(idJoueur).aVote()
-		
+func voteMoment():
+	#retourner les cartes
+	print("ILS PEUVENT VOTER NORMALEMENT")
+	yield(get_tree(), "idle_frame")
+	for child in self.cartes:
+		print(child)
+		child.setVisible(true)
+
 func voirRes():
 	for j in self.joueurs:
 		j.voirRes()
 
-func afficheVoteurs(carte,joueurs):
-	var j
-	for jId in joueurs:
-		j = self.getJoueur(jId)
-		j.PionJoueur(0.25,0.25,0.25,carte.transform.position.x,carte.transform.position.y,carte.transform.position.z,0,0,0)
+func afficheVoteurs(nomCarte,votants):
+	for carte in self.cartes:
+		if carte.nom == nomCarte:
+			var j
+			for jId in votants:
+				j = self.getJoueur(jId)
+				j.PionJoueur(0.25,0.25,0.25,carte.transform.origin.x,carte.transform.origin.y,carte.transform.origin.z,0.0,0.0,0.0)
 		
 #================
 #	getters et trucs utiles toi même tu sais
