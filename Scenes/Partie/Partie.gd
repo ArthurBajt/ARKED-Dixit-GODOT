@@ -18,12 +18,16 @@ func _ready():
 	plateau.init(joueurs)
 	
 	Network.partie_setChargee()
+	Network.connect("decoJoueur", self, "decoJoueur")
 
 class TrieJoueurs:
 	# c'est comme les fonctions discrettes en js.
 	# mais en beaucoup moins bien fait
 	static func sort(a, b):
 		return a.id < b.id
+
+
+
 
 func _instancierJoueurs():
 	""" """
@@ -46,6 +50,17 @@ func _placerJoueurs():
 		j.translation = JOUEUR_POSITION.rotated(Vector3.UP, deg2rad( angle ))
 		j.rotation = Vector3(0, deg2rad( angle ), 0)
 		angle += 360 / nbJoueurs
+
+func decoJoueur(idJoueur):
+	for joueur in nodeJoueurs.get_children():
+		if joueur != null:
+			if joueur.getId()==idJoueur:
+				joueur.queue_free()
+				
+	for joueur in joueurs: 
+		if joueur.getId()==idJoueur:
+			joueurs.erase(joueur)
+
 
 func PionJoueur(idJoueur, ScX,ScY,ScZ,PosX, PosY, PosZ, rX, rY, rZ):
 	for joueur in nodeJoueurs.get_children():
