@@ -88,8 +88,17 @@ func _deconnexion_client(id):
 func _deconnexion_server():
 	erreur_connexion = "L'hôte c'est déconnecté"
 	print(erreur_connexion)
-	_retour_menu()
+#	for usId in utilisateurs:
+#		print(usId)
+#		if usId != 1:
+#			get_tree().peer.disconnect_peer(usId)
+	
+	get_tree().set_network_peer(null)
 
+	self.data=self.dataStruct.duplicate()
+	self.utilisateurs={}
+	
+	_retour_menu()
 
 remote func _lobby_declareUtilisateur(idUtilisateur: int, curentData:Dictionary ):
 	""" Quand un utilisateur se déclare,
