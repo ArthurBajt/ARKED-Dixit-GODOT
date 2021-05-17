@@ -86,7 +86,7 @@ func _deconnexion_client(id):
 	pass
 	
 func _deconnexion_server():
-	erreur_connexion = "L'hôte c'est déconnecté"
+	erreur_connexion = R.getString("networkErrHoteQuitte")
 	print(erreur_connexion)
 #	for usId in utilisateurs:
 #		print(usId)
