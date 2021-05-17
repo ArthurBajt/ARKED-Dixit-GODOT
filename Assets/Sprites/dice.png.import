@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/dikhololo_night_2k.hdr-9b8206620d4044dc58b2b90c160005f7.stex"
+path="res://.import/dice.png-a4baf2cd6173bf5bc554bffd38898d11.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Scenes/MenuPrincipal/dikhololo_night_2k.hdr"
-dest_files=[ "res://.import/dikhololo_night_2k.hdr-9b8206620d4044dc58b2b90c160005f7.stex" ]
+source_file="res://Assets/Sprites/dice.png"
+dest_files=[ "res://.import/dice.png-a4baf2cd6173bf5bc554bffd38898d11.stex" ]
 
 [params]
 

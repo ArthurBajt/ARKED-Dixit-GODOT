@@ -6,7 +6,9 @@ const MAX_UTILISATEURS: int = 99
 
 
 var id: int = 0
+var nom = ""
 
+var tabCouleur=[Color.rebeccapurple,Color.orange,Color.maroon,Color.cadetblue,Color.red,Color.green]
 
 
 func _ready():
@@ -16,7 +18,8 @@ func _ready():
 
 func creerServeur(player_name):
 	""" Creer un serveur """
-	dataStruct.nom = player_name
+#	dataStruct.nom = player_name
+	self.nom = player_name
 	var peer = NetworkedMultiplayerENet.new()
 	peer.create_server(DEFAUT_PORT, MAX_UTILISATEURS)
 	get_tree().set_network_peer(peer)
@@ -24,7 +27,8 @@ func creerServeur(player_name):
 	
 func rejoindreServeur(player_name):
 	""" Fait rejoindre un serveur à un utilisateur"""
-	dataStruct.nom = player_name
+#	dataStruct.nom = player_name
+	self.nom = player_name
 	var peer = NetworkedMultiplayerENet.new()
 	peer.create_client(DEFAUT_IP, DEFAUT_PORT)
 	get_tree().set_network_peer(peer)
@@ -64,19 +68,27 @@ func _lobby_se_declarer():
 	
 	else:
 		id = get_tree().get_network_unique_id()
-		rpc_id(1, "_lobby_declareUtilisateur", id)
 	
 	self.data = dataStruct.duplicate()
+	self.data.nom = self.nom
+	
 	utilisateurs[id] = dataStruct.duplicate()
+	utilisateurs[id].nom = self.nom
+	
+	if id > 1 :
+		rpc_id(1, "_lobby_declareUtilisateur", id, self.data)
 
 
-remote func _lobby_declareUtilisateur(idUtilisateur: int):
+remote func _lobby_declareUtilisateur(idUtilisateur: int, curentData:Dictionary ):
 	""" Quand un utilisateur se déclare,
 	le serveur signal a tt les utilisateur déjà présents
 	qu'un nv Utilisateur s'est connecté."""
-	rpc("_lobby_ajouteUtilisateur", idUtilisateur, dataStruct.duplicate())
+	
+#	rpc("_lobby_ajouteUtilisateur", idUtilisateur, dataStruct.duplicate())
+	rpc("_lobby_ajouteUtilisateur", idUtilisateur, curentData.duplicate() )
 	for usId in utilisateurs:
 		rpc_id(idUtilisateur,"_lobby_ajouteUtilisateur", usId, utilisateurs[usId])
+
 
 remotesync func _lobby_ajouteUtilisateur(idUtilisateur: int, curentData: Dictionary = {}):
 	""" Le serveur a declarer l'arrivee d'un nv Utilisateur
@@ -84,10 +96,7 @@ remotesync func _lobby_ajouteUtilisateur(idUtilisateur: int, curentData: Diction
 	Nous somme un client arrivant sur le serveur
 	
 	On met a jour les Utilisateur deja presents et leurs données"""
-	if curentData == {}:
-		utilisateurs[idUtilisateur] = curentData.duplicate()
-	else :
-		utilisateurs[idUtilisateur] = curentData.duplicate()
+	utilisateurs[idUtilisateur] = curentData.duplicate()
 	
 	emit_signal("nvUtilisateur", idUtilisateur)
 
@@ -104,15 +113,15 @@ remotesync func _lobby_declareStatu(idUtilisateur: int, statu: bool):
 	rpc("_lobby_appliquerStatu", idUtilisateur, statu)
 
 
-
 remotesync func _lobby_appliquerStatu(idUtilisateur: int, statu: bool):
 	""" change le statu d'un joueur"""
-	if (not "estPret" in utilisateurs[idUtilisateur]) or (utilisateurs[idUtilisateur].estPret != statu):
-		emit_signal("nvStatuUtilisateur", idUtilisateur, statu)
+#	if (not "estPret" in utilisateurs[idUtilisateur]) or (utilisateurs[idUtilisateur].estPret != statu):
+#		emit_signal("nvStatuUtilisateur", idUtilisateur, statu)
 	
 	utilisateurs[idUtilisateur].estPret = statu
 	if id == idUtilisateur:
 		data.estPret = statu
+	emit_signal("nvStatuUtilisateur", idUtilisateur, statu)
 
 
 func lobby_lancerPartie():
@@ -123,15 +132,23 @@ func lobby_lancerPartie():
 
 remotesync func _lobby_lancePartie():
 	""" Signal a tt les utilisateurs du lobby que la partie commence."""
-	var tabCouleur=[Color.rebeccapurple,Color.cadetblue,Color.red,Color.maroon,Color.green,Color.orange]
-	randomize()
-	tabCouleur.shuffle()
-	for usId in utilisateurs:
-		var couleurTemp=tabCouleur.pop_front()
-
-		utilisateurs[usId].couleur=couleurTemp
-
+	
+	
+	assigneCouleur()
 	emit_signal("partieLancee")
+
+func assigneCouleur():
+
+
+	var i=0
+	var tabTemp=[]
+	for usId in utilisateurs:
+		tabTemp.append(usId)
+	
+	tabTemp.sort()
+	for usId in tabTemp:
+		var couleurTemp=tabCouleur.pop_front()
+		utilisateurs[usId].couleur=couleurTemp
 
 
 func _peutLancerPartie()->bool:
@@ -162,7 +179,7 @@ func partie_setChargee():
 
 remotesync func _partie_declareChargee(idJoeuur: int):
 	""" """
-	print("pouet : ", idJoeuur )
+
 	rpc("_partie_appliqueChargee", idJoeuur)
 
 
@@ -173,14 +190,14 @@ remotesync func _partie_appliqueChargee(idJoueur: int):
 	utilisateurs[idJoueur].estDansPartie = true
 	
 	if id == 1 and _sontJoueursDansPartie():
-		print("--JoueursDansPartie--")
+
 		
 		emit_signal("JoueursDansPartie")
 
 
 
 func _sontJoueursDansPartie()->bool:
-	print(utilisateurs.size())
+
 	for usId in utilisateurs:
 
 		if not utilisateurs[usId].estDansPartie:
@@ -324,12 +341,10 @@ remotesync func verifEtats(etat):
 #	for usId in self.utilisateurs:
 #		print("V2 Etat de %s [%s]: %s" % [utilisateurs[usId].nom, usId,utilisateurs[usId].etat])
 
-func couleurJoueurLocal(idJoueur):
-	print("c'est mon id", idJoueur)
-	for usId in utilisateurs:
-		print("les id joeurs", usId)
-		if usId == idJoueur:
+func couleurJoueur(idJoueur):
 
+	for usId in utilisateurs:
+		if usId == idJoueur:
 			return utilisateurs[usId].couleur
 
 func afficheVoteurs():

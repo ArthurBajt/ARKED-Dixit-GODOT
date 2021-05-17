@@ -15,25 +15,32 @@ radial_segments = 8
 rings = 8
 
 [sub_resource type="CylinderMesh" id=4]
+resource_local_to_scene = true
 top_radius = 0.2
 bottom_radius = 0.2
 
 [sub_resource type="SpatialMaterial" id=5]
+resource_local_to_scene = true
 
 [sub_resource type="SphereMesh" id=6]
+resource_local_to_scene = true
 radius = 0.5
 height = 1.0
 radial_segments = 8
 rings = 5
 
 [sub_resource type="SpatialMaterial" id=7]
+resource_local_to_scene = true
 
 [sub_resource type="SpatialMaterial" id=8]
+resource_local_to_scene = true
 
 [sub_resource type="CapsuleMesh" id=9]
+resource_local_to_scene = true
 material = SubResource( 8 )
 
 [sub_resource type="SpatialMaterial" id=10]
+resource_local_to_scene = true
 
 [node name="Joueur" type="Spatial"]
 script = ExtResource( 1 )

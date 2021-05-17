@@ -13,14 +13,9 @@ onready var cameraPos: Spatial = $CameraPos
 
 
 
-onready var matiereTete=$MeshRoot/Head.get_surface_material(0)
-onready var matiereCorps=$MeshRoot/Body.get_surface_material(0)
-onready var matiereChapeau=$MeshRoot/MeshInstance3.get_surface_material(0)
 
 
-onready var tete=$MeshRoot/Head
-onready var corps=$MeshRoot/Body
-onready var chapeau=$MeshRoot/MeshInstance3
+
 
 onready var CAM_MID = get_node("/root/Partie/Scene/Camera")
 const NODE_CAM = preload("res://Scenes/Joueur/CameraJoueur.tscn")
@@ -35,6 +30,7 @@ var uiConteur
 var uiChat: Chat
 var myCam
 
+
 var etat: int
 	
 func _ready():
@@ -47,18 +43,32 @@ func _ready():
 
 
 
-func init(idJoueur: int, plateauDePartie):
+func init(idJoueur: int, plateauDePartie, couleurJoueur):
 	self.id = idJoueur
-	self.estLocal = Network.id == idJoueur
+	self.estLocal = estLocal()
 	self.plateau = plateauDePartie
 	self.main = []
 	self.estConteur = false
 	self.etat = Globals.EtatJoueur.ATTENTE_CHOIX_THEME
 	self.myCam = null
 
+	var tete=$MeshRoot/Head
+	var corps=$MeshRoot/Body
+	var chapeau=$MeshRoot/MeshInstance3
 	
+	var material = SpatialMaterial.new()
+	material.set_albedo(couleurJoueur)
 	
-	if self.estLocal():
+
+
+	if !estLocal():
+		
+
+		corps.set_material_override(material)
+		tete.set_material_override(material)
+		chapeau.set_material_override(material)
+
+	if estLocal():
 		var cam: Camera = NODE_CAM.instance()
 		cameraPos.add_child(cam)
 		cam.set_current(true)
@@ -70,6 +80,12 @@ func init(idJoueur: int, plateauDePartie):
 		self.uiChat = NODE_CHAT.instance()
 		self.add_child(uiChat)
 		self.myCam = cam
+
+
+		
+		corps.set_material_override(material)
+		tete.set_material_override(material)
+		chapeau.set_material_override(material)
 		
 		self.uiConteur.attendreChoixConteur()
 		
@@ -149,6 +165,7 @@ func localPoseCarte(carte):
 	carte.peutEtreHover = false
 	Network.verifEtat(Globals.EtatJoueur.ATTENTE_SELECTIONS)
 
+
 #================
 #	getters et trucs utiles toi même tu sais
 
@@ -163,6 +180,8 @@ func estLocal()-> bool:
 	""" Renvoie si le joueur est local (aka le joueur que les client est) """
 	return self.id == Network.id
 
+func getId():
+	return self.id
 
 func retireCarte(carte: Carte):
 	if carte in self.main:
@@ -243,18 +262,4 @@ func voirRes():
 	if(estLocal()):
 		self.uiConteur.enlever()
 	# Attribution des points
-
-func PionJoueur(ScX,ScY,ScZ,PosX, PosY, PosZ, rX, rY, rZ):
-	var mesh=$MeshRoot.duplicate()
-	self.add_child(mesh)
-
-
-	mesh.set_scale(Vector3(ScX,ScY,ScZ))
-	mesh.transform.origin.x=PosX
-	mesh.transform.origin.y=PosY
-	mesh.transform.origin.z=PosZ
-	mesh.rotate_x(rX)
-	mesh.rotate_x(rY)
-	mesh.rotate_x(rZ)
-
 

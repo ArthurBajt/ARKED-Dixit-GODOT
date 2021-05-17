@@ -8,15 +8,13 @@
 [sub_resource type="QuadMesh" id=1]
 size = Vector2( 0.68, 1 )
 
-[sub_resource type="SpatialMaterial" id=2]
+[sub_resource type="SpatialMaterial" id=38]
 flags_unshaded = true
-proximity_fade_enable = true
-proximity_fade_distance = 1.0
 
-[sub_resource type="BoxShape" id=3]
+[sub_resource type="BoxShape" id=2]
 extents = Vector3( 0.32, 0.48, 0.02 )
 
-[sub_resource type="Animation" id=4]
+[sub_resource type="Animation" id=3]
 resource_name = "Apparait"
 length = 0.7
 tracks/0/type = "bezier"
@@ -80,7 +78,7 @@ tracks/5/keys = {
 "times": PoolRealArray( 0, 0.7 )
 }
 
-[sub_resource type="Animation" id=5]
+[sub_resource type="Animation" id=4]
 resource_name = "Cachee"
 length = 0.1
 tracks/0/type = "bezier"
@@ -174,7 +172,7 @@ tracks/8/keys = {
 "times": PoolRealArray( 0, 0.1 )
 }
 
-[sub_resource type="Animation" id=6]
+[sub_resource type="Animation" id=5]
 resource_name = "Cachee_Decouverte"
 tracks/0/type = "bezier"
 tracks/0/path = NodePath("Mesh:translation:x")
@@ -267,7 +265,7 @@ tracks/8/keys = {
 "times": PoolRealArray( 0, 1 )
 }
 
-[sub_resource type="Animation" id=7]
+[sub_resource type="Animation" id=6]
 resource_name = "DansMain"
 length = 0.1
 tracks/0/type = "bezier"
@@ -361,7 +359,7 @@ tracks/8/keys = {
 "times": PoolRealArray( 0, 0.1 )
 }
 
-[sub_resource type="Animation" id=8]
+[sub_resource type="Animation" id=7]
 resource_name = "DansMain_Cachee"
 length = 0.5
 tracks/0/type = "bezier"
@@ -455,7 +453,7 @@ tracks/8/keys = {
 "times": PoolRealArray( 0 )
 }
 
-[sub_resource type="Animation" id=9]
+[sub_resource type="Animation" id=8]
 resource_name = "Decouverte"
 length = 0.1
 tracks/0/type = "bezier"
@@ -549,7 +547,7 @@ tracks/8/keys = {
 "times": PoolRealArray( 0, 0.1 )
 }
 
-[sub_resource type="Animation" id=10]
+[sub_resource type="Animation" id=9]
 resource_name = "Decouverte_Disparait"
 tracks/0/type = "bezier"
 tracks/0/path = NodePath("Mesh:translation:x")
@@ -642,7 +640,7 @@ tracks/8/keys = {
 "times": PoolRealArray( 0, 1 )
 }
 
-[sub_resource type="Animation" id=11]
+[sub_resource type="Animation" id=10]
 length = 0.1
 tracks/0/type = "bezier"
 tracks/0/path = NodePath("Mesh:translation:x")
@@ -735,7 +733,7 @@ tracks/8/keys = {
 "times": PoolRealArray( 0, 0.1 )
 }
 
-[sub_resource type="Animation" id=12]
+[sub_resource type="Animation" id=11]
 resource_name = "NonExistante"
 length = 0.1
 tracks/0/type = "bezier"
@@ -829,7 +827,7 @@ tracks/8/keys = {
 "times": PoolRealArray( 0, 0.1 )
 }
 
-[sub_resource type="Animation" id=13]
+[sub_resource type="Animation" id=12]
 length = 0.2
 tracks/0/type = "bezier"
 tracks/0/path = NodePath("Mesh:translation:x")
@@ -922,7 +920,7 @@ tracks/8/keys = {
 "times": PoolRealArray( 0, 0.5 )
 }
 
-[sub_resource type="Animation" id=14]
+[sub_resource type="Animation" id=13]
 length = 0.5
 tracks/0/type = "bezier"
 tracks/0/path = NodePath("Mesh:translation:x")
@@ -1015,38 +1013,41 @@ tracks/8/keys = {
 "times": PoolRealArray( 0, 0.5 )
 }
 
-[sub_resource type="AnimationNodeAnimation" id=15]
+[sub_resource type="AnimationNodeAnimation" id=14]
 animation = "Apparait"
 
-[sub_resource type="AnimationNodeAnimation" id=16]
+[sub_resource type="AnimationNodeAnimation" id=15]
 animation = "Cachee"
 
-[sub_resource type="AnimationNodeAnimation" id=17]
+[sub_resource type="AnimationNodeAnimation" id=16]
 animation = "Cachee_Decouverte"
 
-[sub_resource type="AnimationNodeAnimation" id=18]
+[sub_resource type="AnimationNodeAnimation" id=17]
 animation = "DansMain"
 
-[sub_resource type="AnimationNodeAnimation" id=19]
+[sub_resource type="AnimationNodeAnimation" id=18]
 animation = "DansMain_Cachee"
 
-[sub_resource type="AnimationNodeAnimation" id=20]
+[sub_resource type="AnimationNodeAnimation" id=19]
 animation = "Decouverte"
 
-[sub_resource type="AnimationNodeAnimation" id=21]
+[sub_resource type="AnimationNodeAnimation" id=20]
 animation = "Decouverte_Disparait"
 
-[sub_resource type="AnimationNodeAnimation" id=22]
+[sub_resource type="AnimationNodeAnimation" id=21]
 animation = "Hoover"
 
-[sub_resource type="AnimationNodeAnimation" id=23]
+[sub_resource type="AnimationNodeAnimation" id=22]
 animation = "NonExistante"
 
-[sub_resource type="AnimationNodeAnimation" id=24]
+[sub_resource type="AnimationNodeAnimation" id=23]
 animation = "RetourHoover"
 
-[sub_resource type="AnimationNodeAnimation" id=25]
+[sub_resource type="AnimationNodeAnimation" id=24]
 animation = "VersHoover"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=25]
+switch_mode = 2
 
 [sub_resource type="AnimationNodeStateMachineTransition" id=26]
 switch_mode = 2
@@ -1078,36 +1079,33 @@ switch_mode = 2
 [sub_resource type="AnimationNodeStateMachineTransition" id=35]
 switch_mode = 2
 
-[sub_resource type="AnimationNodeStateMachineTransition" id=36]
-switch_mode = 2
-
-[sub_resource type="AnimationNodeStateMachine" id=37]
-states/Apparait/node = SubResource( 15 )
+[sub_resource type="AnimationNodeStateMachine" id=36]
+states/Apparait/node = SubResource( 14 )
 states/Apparait/position = Vector2( 66, 57 )
-states/Cachee/node = SubResource( 16 )
+states/Cachee/node = SubResource( 15 )
 states/Cachee/position = Vector2( 940, 57 )
-states/Cachee_Decouverte/node = SubResource( 17 )
+states/Cachee_Decouverte/node = SubResource( 16 )
 states/Cachee_Decouverte/position = Vector2( 1210, 57 )
-states/DansMain/node = SubResource( 18 )
+states/DansMain/node = SubResource( 17 )
 states/DansMain/position = Vector2( 316, 57 )
-states/DansMain_Cachee/node = SubResource( 19 )
+states/DansMain_Cachee/node = SubResource( 18 )
 states/DansMain_Cachee/position = Vector2( 676, 57 )
-states/Decouverte/node = SubResource( 20 )
+states/Decouverte/node = SubResource( 19 )
 states/Decouverte/position = Vector2( 1467, 57 )
-states/Decouverte_Disparait/node = SubResource( 21 )
+states/Decouverte_Disparait/node = SubResource( 20 )
 states/Decouverte_Disparait/position = Vector2( 1740, 57 )
-states/Hoover/node = SubResource( 22 )
+states/Hoover/node = SubResource( 21 )
 states/Hoover/position = Vector2( 316, 261 )
-states/NonExistante/node = SubResource( 23 )
+states/NonExistante/node = SubResource( 22 )
 states/NonExistante/position = Vector2( -171, 57 )
-states/RetourHoover/node = SubResource( 24 )
+states/RetourHoover/node = SubResource( 23 )
 states/RetourHoover/position = Vector2( 436, 141 )
-states/VersHoover/node = SubResource( 25 )
+states/VersHoover/node = SubResource( 24 )
 states/VersHoover/position = Vector2( 212, 141 )
-transitions = [ "Apparait", "DansMain", SubResource( 26 ), "DansMain", "VersHoover", SubResource( 27 ), "VersHoover", "Hoover", SubResource( 28 ), "Hoover", "RetourHoover", SubResource( 29 ), "RetourHoover", "DansMain", SubResource( 30 ), "DansMain", "DansMain_Cachee", SubResource( 31 ), "DansMain_Cachee", "Cachee", SubResource( 32 ), "Cachee", "Cachee_Decouverte", SubResource( 33 ), "Cachee_Decouverte", "Decouverte", SubResource( 34 ), "Decouverte", "Decouverte_Disparait", SubResource( 35 ), "NonExistante", "Apparait", SubResource( 36 ) ]
+transitions = [ "Apparait", "DansMain", SubResource( 25 ), "DansMain", "VersHoover", SubResource( 26 ), "VersHoover", "Hoover", SubResource( 27 ), "Hoover", "RetourHoover", SubResource( 28 ), "RetourHoover", "DansMain", SubResource( 29 ), "DansMain", "DansMain_Cachee", SubResource( 30 ), "DansMain_Cachee", "Cachee", SubResource( 31 ), "Cachee", "Cachee_Decouverte", SubResource( 32 ), "Cachee_Decouverte", "Decouverte", SubResource( 33 ), "Decouverte", "Decouverte_Disparait", SubResource( 34 ), "NonExistante", "Apparait", SubResource( 35 ) ]
 graph_offset = Vector2( 41.4066, -1 )
 
-[sub_resource type="AnimationNodeStateMachinePlayback" id=38]
+[sub_resource type="AnimationNodeStateMachinePlayback" id=37]
 
 [node name="Carte" type="Spatial"]
 transform = Transform( 0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, 0, 0, 0 )
@@ -1123,31 +1121,31 @@ material/0 = ExtResource( 3 )
 [node name="CarteVerso" type="MeshInstance" parent="Mesh"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00316722, 0, 0.0016949 )
 mesh = SubResource( 1 )
-material/0 = SubResource( 2 )
+material/0 = SubResource( 38 )
 
 [node name="Area" type="Area" parent="Mesh"]
 
 [node name="CollisionShape" type="CollisionShape" parent="Mesh/Area"]
-shape = SubResource( 3 )
+shape = SubResource( 2 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-anims/Apparait = SubResource( 4 )
-anims/Cachee = SubResource( 5 )
-anims/Cachee_Decouverte = SubResource( 6 )
-anims/DansMain = SubResource( 7 )
-anims/DansMain_Cachee = SubResource( 8 )
-anims/Decouverte = SubResource( 9 )
-anims/Decouverte_Disparait = SubResource( 10 )
-anims/Hoover = SubResource( 11 )
-anims/NonExistante = SubResource( 12 )
-anims/RetourHoover = SubResource( 13 )
-anims/VersHoover = SubResource( 14 )
+anims/Apparait = SubResource( 3 )
+anims/Cachee = SubResource( 4 )
+anims/Cachee_Decouverte = SubResource( 5 )
+anims/DansMain = SubResource( 6 )
+anims/DansMain_Cachee = SubResource( 7 )
+anims/Decouverte = SubResource( 8 )
+anims/Decouverte_Disparait = SubResource( 9 )
+anims/Hoover = SubResource( 10 )
+anims/NonExistante = SubResource( 11 )
+anims/RetourHoover = SubResource( 12 )
+anims/VersHoover = SubResource( 13 )
 
 [node name="AnimationTree" type="AnimationTree" parent="."]
-tree_root = SubResource( 37 )
+tree_root = SubResource( 36 )
 anim_player = NodePath("../AnimationPlayer")
 active = true
-parameters/playback = SubResource( 38 )
+parameters/playback = SubResource( 37 )
 script = ExtResource( 4 )
 [connection signal="input_event" from="Mesh/Area" to="." method="_on_Area_input_event"]
 [connection signal="mouse_entered" from="Mesh/Area" to="." method="_on_Area_mouse_entered"]

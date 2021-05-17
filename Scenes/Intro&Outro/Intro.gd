@@ -13,5 +13,5 @@ func _input(event):
 		self.skip()
 
 func skip(_value=null):
-	$AnimationPlayer.disconnect("animation_finished", self, "skip")
+#	$AnimationPlayer.disconnect("animation_finished", self, "skip")
 	Transition.transitionVers("res://Scenes/MenuPrincipal/MenuPrincipal.tscn")

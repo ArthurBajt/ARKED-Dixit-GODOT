@@ -5,7 +5,7 @@
   "copyright": "Illustrations tirées du jeu Dixit Origins. Un jeu de Jean-Louis Roubira, illustré par Clément Lefèvre et édité par Libellud©",
 
   "introDisclamer": "Ce jeu est une preuve de concept pour un projet universitaire.\nIl n'est pas destiné à être distribué.",
-  
+
   "outroMessage": "Merci d'avoir jouer.",
 
   "btnJouer": "Jouer",
@@ -15,9 +15,25 @@
   "optionsTitre":"Options",
   "optionsMusique":"Musique",
   "optionsSfx":"SFX",
+  "optionTailleEcrand": "Taille de l'ecrand :",
+  "optionTailleEcrandPetit": "Petit",
+  "optionTailleEcrandGrand": "Grand",
 
+  "panelJouer": "Jouer",
+  "panelJouerPseudo": "Pseudo :",
+  "errPseudo": "Ce pseudo n'est pas valide !",
+  "panelJouerCreer": "Creer une partie.\nEt laisser vos amis la rejoindre.",
+  "panelJouerRejoindre": "Rejoingnez une partie déjà existante.",
   "buttonCreer": "Créer une partie",
   "buttonRejoindre": "Rejoindre une partie en local",
+
+  "lobbyPasPret": "Pas prêt",
+  "lobbyPret": "Prêt",
+
+  "lobbyListe": "Liste de Joueurs :",
+  "lobbylancer": "Lancer",
+  "lobbyAttendre": "En Attente",
+
 
   "labelNom": "Je suis le joueur : %s .",
   "labelPoints": "Et j'ai %s point(s).",
