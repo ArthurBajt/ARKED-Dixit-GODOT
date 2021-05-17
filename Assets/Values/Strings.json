@@ -27,6 +27,7 @@
   "panelJouerHost": "Hébergez une partie, et rassemblez vos amis\nautour d'un support. ",
   "buttonCreer": "Créer une partie",
   "buttonRejoindre": "Rejoindre une partie en local",
+  "errIp":"Adresse Invalide !",
   "buttonHost":"Héberger",
 
   "lobbyPasPret": "Pas prêt",

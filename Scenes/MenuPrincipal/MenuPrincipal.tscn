@@ -131,10 +131,10 @@ __meta__ = {
 }
 
 [node name="PanelJouer" parent="Ui" instance=ExtResource( 8 )]
-margin_left = 345.068
-margin_top = 178.191
-margin_right = 1222.07
-margin_bottom = 671.191
+margin_left = 377.595
+margin_top = 130.108
+margin_right = 1254.59
+margin_bottom = 670.108
 
 [connection signal="pressed" from="Ui/BtnJouer" to="." method="_on_BtnJouer_pressed"]
 [connection signal="pressed" from="Ui/BtnOptions" to="." method="_on_BtnOptions_pressed"]
