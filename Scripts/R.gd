@@ -52,28 +52,13 @@ func getString(key: String)-> String:
 #	R.cartes
 
 func _loadCartes():
-	""" Initialise le dict des carte
-	en fonction de ce qui est contenus dans :  [PATH_TO_CARDS] """
-	
-	var reg:RegEx = RegEx.new()
-	reg.compile('.jpeg$')
-	
-	var dir = Directory.new()
-	assert(dir.open(PATH_TO_CARDS) == OK , "err - _loadCartes()")
-	
-	dir.list_dir_begin()
-	var file = dir.get_next()
-	while file != "":
-		if not  dir.current_is_dir():
-			if reg.search(file):
-				# pour puvoir exporter le jeu, c'est mieux d'utiliser un stream
-				var streamTexture = load(PATH_TO_CARDS + file)
-				var image = streamTexture.get_data()
-				var imageTexture = ImageTexture.new()
-				imageTexture.create_from_image(image)
-				_cartes[file] = imageTexture
-		
-		file = dir.get_next()
+	var index: int = 0
+	for carteImg in self.listeCarte:
+		carteImg.lock()
+		var texture: ImageTexture = ImageTexture.new()
+		texture.create_from_image(carteImg)
+		self._cartes["carte_"+str(index)] = texture
+		index += 1
 
 
 func _loadTextureCarteDefaut():
@@ -105,3 +90,51 @@ func getDeck()->Array:
 	for c in _cartes:
 		res.append(c)
 	return res
+
+
+#========================
+
+onready var listeCarte: Array = [
+	load("res://Assets/Sprites/Cartes/Carte (1).jpeg"), load("res://Assets/Sprites/Cartes/Carte (2).jpeg"),
+	load("res://Assets/Sprites/Cartes/Carte (3).jpeg"), load("res://Assets/Sprites/Cartes/Carte (4).jpeg"),
+	load("res://Assets/Sprites/Cartes/Carte (5).jpeg"), load("res://Assets/Sprites/Cartes/Carte (6).jpeg"),
+	load("res://Assets/Sprites/Cartes/Carte (7).jpeg"), load("res://Assets/Sprites/Cartes/Carte (8).jpeg"),
+	load("res://Assets/Sprites/Cartes/Carte (9).jpeg"), load("res://Assets/Sprites/Cartes/Carte (10).jpeg"),
+	load("res://Assets/Sprites/Cartes/Carte (11).jpeg"), load("res://Assets/Sprites/Cartes/Carte (12).jpeg"),
+	load("res://Assets/Sprites/Cartes/Carte (13).jpeg"), load("res://Assets/Sprites/Cartes/Carte (14).jpeg"),
+	load("res://Assets/Sprites/Cartes/Carte (15).jpeg"), load("res://Assets/Sprites/Cartes/Carte (16).jpeg"),
+	load("res://Assets/Sprites/Cartes/Carte (17).jpeg"), load("res://Assets/Sprites/Cartes/Carte (18).jpeg"),
+	load("res://Assets/Sprites/Cartes/Carte (19).jpeg"), load("res://Assets/Sprites/Cartes/Carte (20).jpeg"),
+	load("res://Assets/Sprites/Cartes/Carte (21).jpeg"), load("res://Assets/Sprites/Cartes/Carte (22).jpeg"),
+	load("res://Assets/Sprites/Cartes/Carte (23).jpeg"), load("res://Assets/Sprites/Cartes/Carte (24).jpeg"),
+	load("res://Assets/Sprites/Cartes/Carte (25).jpeg"), load("res://Assets/Sprites/Cartes/Carte (26).jpeg"),
+	load("res://Assets/Sprites/Cartes/Carte (27).jpeg"), load("res://Assets/Sprites/Cartes/Carte (28).jpeg"),
+	load("res://Assets/Sprites/Cartes/Carte (29).jpeg"), load("res://Assets/Sprites/Cartes/Carte (30).jpeg"),
+	load("res://Assets/Sprites/Cartes/Carte (31).jpeg"), load("res://Assets/Sprites/Cartes/Carte (32).jpeg"),
+	load("res://Assets/Sprites/Cartes/Carte (33).jpeg"), load("res://Assets/Sprites/Cartes/Carte (34).jpeg"),
+	load("res://Assets/Sprites/Cartes/Carte (35).jpeg"), load("res://Assets/Sprites/Cartes/Carte (36).jpeg"),
+	load("res://Assets/Sprites/Cartes/Carte (37).jpeg"), load("res://Assets/Sprites/Cartes/Carte (38).jpeg"),
+	load("res://Assets/Sprites/Cartes/Carte (39).jpeg"), load("res://Assets/Sprites/Cartes/Carte (40).jpeg"),
+	load("res://Assets/Sprites/Cartes/Carte (41).jpeg"), load("res://Assets/Sprites/Cartes/Carte (42).jpeg"),
+	load("res://Assets/Sprites/Cartes/Carte (43).jpeg"), load("res://Assets/Sprites/Cartes/Carte (44).jpeg"),
+	load("res://Assets/Sprites/Cartes/Carte (45).jpeg"), load("res://Assets/Sprites/Cartes/Carte (46).jpeg"),
+	load("res://Assets/Sprites/Cartes/Carte (47).jpeg"), load("res://Assets/Sprites/Cartes/Carte (48).jpeg"),
+	load("res://Assets/Sprites/Cartes/Carte (49).jpeg"), load("res://Assets/Sprites/Cartes/Carte (50).jpeg"),
+	load("res://Assets/Sprites/Cartes/Carte (51).jpeg"), load("res://Assets/Sprites/Cartes/Carte (52).jpeg"),
+	load("res://Assets/Sprites/Cartes/Carte (53).jpeg"), load("res://Assets/Sprites/Cartes/Carte (54).jpeg"),
+	load("res://Assets/Sprites/Cartes/Carte (55).jpeg"), load("res://Assets/Sprites/Cartes/Carte (56).jpeg"),
+	load("res://Assets/Sprites/Cartes/Carte (57).jpeg"), load("res://Assets/Sprites/Cartes/Carte (58).jpeg"),
+	load("res://Assets/Sprites/Cartes/Carte (59).jpeg"), load("res://Assets/Sprites/Cartes/Carte (60).jpeg"),
+	load("res://Assets/Sprites/Cartes/Carte (61).jpeg"), load("res://Assets/Sprites/Cartes/Carte (62).jpeg"),
+	load("res://Assets/Sprites/Cartes/Carte (63).jpeg"), load("res://Assets/Sprites/Cartes/Carte (64).jpeg"),
+	load("res://Assets/Sprites/Cartes/Carte (65).jpeg"), load("res://Assets/Sprites/Cartes/Carte (66).jpeg"),
+	load("res://Assets/Sprites/Cartes/Carte (67).jpeg"), load("res://Assets/Sprites/Cartes/Carte (68).jpeg"),
+	load("res://Assets/Sprites/Cartes/Carte (69).jpeg"), load("res://Assets/Sprites/Cartes/Carte (70).jpeg"),
+	load("res://Assets/Sprites/Cartes/Carte (71).jpeg"), load("res://Assets/Sprites/Cartes/Carte (72).jpeg"),
+	load("res://Assets/Sprites/Cartes/Carte (73).jpeg"), load("res://Assets/Sprites/Cartes/Carte (74).jpeg"),
+	load("res://Assets/Sprites/Cartes/Carte (75).jpeg"), load("res://Assets/Sprites/Cartes/Carte (76).jpeg"),
+	load("res://Assets/Sprites/Cartes/Carte (77).jpeg"), load("res://Assets/Sprites/Cartes/Carte (78).jpeg"),
+	load("res://Assets/Sprites/Cartes/Carte (79).jpeg"), load("res://Assets/Sprites/Cartes/Carte (80).jpeg"),
+	load("res://Assets/Sprites/Cartes/Carte (81).jpeg"), load("res://Assets/Sprites/Cartes/Carte (82).jpeg"),
+	load("res://Assets/Sprites/Cartes/Carte (83).jpeg"), load("res://Assets/Sprites/Cartes/Carte (84).jpeg")
+]
