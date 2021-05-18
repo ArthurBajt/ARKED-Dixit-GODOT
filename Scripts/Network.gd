@@ -100,6 +100,7 @@ func _deconnexion_server():
 	
 	get_tree().set_network_peer(null)
 
+	self.data={}
 	self.data=self.dataStruct.duplicate()
 	self.utilisateurs={}
 	
@@ -163,8 +164,6 @@ remotesync func _lobby_lancePartie():
 func assigneCouleur():
 
 
-# warning-ignore:unused_variable
-	var i=0
 	var tabTemp=[]
 	for usId in utilisateurs:
 		tabTemp.append(usId)
