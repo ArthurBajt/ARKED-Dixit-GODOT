@@ -29,12 +29,12 @@ func afficheUiConteur():
 func attendreChoixConteur():
 	self.visible = true
 	hboxConteur.visible = false
-	labelIndicator.text = "En attente de la selection du conteur..."
+	labelIndicator.text = "En attente de la sélection du conteur..."
 
 func attendreSelections():
 	self.visible = true
 	hboxConteur.visible = false
-	labelIndicator.text = "En attente de la selection des autres joueurs..."
+	labelIndicator.text = "En attente de la sélection des autres joueurs..."
 	
 func attendreVotes():
 	self.visible = true

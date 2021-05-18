@@ -151,5 +151,7 @@ func nouvelleManche():
 	for j in self.joueurs:
 		j.nouvelleManche()
 		self.pioche.piocher(j)
-	self.changeConteur()
+	
+	if(Network.id == 1):
+		self.changeConteur()
 	
