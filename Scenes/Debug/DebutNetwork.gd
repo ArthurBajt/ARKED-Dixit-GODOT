@@ -6,8 +6,6 @@ onready var labelUtilisateurs = $UI/labelUtilisateurs
 
 func _ready():
 	nodeUi.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	print(Network.dataStruct)
-	pass
 
 
 func _process(_delta):
