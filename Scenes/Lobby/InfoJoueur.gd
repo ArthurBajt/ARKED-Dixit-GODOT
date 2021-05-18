@@ -10,9 +10,12 @@ const LED_TEXTURE_PAS_PRET = "res://Assets/Sprites/Led/led_red.png"
 onready var labelNom = $HBoxContainer/LabelNom
 onready var labelPret = $HBoxContainer/LabelPret
 
+onready var couleur = $HBoxContainer/HBoxContainer2/VBoxContainer/Couleur
+
 
 func _ready():
-	pass
+	Network.connect("joueurChangeCouleur", self, "on_joueurChangeCouleur")
+
 
 func setId(id: int):
 	self.id = id
@@ -21,6 +24,10 @@ func setId(id: int):
 
 func setNom(nom: String):
 	self.labelNom.text = nom
+
+
+func setCouleur(coul):
+	self.couleur.color = coul
 
 
 func setPret(etat: bool):
@@ -34,3 +41,8 @@ func setPret(etat: bool):
 		self.led.texture = load(self.LED_TEXTURE_PAS_PRET)
 		self.labelPret.text = R.getString("lobbyPasPret")
 		self.labelPret.modulate = Color(1.0, 0.0, 0.0)
+
+
+func on_joueurChangeCouleur(id: int, coul: Color):
+	if self.id == id:
+		self.setCouleur(coul)

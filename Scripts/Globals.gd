@@ -15,6 +15,28 @@ enum EtatJoueur {
 				ATTENTE_PROCHAINE_MANCHE	# Conteur & Joueur	8
 				}
 
+enum couleurs {
+	ROUGE,
+	ORANGE,
+	ROSE,
+	VIOLET,
+	BLEU,
+	CYAN,
+	VERT,
+	JAUNE
+}
+
+const couleursValeurs: Dictionary = {
+	couleurs.ROUGE: Color("#ff0000"),
+	couleurs.ORANGE: Color("#ff9900"),
+	couleurs.ROSE: Color("#ff66cc"),
+	couleurs.VIOLET: Color("#9933ff"),
+	couleurs.BLEU: Color("#0066ff"),
+	couleurs.CYAN: Color("#00ffcc"),
+	couleurs.VERT: Color("#66ff33"),
+	couleurs.JAUNE: Color("#ffff00"),
+}
+
 
 func _ready():
 	self.options = self.NODE_OPTIONS.instance()
