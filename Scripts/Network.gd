@@ -10,6 +10,7 @@ var nom = ""
 var erreur_connexion
 var tabCouleur=[Color.rebeccapurple,Color.orange,Color.maroon,Color.cadetblue,Color.red,Color.green]
 
+var withHost = false
 
 func _ready():
 	get_tree().connect("connected_to_server", self, "_lobby_se_declarer")
@@ -28,11 +29,22 @@ func creerServeur(player_name, ip):
 	peer.create_server(DEFAUT_PORT, MAX_UTILISATEURS)
 	get_tree().set_network_peer(peer)
 	_lobby_se_declarer()
+
+func hostServeur():
+	""" Host un serveur """
+	""" Ip défini à 127.0.0.1 pour le moment"""
+	var peer = NetworkedMultiplayerENet.new()
+	withHost = true
+	peer.set_bind_ip("127.0.0.1")
+	peer.create_server(DEFAUT_PORT, MAX_UTILISATEURS)
+	get_tree().set_network_peer(peer)
+	_lobby_se_declarer()
 	
 func rejoindreServeur(player_name, ipHote):
 	""" Fait rejoindre un serveur à un utilisateur"""
 #	dataStruct.nom = player_name
 	self.nom = player_name
+	withHost = false
 	var peer = NetworkedMultiplayerENet.new()
 	peer.create_client(ipHote, DEFAUT_PORT)
 	get_tree().set_network_peer(peer)
@@ -67,11 +79,15 @@ func _lobby_se_declarer():
 	Et déclare sa présence au serveur. """
 	
 	
-	if get_tree().is_network_server():
+	if get_tree().is_network_server() and withHost:
 		id = 1
 		dataStruct.estPlateau = true
 		dataStruct.estPret = true
 		VuPlateau = dataStruct
+		print("with host")
+	elif get_tree().is_network_server() and !withHost:
+		id = 1
+		print("sans host")
 	else:
 		id = get_tree().get_network_unique_id()
 	
@@ -84,6 +100,8 @@ func _lobby_se_declarer():
 	
 	if id > 1 :
 		rpc_id(1, "_lobby_declareUtilisateur", id, self.data)
+		
+
 
 func _retour_menu():
 	Transition.transitionVers("res://Scenes/MenuPrincipal/MenuPrincipal.tscn")
@@ -327,7 +345,7 @@ func setCouleurJoueur(idJoueur: int, coul: Color):
 
 
 remotesync func couleurDeclare(idJoueur: int, coul: Color):
-	if self.id == idJoueur:
+	if self.id == idJoueur and self.id == 1 and !withHost:
 		self.data.couleur = coul
 	self.utilisateurs[idJoueur].couleur = coul
 	emit_signal("joueurChangeCouleur", idJoueur, coul)
