@@ -332,6 +332,7 @@ func verifEtat(etat):
 signal vote
 signal voirRes
 signal prochaineManche
+signal finDePartie
 remotesync func verifEtats(etat, idClient):
 		
 	var nbJoueur = utilisateurs.size()
@@ -368,7 +369,14 @@ remotesync func verifEtats(etat, idClient):
 				self.utilisateurs[user].cartesPlateau = {}
 				self.utilisateurs[user].carteVotee = null
 				self.utilisateurs[user].etat = Globals.EtatJoueur.ATTENTE_CHOIX_THEME
-			emit_signal("prochaineManche")
+			
+			var aFini = false
+			for user in self.utilisateurs:
+				aFini = aFini or self.utilisateurs[user].points>=30
+			if aFini:
+				emit_signal("finDePartie")
+			else:
+				emit_signal("prochaineManche")
 
 #	for usId in self.utilisateurs:
 #		print("V2 Etat de %s [%s]: %s" % [utilisateurs[usId].nom, usId,utilisateurs[usId].etat])

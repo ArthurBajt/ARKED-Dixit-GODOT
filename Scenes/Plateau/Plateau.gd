@@ -96,21 +96,25 @@ func ajouteCartePlateau(carte: Carte, transform = null):
 func voteMoment():
 	
 	#Mélange des cartes
-#	self.cartes.shuffle()
-#	for carte in self.cartes:
-#		carte.positionCible = Vector3(0,0,1)
-#		yield(get_tree().create_timer(0.5), "timeout")
-#
-#	var i = 0
-#	var cartePosees = []
-#	for carte in self.cartes:
-#		for cartezer in cartePosees:
-#			cartezer.positionCible.x += 0.28
-#		carte.positionCible = Vector3(0.28, 0, 0) * -(i)
-#		cartePosees.append(carte)
-#		i+=1
-#		yield(get_tree().create_timer(0.8), "timeout")
+	self.cartes.shuffle()
+	for carte in self.cartes:
+		carte.positionCible = Vector3(0,0,1)
 	
+	yield(get_tree().create_timer(0.5), "timeout")
+
+	var cartePosees = []
+	for carte in self.cartes:
+		for cartezer in cartePosees:
+			cartezer.positionCible.x += 0.14
+		cartePosees.append(carte)
+		
+		carte.positionCible = Vector3(0.14, 0, 0) * -(cartePosees.size() - 1)
+		
+		yield(get_tree().create_timer(0.2), "timeout")
+
+	for cartezer in cartePosees:
+		cartezer.positionCible.x -= 0.14
+
 	#retourner les cartes
 	for child in self.cartes:
 		yield(get_tree(), "idle_frame")
