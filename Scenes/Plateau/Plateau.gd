@@ -22,6 +22,7 @@ func _ready():
 	Network.connect("JoueurPoseCarte", self, "_fairePoserCarte")
 	Network.connect("vote", self, "voteMoment")
 	Network.connect("voirRes", self, "voirRes")
+	Network.connect("pointsCumules", self, "attribuerPoints")
 
 
 func init(joueursDeLaPartie: Array, cartesMax: int = 6):
@@ -77,7 +78,6 @@ func _fairePoserCarte(idJoueur: int, nomCarte: String):
 func ajouteCartePlateau(carte: Carte, transform = null):
 	self.cartes.append(carte)
 	for child in rootCartes.get_children():
-		print(child)
 		child.positionCible.x += 0.28
 	self.rootCartes.add_child(carte)
 	
@@ -128,6 +128,11 @@ func getJoueur(id: int):
 			return j
 	return null
 
+func getCarte(nom: String):
+	for carte in self.cartes:
+		if(carte.nom == nom):
+			return carte
+	return null
 #================
 #	Conteur
 
@@ -141,9 +146,21 @@ func setTheme(themezer):
 	
 func getTheme():
 	return self.theme
+
+func attribuerPoints(idJoueur,points,nomCartePosee,nomCarteVotee):
+	var j = getJoueur(idJoueur)	
+	var cartePosed = getCarte(nomCartePosee)
+	
+	j.points += points * cartePosed.coef + cartePosed.bonus 
+	
+	if(nomCarteVotee != null):
+		var carteVoted = getCarte(nomCarteVotee)
+		j.points -= carteVoted.malus
+		
+	if(Network.id == 1):
+		Network.setPointsJoueur(j.id,j.points)
 	
 func nouvelleManche():
-	print("nouvelle manche plateau")
 	for carte in self.cartes:
 		carte.queue_free()
 	self.cartes = []

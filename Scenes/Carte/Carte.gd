@@ -2,6 +2,10 @@ extends Spatial
 class_name Carte
 
 var nom: String
+var coef = 1
+var bonus = 0
+var malus = 0
+
 var texture
 
 var estVisible: bool setget setVisible
@@ -94,12 +98,10 @@ func _on_Area_input_event(camera, event, click_position, click_normal, shape_idx
 				self.joueurQuiAPose = Network.id
 				emit_signal("carteCliquee", self)
 			if(self.estSurPlateau && self.joueurQuiAPose != Network.id):
-				print(self, " a été votée")
 				emit_signal("carteVotee", self, Network.id)
 				
 func AjoutePion(pion):
 	for pion in self.pionsDessus:
-		print(pion)
 		pion.transform.origin.z += 0.05
 	
 	self.pionsDessus.append(pion)

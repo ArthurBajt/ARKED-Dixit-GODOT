@@ -68,7 +68,6 @@ func PionJoueur(idJoueur, ScX,ScY,ScZ,PosX, PosY, PosZ, rX, rY, rZ):
 				return pion
 
 func afficheVoteurs(nomCarte,votants):
-	print("OUGA BOUGA")
 	for carte in plateau.cartes:
 		if carte.nom == nomCarte:
 			var pion
@@ -81,6 +80,5 @@ func clearPions():
 		pion.queue_free()
 
 func nouvelleManche():
-	print("nouvelle manche partie")
 	self.clearPions()
 	plateau.nouvelleManche()

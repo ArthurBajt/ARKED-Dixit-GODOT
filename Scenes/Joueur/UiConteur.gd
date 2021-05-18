@@ -57,7 +57,6 @@ func _on_OkButton_pressed():
 func valideTheme():
 	var theme = lineEditTheme.text
 	if(theme!=null and theme != ""):
-		print(theme)
 		self.visible = false
 		isChoisingTheme = false
 		Network.defineTheme(theme)

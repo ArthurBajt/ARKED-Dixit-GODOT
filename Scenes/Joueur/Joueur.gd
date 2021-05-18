@@ -7,6 +7,8 @@ var estLocal: bool = false
 var plateau
 var main: Array
 var carteVotee: Carte
+var points: int = 0
+
 onready var mainRoot = $CameraPos/MainRoot
 
 onready var cameraPos: Spatial = $CameraPos
@@ -195,7 +197,6 @@ func carteSelectectionnee(idJoueur):
 		Network.verifEtat(Globals.EtatJoueur.ATTENTE_SELECTIONS)
 
 func peuxVoter():
-	print("Suis je conteur ? ", self.id, self.estConteur)
 	if(self.estConteur):
 		self.etat = Globals.EtatJoueur.ATTENTE_VOTES
 		if(estLocal()):
@@ -205,9 +206,6 @@ func peuxVoter():
 		
 		self.etat = Globals.EtatJoueur.VOTE
 		if(estLocal()):
-			
-			print("pouet")
-			
 			self.uiConteur.enlever()
 	if(estLocal()):
 		self.myCam.current = false
@@ -216,7 +214,6 @@ func peuxVoter():
 	
 
 func aVote(nomCarte, idJoueur):
-	print(idJoueur, " : ", self.id)
 	if(idJoueur == self.id):
 		self.carteVotee = nomCarte
 		self.etat = Globals.EtatJoueur.ATTENTE_VOTES
