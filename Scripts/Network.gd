@@ -13,6 +13,7 @@ var tabCouleur=[Color.rebeccapurple,Color.orange,Color.maroon,Color.cadetblue,Co
 var withHost = false
 
 func _ready():
+# warning-ignore:return_value_discarded
 	get_tree().connect("connected_to_server", self, "_lobby_se_declarer")
 	get_tree().connect("connection_failed", self, "_retour_menu")
 	get_tree().connect("server_disconnected", self, "_deconnexion_server")
@@ -61,11 +62,13 @@ const dataStruct = {nom = "",
 					estDansPartie = false,
 					main = [],
 					cartesPlateau = {},
+					carteVotee = null,
 					points = 0,
 					estConteur = false,
 					couleur = Globals.couleursValeurs[ Globals.couleurs.ROUGE ]
 					}
 var VuPlateau
+
 
 signal nvUtilisateur(idUtilisateur)
 signal nvStatuUtilisateur(idUtilisateur, statu)
@@ -179,6 +182,20 @@ remotesync func _lobby_lancePartie():
 	""" Signal a tt les utilisateurs du lobby que la partie commence."""
 	emit_signal("partieLancee")
 
+func assigneCouleur():
+
+
+# warning-ignore:unused_variable
+	var i=0
+	var tabTemp=[]
+	for usId in utilisateurs:
+		tabTemp.append(usId)
+	
+	tabTemp.sort()
+	for usId in tabTemp:
+		var couleurTemp=tabCouleur.pop_front()
+		utilisateurs[usId].couleur=couleurTemp
+
 
 func _peutLancerPartie()->bool:
 	""" True si on peut lancer la partie """
@@ -233,7 +250,19 @@ func _sontJoueursDansPartie()->bool:
 			return false
 	return true
 
+func voteCarte(carte, idJoueur):
+	rpc("joueurVoteCarte", carte.nom, idJoueur)
 
+signal carteVotee(nomCarte, idJoueur)
+
+remotesync func joueurVoteCarte(nomCarte,idJoueur):
+	if(idJoueur == self.id):
+		self.data.carteVotee = nomCarte
+	
+	self.utilisateurs[idJoueur].carteVotee = nomCarte
+
+	self.utilisateurs[idJoueur].etat = Globals.EtatJoueur.ATTENTE_VOTES
+	emit_signal("carteVotee", nomCarte, idJoueur)
 # =================================================
 # Cartes
 
@@ -264,14 +293,15 @@ remotesync func appliquePoseCarte(idJoueur: int, carte: String):
 		self.data.cartesPlateau[idJoueur] = carte
 		self.data.main.erase(carte)
 	
-	self.utilisateurs[idJoueur].cartesPlateau[idJoueur] = carte
+	for jId in self.utilisateurs:
+		self.utilisateurs[jId].cartesPlateau[idJoueur] = carte
 	self.utilisateurs[idJoueur].main.erase(carte)
 	
 	if(!self.utilisateurs[idJoueur].estConteur):
 		self.utilisateurs[idJoueur].etat = Globals.EtatJoueur.ATTENTE_SELECTIONS
 	else:
 		self.utilisateurs[idJoueur].etat = Globals.EtatJoueur.CHOIX_THEME
-	
+	self.verifEtat(Globals.EtatJoueur.ATTENTE_SELECTIONS)
 		
 	
 	emit_signal("JoueurPoseCarte", idJoueur, carte)
@@ -283,7 +313,7 @@ func changeConteur(idJoueur):
 	rpc("declareChangementConteur", idJoueur)
 	
 remotesync func declareChangementConteur(idJoueur):
-	self.data.estConteur= idJoueur == self.id
+	self.data.estConteur = (idJoueur == self.id)
 	for usId in self.utilisateurs:
 		if usId == idJoueur:
 			self.utilisateurs[usId].etat = Globals.EtatJoueur.SELECTION_CARTE_THEME
@@ -292,6 +322,7 @@ remotesync func declareChangementConteur(idJoueur):
 		self.utilisateurs[usId].estConteur = usId == idJoueur
 	emit_signal("ChangementConteur", idJoueur)
 			
+
 
 # =================================================
 # Chat
@@ -316,25 +347,61 @@ remotesync func changeTheme(theme, nomConteur):
 			self.utilisateurs[usId].etat = Globals.EtatJoueur.SELECTION_CARTE
 		
 	emit_signal("updateTheme", theme, nomConteur)
-	
-func verifEtat():
+
+func verifEtat(etat):
+	rpc("verifEtats",etat, Network.id)
+
+signal vote
+signal voirRes
+signal prochaineManche
+signal finDePartie
+remotesync func verifEtats(etat, idClient):
+		
 	var nbJoueur = utilisateurs.size()
 	var compteur = 0
 	for usId in self.utilisateurs:
-		if (self.utilisateurs[usId].etat==Globals.EtatJoueur.ATTENTE_SELECTIONS):
+		if (self.utilisateurs[usId].etat==etat):
+		
 			compteur+=1
-		if (compteur == nbJoueur):
+			
+	
+	if (compteur == nbJoueur):
+		if(etat==Globals.EtatJoueur.ATTENTE_SELECTIONS):
 			for user in self.utilisateurs:
 				if self.utilisateurs[user].estConteur:
 					self.utilisateurs[user].etat=Globals.EtatJoueur.ATTENTE_VOTES
 				else:
 					self.utilisateurs[user].etat=Globals.EtatJoueur.VOTE
+				emit_signal("vote")
+
 					
 				print("V1 Etat de %s [%s]: %s" % [utilisateurs[user].nom, user,utilisateurs[user].etat])
-	
-	
-	for usId in self.utilisateurs:
-		print("V2 Etat de %s [%s]: %s" % [utilisateurs[usId].nom, usId,utilisateurs[usId].etat])
+		
+		elif(etat==Globals.EtatJoueur.ATTENTE_VOTES):
+			for user in self.utilisateurs:
+				self.utilisateurs[user].etat = Globals.EtatJoueur.VOIR_RESULTAT
+			emit_signal("voirRes")
+			if(Network.id == idClient):
+				self.afficheVoteurs()
+				self.calculPoints()
+		
+		elif(etat==Globals.EtatJoueur.ATTENTE_PROCHAINE_MANCHE):
+			self.data.cartesPlateau = {}
+			for user in self.utilisateurs:
+				self.utilisateurs[user].cartesPlateau = {}
+				self.utilisateurs[user].carteVotee = null
+				self.utilisateurs[user].etat = Globals.EtatJoueur.ATTENTE_CHOIX_THEME
+			
+			var aFini = false
+			for user in self.utilisateurs:
+				aFini = aFini or self.utilisateurs[user].points>=30
+			if aFini:
+				emit_signal("finDePartie")
+			else:
+				emit_signal("prochaineManche")
+
+#	for usId in self.utilisateurs:
+#		print("V2 Etat de %s [%s]: %s" % [utilisateurs[usId].nom, usId,utilisateurs[usId].etat])
 
 
 # =================================================
@@ -366,3 +433,89 @@ func getCouleursPossibles()-> Array:
 	for c in self.getCouleurUtilisee():
 		res.erase(c)
 	return res
+
+func couleurJoueur(idJoueur):
+	for usId in utilisateurs:
+		if usId == idJoueur:
+			return utilisateurs[usId].couleur
+
+func calculPoints():
+	var votes = {}
+	var idConteur = 0
+	for user in self.utilisateurs:
+		if(!self.utilisateurs[user].estConteur):
+			votes[user] = self.utilisateurs[user].carteVotee
+	for user in self.utilisateurs:
+		if(self.utilisateurs[user].estConteur):
+			idConteur = user
+	rpc("calculDesPoints", votes, self.utilisateurs[Network.id].cartesPlateau, idConteur)
+
+
+signal pointsCumules(idJoueur, points, cartePosee, carteVotee)
+remotesync func calculDesPoints(votes, cartesPosees : Dictionary, idConteur):
+	var cartePosed = cartesPosees.get(idConteur)
+	var compteurOnCarteConteur = 0
+	for idJ in votes:
+		if(votes.get(idJ) == cartePosed):
+			compteurOnCarteConteur+=1
+	
+	if(compteurOnCarteConteur == 0 or compteurOnCarteConteur == self.utilisateurs.size()-1):
+		for user in self.utilisateurs:
+			if(user == idConteur):
+				emit_signal("pointsCumules",user,0,cartesPosees.get(user),null)
+			else:
+				emit_signal("pointsCumules",user,2,cartesPosees.get(user),votes.get(user))
+	else:
+		for user in self.utilisateurs:
+			if(user == idConteur):
+				emit_signal("pointsCumules",user,3,cartesPosees.get(user),null)
+			else:
+				cartePosed = cartesPosees.get(user)
+				var compteur = 0
+				for idJ in votes:
+					if(votes.get(idJ) == cartePosed):
+						compteur+=1
+				emit_signal("pointsCumules",user,compteur,cartesPosees.get(user),votes.get(user))
+				
+				if(votes.get(user) == cartesPosees.get(idConteur)):
+					emit_signal("pointsCumules",user,3,cartesPosees.get(user),votes.get(user))
+
+func setPointsJoueur(jId, points):
+	rpc("setPointsJoueurRPC",jId, points)
+	
+remotesync func setPointsJoueurRPC(jId, points):
+	if(self.id == jId):
+		self.data.points = points
+	self.utilisateurs[jId].points = points
+	
+
+func afficheVoteurs():
+	var nomCartes = []
+	for user in self.utilisateurs:
+		if(!self.utilisateurs[user].estConteur):
+			if(not(self.utilisateurs[user].carteVotee in nomCartes)):
+				nomCartes.append(self.utilisateurs[user].carteVotee)
+	print(nomCartes)
+	for c in nomCartes:
+		rpc("getVoteurs",c)
+
+signal giveVoteurs(nomCarte, joueurs)
+remotesync func getVoteurs(nomCarte):
+	var joueurs = []
+	for user in self.utilisateurs:
+		if(self.utilisateurs[user].carteVotee == nomCarte):
+			joueurs += [user]
+	emit_signal("giveVoteurs",nomCarte,joueurs)
+	
+
+func pretPourTour():
+	rpc("joueurPretPourTour", Network.id)
+
+signal joueurDePlusPret()
+remotesync func joueurPretPourTour(idJoueur):
+	if(idJoueur == Network.id):
+		self.data.etat = Globals.EtatJoueur.ATTENTE_PROCHAINE_MANCHE
+	self.utilisateurs[idJoueur].etat = Globals.EtatJoueur.ATTENTE_PROCHAINE_MANCHE
+	emit_signal("joueurDePlusPret")
+	if(idJoueur == Network.id):
+		Network.verifEtat(Globals.EtatJoueur.ATTENTE_PROCHAINE_MANCHE)

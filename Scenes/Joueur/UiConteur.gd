@@ -14,24 +14,32 @@ onready var background = $Background
 func _ready():
 	self.mouse_filter = Control.MOUSE_FILTER_IGNORE
 
-
-func afficheUiConteur(isConteur):
-	isChoisingTheme = isConteur
-	if(isConteur):
-		labelIndicator.text = "Choisissez le thème..."
-	else:
-		labelIndicator.text = "En attente de la selection du conteur..."
-	
-	hboxConteur.visible = isConteur
-	self.visible = !isConteur
-	
-func afficheChoixConteur():
+func afficheChargement():
 	self.visible = true
+	hboxConteur.visible = false
+	labelIndicator.text = "En attente de tous les joueurs..."
+
+func afficheUiConteur():
+	isChoisingTheme = true
+	
+	self.visible = true
+	hboxConteur.visible = true
+	labelIndicator.text = "Choisissez le thème..."
+	
+func attendreChoixConteur():
+	self.visible = true
+	hboxConteur.visible = false
+	labelIndicator.text = "En attente de la sélection du conteur..."
 
 func attendreSelections():
 	self.visible = true
 	hboxConteur.visible = false
-	labelIndicator.text = "En attente de la selection des autres joueurs"
+	labelIndicator.text = "En attente de la sélection des autres joueurs..."
+	
+func attendreVotes():
+	self.visible = true
+	hboxConteur.visible = false
+	labelIndicator.text = "En attente de tous les votes..."
 
 func enlever():
 	self.visible = false
@@ -49,7 +57,6 @@ func _on_OkButton_pressed():
 func valideTheme():
 	var theme = lineEditTheme.text
 	if(theme!=null and theme != ""):
-		print(theme)
 		self.visible = false
 		isChoisingTheme = false
 		Network.defineTheme(theme)

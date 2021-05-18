@@ -6,6 +6,9 @@ var estLocal: bool = false
 
 var plateau
 var main: Array
+var carteVotee: Carte
+var points: int = 0
+
 onready var mainRoot = $CameraPos/MainRoot
 
 onready var cameraPos: Spatial = $CameraPos
@@ -16,12 +19,14 @@ const NODE_CAM = preload("res://Scenes/Joueur/CameraJoueur.tscn")
 const NODE_UI = preload("res://Scenes/Joueur/UiJoueur.tscn")
 const NODE_UI_CONTEUR = preload("res://Scenes/Joueur/UiConteur.tscn")
 const NODE_CHAT = preload("res://Scenes/Chat/Chat.tscn")
+const NODE_UI_TOURDEPARTIE = preload("res://Scenes/Joueur/UiTourDePartie.tscn")
 
 const NODE_CARTE = preload("res://Scenes/Carte/Carte.tscn")
 var estConteur: bool = false 
 var ui 
 var uiConteur
 var uiChat: Chat
+var uiTourDePartie
 var myCam
 
 
@@ -31,6 +36,9 @@ func _ready():
 	Network.connect("ChangementConteur", self, "setConteur")
 	Network.connect("updateTheme",self,"changeTheme")
 	Network.connect("APoseCarte",self,"carteSelectectionnee")
+	Network.connect("vote",self,"peuxVoter")
+	Network.connect("voirRes",self,"voirRes")
+	Network.connect("carteVotee", self, "aVote")
 
 
 
@@ -49,12 +57,8 @@ func init(idJoueur: int, plateauDePartie, couleurJoueur):
 	
 	var material = SpatialMaterial.new()
 	material.set_albedo(couleurJoueur)
-	
-
 
 	if !estLocal():
-		
-
 		corps.set_material_override(material)
 		tete.set_material_override(material)
 		chapeau.set_material_override(material)
@@ -64,23 +68,25 @@ func init(idJoueur: int, plateauDePartie, couleurJoueur):
 		cameraPos.add_child(cam)
 		cam.set_current(true)
 		# UI dans le joueur car c'est celui qui est en local qui en a besoin
-		self.uiChat = NODE_CHAT.instance()
-		self.add_child(uiChat)
 		self.uiConteur = NODE_UI_CONTEUR.instance()
 		self.add_child(uiConteur)
 		self.ui = NODE_UI.instance()
 		self.add_child(ui)
+		self.uiChat = NODE_CHAT.instance()
+		self.add_child(uiChat)
+		
+		self.uiTourDePartie = NODE_UI_TOURDEPARTIE.instance() 
+		self.uiTourDePartie.connect("pretNextRound", self, "pretPasserTour")
+		self.add_child(uiTourDePartie) 
+		
 		self.myCam = cam
 
-
-		
 		corps.set_material_override(material)
 		tete.set_material_override(material)
 		chapeau.set_material_override(material)
 		
-
-
-
+		self.uiTourDePartie.enlever()
+		self.uiConteur.attendreChoixConteur()
 
 func _input(event):
 	# Pour changer de cam lorsque l'on utilise les fleches
@@ -93,7 +99,6 @@ func _input(event):
 			if(self.CAM_MID.current == true):
 				CAM_MID.current = false
 				self.myCam.current = true
-
 
 func piocheCarte(nomCarte: String):
 	var instanceCarte = NODE_CARTE.instance()
@@ -111,9 +116,18 @@ func piocheCarte(nomCarte: String):
 
 
 func localPoseCarte(carte):
+	
+	if(!self.estConteur):
+		self.uiConteur.attendreSelections()
+		self.etat = Globals.EtatJoueur.ATTENTE_SELECTIONS
+	else:
+		self.uiConteur.afficheUiConteur()
+		self.etat= Globals.EtatJoueur.CHOIX_THEME
+		
 	Network.posercarte(self.id, carte.nom)
 	carte.disconnect("carteCliquee", self, "localPoseCarte")
 	carte.peutEtreHover = false
+	Network.verifEtat(Globals.EtatJoueur.ATTENTE_SELECTIONS)
 
 
 #================
@@ -127,7 +141,7 @@ func getCarte(nom: String):
 
 
 func estLocal()-> bool:
-	""" Renvoie si les joueur est local (aka le joueur que les client est) """
+	""" Renvoie si le joueur est local (aka le joueur que les client est) """
 	return self.id == Network.id
 
 func getId():
@@ -143,8 +157,14 @@ func retireCarte(carte: Carte):
 # UI
 func setConteur(idJoueur):
 	self.estConteur = self.id == idJoueur
-	if estLocal():
-		self.uiConteur.afficheUiConteur(self.estConteur)
+	if(self.estConteur):
+		self.etat = Globals.EtatJoueur.SELECTION_CARTE_THEME
+		if(self.estLocal()):
+			self.uiConteur.enlever()
+	else:
+		if(self.estLocal()):
+				self.uiConteur.attendreChoixConteur()
+		self.etat = Globals.EtatJoueur.ATTENTE_CHOIX_THEME
 		
 func changeTheme(theme, nomConteur):
 	if(self.estConteur):
@@ -161,16 +181,63 @@ func changeTheme(theme, nomConteur):
 
 func carteSelectectionnee(idJoueur):
 	# Si le joueur a bien posé la carte et qu'il est local
-	if(self.estLocal() && self.id == idJoueur):
+	if(self.id == idJoueur):
 		# Alors si il est conteur
 		if(self.estConteur):
 			# On lui demande le choix du theme
 			self.etat = Globals.EtatJoueur.CHOIX_THEME
-			self.uiConteur.afficheChoixConteur()
 		else:
 			# Sinon il attends le conteur
-			self.uiConteur.attendreSelections()
 			self.etat = Globals.EtatJoueur.ATTENTE_SELECTIONS
+		Network.verifEtat(Globals.EtatJoueur.ATTENTE_SELECTIONS)
 
-		Network.verifEtat()
+func peuxVoter():
+	if(self.estConteur):
+		self.etat = Globals.EtatJoueur.ATTENTE_VOTES
+		if(estLocal()):
+			self.uiConteur.attendreVotes()
+	else:
+		
+		
+		self.etat = Globals.EtatJoueur.VOTE
+		if(estLocal()):
+			self.uiConteur.enlever()
+	if(estLocal()):
+		self.myCam.current = false
+		CAM_MID.current = true
+		Network.verifEtat(Globals.EtatJoueur.ATTENTE_VOTES)
+	
 
+func aVote(nomCarte, idJoueur):
+	if(idJoueur == self.id):
+		self.carteVotee = nomCarte
+		self.etat = Globals.EtatJoueur.ATTENTE_VOTES
+		if(self.estLocal()):
+			self.uiConteur.attendreVotes()
+			Network.verifEtat(Globals.EtatJoueur.ATTENTE_VOTES)
+	
+func voirRes():
+	self.etat = Globals.EtatJoueur.VOIR_RESULTAT
+	if(estLocal()):
+		self.uiConteur.enlever()
+		self.uiTourDePartie.afficher()
+	# Attribution des points
+
+func pretPasserTour():
+	self.etat = Globals.EtatJoueur.ATTENTE_PROCHAINE_MANCHE
+	Network.pretPourTour()
+	
+func nouvelleManche():
+	if(estLocal()):
+		self.uiTourDePartie.enlever()
+		self.uiTourDePartie.resetNbPrets()
+		self.myCam.current = true
+		CAM_MID.current = false
+		self.uiConteur.attendreChoixConteur()
+	while(self.main.size() < 5):
+		pass
+	for carte in self.main:
+		carte.positionCible = Vector3.ZERO
+	for i in range(0,self.main.size()):
+		var carte = self.main[i]
+		carte.positionCible = Vector3(-0.6+0.5*(i), 0, 0)

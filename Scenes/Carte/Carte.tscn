@@ -10,14 +10,11 @@ size = Vector2( 0.68, 1 )
 
 [sub_resource type="SpatialMaterial" id=2]
 flags_unshaded = true
-proximity_fade_enable = true
-proximity_fade_distance = 1.0
 
 [sub_resource type="BoxShape" id=3]
 extents = Vector3( 0.32, 0.48, 0.02 )
 
 [sub_resource type="Animation" id=4]
-resource_name = "Apparait"
 length = 0.7
 tracks/0/type = "bezier"
 tracks/0/path = NodePath("Mesh:rotation_degrees:x")
@@ -81,7 +78,6 @@ tracks/5/keys = {
 }
 
 [sub_resource type="Animation" id=5]
-resource_name = "Cachee"
 length = 0.1
 tracks/0/type = "bezier"
 tracks/0/path = NodePath("Mesh:translation:x")
@@ -175,7 +171,6 @@ tracks/8/keys = {
 }
 
 [sub_resource type="Animation" id=6]
-resource_name = "Cachee_Decouverte"
 tracks/0/type = "bezier"
 tracks/0/path = NodePath("Mesh:translation:x")
 tracks/0/interp = 1
@@ -268,7 +263,6 @@ tracks/8/keys = {
 }
 
 [sub_resource type="Animation" id=7]
-resource_name = "DansMain"
 length = 0.1
 tracks/0/type = "bezier"
 tracks/0/path = NodePath("Mesh:translation:x")
@@ -362,7 +356,6 @@ tracks/8/keys = {
 }
 
 [sub_resource type="Animation" id=8]
-resource_name = "DansMain_Cachee"
 length = 0.5
 tracks/0/type = "bezier"
 tracks/0/path = NodePath("Mesh:translation:x")
@@ -456,7 +449,6 @@ tracks/8/keys = {
 }
 
 [sub_resource type="Animation" id=9]
-resource_name = "Decouverte"
 length = 0.1
 tracks/0/type = "bezier"
 tracks/0/path = NodePath("Mesh:translation:x")
@@ -550,7 +542,6 @@ tracks/8/keys = {
 }
 
 [sub_resource type="Animation" id=10]
-resource_name = "Decouverte_Disparait"
 tracks/0/type = "bezier"
 tracks/0/path = NodePath("Mesh:translation:x")
 tracks/0/interp = 1
@@ -736,7 +727,6 @@ tracks/8/keys = {
 }
 
 [sub_resource type="Animation" id=12]
-resource_name = "NonExistante"
 length = 0.1
 tracks/0/type = "bezier"
 tracks/0/path = NodePath("Mesh:translation:x")
@@ -1149,10 +1139,6 @@ anim_player = NodePath("../AnimationPlayer")
 active = true
 parameters/playback = SubResource( 38 )
 script = ExtResource( 4 )
-
-[node name="Timer" type="Timer" parent="."]
-wait_time = 0.15
-one_shot = true
 
 [connection signal="input_event" from="Mesh/Area" to="." method="_on_Area_input_event"]
 [connection signal="mouse_entered" from="Mesh/Area" to="." method="_on_Area_mouse_entered"]
