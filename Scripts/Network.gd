@@ -278,3 +278,15 @@ func verifEtat():
 	for usId in self.utilisateurs:
 		print("V2 Etat de %s [%s]: %s" % [utilisateurs[usId].nom, usId,utilisateurs[usId].etat])
 
+#=================================
+# 	leaderboard
+
+func load_leaderboard_screen():
+	get_tree().change_scene("res://addons/silent_wolf/Scores/Leaderboard.tscn")
+
+func _input(event):
+	if (event.type == ( InputEventKey.scancode == KEY_T) ):
+		Globals.set_player_name(joueurs)
+		SilentWolf.Scores.persist_score(Globals.player_name, Globals.total_score)
+		SilentWolf.Scores.get_high_scores()
+		load_leaderboard_screen()

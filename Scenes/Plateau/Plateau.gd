@@ -112,3 +112,4 @@ func setTheme(themezer):
 	
 func getTheme():
 	return self.theme
+

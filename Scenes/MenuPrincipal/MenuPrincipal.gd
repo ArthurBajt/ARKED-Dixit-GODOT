@@ -33,3 +33,5 @@ func _on_BtnOptions_pressed():
 
 func _on_BtnQuit_pressed():
 	Globals.quitter()
+
+
