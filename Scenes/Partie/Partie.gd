@@ -18,6 +18,9 @@ func _ready():
 	plateau.init(joueurs)
 	
 	Network.partie_setChargee()
+	
+	Network.connect("giveVoteurs",self,"afficheVoteurs")
+	Network.connect("prochaineManche", self, "nouvelleManche")
 
 class TrieJoueurs:
 	# c'est comme les fonctions discrettes en js.
@@ -62,7 +65,22 @@ func PionJoueur(idJoueur, ScX,ScY,ScZ,PosX, PosY, PosZ, rX, rY, rZ):
 				pion.rotate_x(rZ)
 
 				$Scene/Pions.add_child(pion)
+				return pion
 
+func afficheVoteurs(nomCarte,votants):
+	print("OUGA BOUGA")
+	for carte in plateau.cartes:
+		if carte.nom == nomCarte:
+			var pion
+			for jId in votants:
+				pion = PionJoueur(jId,0.05,0.05,0.05,carte.positionCible.x,carte.positionCible.y,carte.positionCible.z,0.0,0.0,0.0)
+				carte.AjoutePion(pion)
+	
 func clearPions():
-	for pion in $Scene/Pions:
+	for pion in $Scene/Pions.get_children():
 		pion.queue_free()
+
+func nouvelleManche():
+	print("nouvelle manche partie")
+	self.clearPions()
+	plateau.nouvelleManche()

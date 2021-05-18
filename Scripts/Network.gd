@@ -12,6 +12,7 @@ var tabCouleur=[Color.rebeccapurple,Color.orange,Color.maroon,Color.cadetblue,Co
 
 
 func _ready():
+# warning-ignore:return_value_discarded
 	get_tree().connect("connected_to_server", self, "_lobby_se_declarer")
 
 
@@ -140,6 +141,7 @@ remotesync func _lobby_lancePartie():
 func assigneCouleur():
 
 
+# warning-ignore:unused_variable
 	var i=0
 	var tabTemp=[]
 	for usId in utilisateurs:
@@ -267,7 +269,7 @@ func changeConteur(idJoueur):
 	rpc("declareChangementConteur", idJoueur)
 	
 remotesync func declareChangementConteur(idJoueur):
-	self.data.estConteur= idJoueur == self.id
+	self.data.estConteur = (idJoueur == self.id)
 	for usId in self.utilisateurs:
 		if usId == idJoueur:
 			self.utilisateurs[usId].etat = Globals.EtatJoueur.SELECTION_CARTE_THEME
@@ -303,14 +305,13 @@ remotesync func changeTheme(theme, nomConteur):
 	emit_signal("updateTheme", theme, nomConteur)
 
 func verifEtat(etat):
-	rpc("verifEtats",etat)
+	rpc("verifEtats",etat, Network.id)
 
 signal vote
 signal voirRes
-remotesync func verifEtats(etat):
-	
-
-	
+signal prochaineManche
+remotesync func verifEtats(etat, idClient):
+		
 	var nbJoueur = utilisateurs.size()
 	var compteur = 0
 	for usId in self.utilisateurs:
@@ -336,7 +337,14 @@ remotesync func verifEtats(etat):
 			for user in self.utilisateurs:
 				self.utilisateurs[user].etat = Globals.EtatJoueur.VOIR_RESULTAT
 			emit_signal("voirRes")
-			self.afficheVoteurs()
+			if(Network.id == idClient):
+				self.afficheVoteurs()
+		
+		elif(etat==Globals.EtatJoueur.ATTENTE_PROCHAINE_MANCHE):
+			for user in self.utilisateurs:
+				self.utilisateurs[user].etat = Globals.EtatJoueur.ATTENTE_CHOIX_THEME
+			print("Tout le monde est pret pour la prochaine manche")
+			emit_signal("prochaineManche")
 
 #	for usId in self.utilisateurs:
 #		print("V2 Etat de %s [%s]: %s" % [utilisateurs[usId].nom, usId,utilisateurs[usId].etat])
@@ -364,3 +372,16 @@ remotesync func getVoteurs(nomCarte):
 		if(self.utilisateurs[user].carteVotee == nomCarte):
 			joueurs += [user]
 	emit_signal("giveVoteurs",nomCarte,joueurs)
+	
+
+func pretPourTour():
+	rpc("joueurPretPourTour", Network.id)
+
+signal joueurDePlusPret()
+remotesync func joueurPretPourTour(idJoueur):
+	if(idJoueur == Network.id):
+		self.data.etat = Globals.EtatJoueur.ATTENTE_PROCHAINE_MANCHE
+	self.utilisateurs[idJoueur].etat = Globals.EtatJoueur.ATTENTE_PROCHAINE_MANCHE
+	emit_signal("joueurDePlusPret")
+	if(idJoueur == Network.id):
+		Network.verifEtat(Globals.EtatJoueur.ATTENTE_PROCHAINE_MANCHE)

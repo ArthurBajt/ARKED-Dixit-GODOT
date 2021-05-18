@@ -2,7 +2,7 @@ extends Spatial
 
 var joueurs: Array
 var estHote: bool
-var indexConteur: int = 0
+var indexConteur: int = -1
 
 var pioche: Pioche
 const NODE_PIOCHE_CLIENT = preload("res://Scenes/Pioche/PiocheClient.tscn")
@@ -22,7 +22,6 @@ func _ready():
 	Network.connect("JoueurPoseCarte", self, "_fairePoserCarte")
 	Network.connect("vote", self, "voteMoment")
 	Network.connect("voirRes", self, "voirRes")
-	Network.connect("giveVoteurs",self,"afficheVoteurs")
 
 
 func init(joueursDeLaPartie: Array, cartesMax: int = 6):
@@ -48,7 +47,7 @@ func _initPioche():
 func lancePartie():
 	
 	distribuCarte()
-	Network.changeConteur(self.joueurs[0].id)
+	self.changeConteur()
 
 func distribuCarte():
 	for j in joueurs:
@@ -95,25 +94,32 @@ func ajouteCartePlateau(carte: Carte, transform = null):
 	carte.cache = true
 
 func voteMoment():
+	
+	#Mélange des cartes
+#	self.cartes.shuffle()
+#	for carte in self.cartes:
+#		carte.positionCible = Vector3(0,0,1)
+#		yield(get_tree().create_timer(0.5), "timeout")
+#
+#	var i = 0
+#	var cartePosees = []
+#	for carte in self.cartes:
+#		for cartezer in cartePosees:
+#			cartezer.positionCible.x += 0.28
+#		carte.positionCible = Vector3(0.28, 0, 0) * -(i)
+#		cartePosees.append(carte)
+#		i+=1
+#		yield(get_tree().create_timer(0.8), "timeout")
+	
 	#retourner les cartes
-	print("ILS PEUVENT VOTER NORMALEMENT")
-	yield(get_tree(), "idle_frame")
 	for child in self.cartes:
-		print(child)
+		yield(get_tree(), "idle_frame")
 		child.setVisible(true)
 
 func voirRes():
 	for j in self.joueurs:
 		j.voirRes()
-
-func afficheVoteurs(nomCarte,votants):
-	for carte in self.cartes:
-		if carte.nom == nomCarte:
-			var j
-			for jId in votants:
-				j = self.getJoueur(jId)
-				j.PionJoueur(0.25,0.25,0.25,carte.transform.origin.x,carte.transform.origin.y,carte.transform.origin.z,0.0,0.0,0.0)
-		
+	
 #================
 #	getters et trucs utiles toi même tu sais
 func getJoueur(id: int):
@@ -126,9 +132,8 @@ func getJoueur(id: int):
 #	Conteur
 
 func changeConteur():
-	print("\n\n\n\nAAAAAAAAAAAAAAAAAAAAAAAAAa\n\n\n\n")
-	indexConteur+=1 % joueurs.size()
-	Network.changeConteur(indexConteur)
+	self.indexConteur = (self.indexConteur + 1) % self.joueurs.size()
+	Network.changeConteur(self.joueurs[self.indexConteur].id)
 
 func setTheme(themezer):
 	self.theme = themezer
@@ -136,3 +141,15 @@ func setTheme(themezer):
 	
 func getTheme():
 	return self.theme
+	
+func nouvelleManche():
+	print("nouvelle manche plateau")
+	for carte in self.cartes:
+		carte.queue_free()
+	self.cartes = []
+	
+	for j in self.joueurs:
+		j.nouvelleManche()
+		self.pioche.piocher(j)
+	self.changeConteur()
+	

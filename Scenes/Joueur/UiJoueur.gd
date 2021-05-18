@@ -16,3 +16,6 @@ func changeTheme(theme, estConteur=true, nomConteur=""):
 		labelConteur.text = "Vous avez choisi : %s" % theme
 	else:
 		labelConteur.text = "%s a choisi : %s" % [nomConteur,theme]
+
+func resetTheme():
+	labelConteur.text = "Le choix du thème n'a pas encore été fait"

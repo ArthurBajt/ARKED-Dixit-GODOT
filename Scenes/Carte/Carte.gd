@@ -22,6 +22,8 @@ var estDansMain: bool = false
 var estSurPlateau: bool  = false
 var cache: bool
 
+var pionsDessus: Array = []
+
 var joueurQuiAPose: int
 
 func _ready():
@@ -94,3 +96,18 @@ func _on_Area_input_event(camera, event, click_position, click_normal, shape_idx
 			if(self.estSurPlateau && self.joueurQuiAPose != Network.id):
 				print(self, " a été votée")
 				emit_signal("carteVotee", self, Network.id)
+				
+func AjoutePion(pion):
+	for pion in self.pionsDessus:
+		print(pion)
+		pion.transform.origin.z += 0.05
+	
+	self.pionsDessus.append(pion)
+	
+	
+	pion.rotation_degrees.x = 0
+	pion.rotation_degrees.y = 90
+	pion.rotation_degrees.z = 0
+	pion.transform.origin.x = self.global_transform.origin.x
+	pion.transform.origin.y = self.global_transform.origin.y
+	pion.transform.origin.z = self.global_transform.origin.z + (0.05 * -(self.pionsDessus.size() - 1))

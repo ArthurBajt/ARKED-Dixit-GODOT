@@ -22,12 +22,14 @@ const NODE_CAM = preload("res://Scenes/Joueur/CameraJoueur.tscn")
 const NODE_UI = preload("res://Scenes/Joueur/UiJoueur.tscn")
 const NODE_UI_CONTEUR = preload("res://Scenes/Joueur/UiConteur.tscn")
 const NODE_CHAT = preload("res://Scenes/Chat/Chat.tscn")
+const NODE_UI_TOURDEPARTIE = preload("res://Scenes/Joueur/UiTourDePartie.tscn")
 
 const NODE_CARTE = preload("res://Scenes/Carte/Carte.tscn")
 var estConteur: bool = false 
 var ui 
 var uiConteur
 var uiChat: Chat
+var uiTourDePartie
 var myCam
 
 
@@ -58,12 +60,8 @@ func init(idJoueur: int, plateauDePartie, couleurJoueur):
 	
 	var material = SpatialMaterial.new()
 	material.set_albedo(couleurJoueur)
-	
-
 
 	if !estLocal():
-		
-
 		corps.set_material_override(material)
 		tete.set_material_override(material)
 		chapeau.set_material_override(material)
@@ -79,22 +77,19 @@ func init(idJoueur: int, plateauDePartie, couleurJoueur):
 		self.add_child(ui)
 		self.uiChat = NODE_CHAT.instance()
 		self.add_child(uiChat)
+		
+		self.uiTourDePartie = NODE_UI_TOURDEPARTIE.instance() 
+		self.uiTourDePartie.connect("pretNextRound", self, "pretPasserTour")
+		self.add_child(uiTourDePartie) 
+		
 		self.myCam = cam
 
-
-		
 		corps.set_material_override(material)
 		tete.set_material_override(material)
 		chapeau.set_material_override(material)
 		
+		self.uiTourDePartie.enlever()
 		self.uiConteur.attendreChoixConteur()
-		
-		matiereTete.set_albedo(Network.couleurJoueurLocal(id))
-		matiereChapeau.set_albedo(Network.couleurJoueurLocal(id))
-		matiereCorps.set_albedo(Network.couleurJoueurLocal(id))
-		corps.set_surface_material(0,matiereCorps)
-		tete.set_surface_material(0,matiereTete)
-		chapeau.set_surface_material(0,matiereChapeau)
 
 func _input(event):
 	# Pour changer de cam lorsque l'on utilise les fleches
@@ -108,34 +103,6 @@ func _input(event):
 				CAM_MID.current = false
 				self.myCam.current = true
 
-#func _process(delta):
-#	if(estLocal()):
-#
-#		print("----i----")
-#		print("moi c'est ", id)
-#		print("Mon etat est : ", self.etat)
-#		print("Mon etat network est : ", Network.utilisateurs[id].etat)
-
-
-		
-#		if(self.etat == Globals.EtatJoueur.SELECTION_CARTE_THEME):
-#			self.uiConteur.enlever()
-#		if(self.etat == Globals.EtatJoueur.CHOIX_THEME):
-#			self.uiConteur.afficheUiConteur(self.estConteur)
-#		if(self.etat == Globals.EtatJoueur.ATTENTE_CHOIX_THEME):
-#			self.uiConteur.attendreSelections()
-#		if(self.etat == Globals.EtatJoueur.SELECTION_CARTE):
-#			self.uiConteur.enlever()
-#		if(self.etat == Globals.EtatJoueur.ATTENTE_SELECTIONS):
-#			self.uiConteur.attendreSelections()
-#		if(self.etat == Globals.EtatJoueur.VOTE):
-#			print("Je vote")
-#			self.uiConteur.enlever()
-#		if(self.etat == Globals.EtatJoueur.ATTENTE_VOTES):
-#			self.uiConteur.attendreVotes()
-#		if(self.etat == Globals.EtatJoueur.VOIR_RESULTAT):
-#			self.uiConteur.enlever()
-		
 func piocheCarte(nomCarte: String):
 	var instanceCarte = NODE_CARTE.instance()
 	mainRoot.add_child(instanceCarte)
@@ -245,7 +212,7 @@ func peuxVoter():
 	if(estLocal()):
 		self.myCam.current = false
 		CAM_MID.current = true
-	Network.verifEtat(Globals.EtatJoueur.ATTENTE_VOTES)
+		Network.verifEtat(Globals.EtatJoueur.ATTENTE_VOTES)
 	
 
 func aVote(nomCarte, idJoueur):
@@ -255,11 +222,30 @@ func aVote(nomCarte, idJoueur):
 		self.etat = Globals.EtatJoueur.ATTENTE_VOTES
 		if(self.estLocal()):
 			self.uiConteur.attendreVotes()
-		Network.verifEtat(Globals.EtatJoueur.ATTENTE_VOTES)
+			Network.verifEtat(Globals.EtatJoueur.ATTENTE_VOTES)
 	
 func voirRes():
 	self.etat = Globals.EtatJoueur.VOIR_RESULTAT
 	if(estLocal()):
 		self.uiConteur.enlever()
+		self.uiTourDePartie.afficher()
 	# Attribution des points
 
+func pretPasserTour():
+	self.etat = Globals.EtatJoueur.ATTENTE_PROCHAINE_MANCHE
+	Network.pretPourTour()
+	
+func nouvelleManche():
+	if(estLocal()):
+		self.uiTourDePartie.enlever()
+		self.uiTourDePartie.resetNbPrets()
+		self.myCam.current = true
+		CAM_MID.current = false
+		self.uiConteur.attendreChoixConteur()
+	while(self.main.size() < 5):
+		pass
+	for carte in self.main:
+		carte.positionCible = Vector3.ZERO
+	for i in range(0,self.main.size()):
+		var carte = self.main[i]
+		carte.positionCible = Vector3(-0.6+0.5*(i), 0, 0)

@@ -14,6 +14,10 @@ onready var background = $Background
 func _ready():
 	self.mouse_filter = Control.MOUSE_FILTER_IGNORE
 
+func afficheChargement():
+	self.visible = true
+	hboxConteur.visible = false
+	labelIndicator.text = "En attente de tous les joueurs..."
 
 func afficheUiConteur():
 	isChoisingTheme = true
