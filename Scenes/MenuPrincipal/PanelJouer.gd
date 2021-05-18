@@ -82,13 +82,13 @@ func _on_ImgPseudoAleatoire_gui_input(event):
 
 func _on_ButtonCreer_pressed():
 	if self.verifPseudo():
-		Network.creerServeur( self.editPseudo.text, self.IpHost )
+		Network.creerServeur( self.editPseudo.text, self.IpHost.text )
 		Transition.transitionVers("res://Scenes/Lobby/Lobby.tscn")
 
 
 func _on_ButtonRejoindre_pressed():
 	if self.verifPseudo():
-		Network.rejoindreServeur( self.editPseudo.text, self.editIp )
+		Network.rejoindreServeur( self.editPseudo.text, self.editIp.text )
 		Transition.transitionVers("res://Scenes/Lobby/Lobby.tscn")
 
 
