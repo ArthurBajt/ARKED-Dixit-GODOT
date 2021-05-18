@@ -18,21 +18,23 @@ func _ready():
 	get_tree().connect("network_peer_disconnected", self, "_deconnexion_client")
 
 
-func creerServeur(player_name):
+func creerServeur(player_name, ip):
 	""" Creer un serveur """
 #	dataStruct.nom = player_name
+
 	self.nom = player_name
 	var peer = NetworkedMultiplayerENet.new()
+	peer.set_bind_ip(ip)
 	peer.create_server(DEFAUT_PORT, MAX_UTILISATEURS)
 	get_tree().set_network_peer(peer)
 	_lobby_se_declarer()
 	
-func rejoindreServeur(player_name):
+func rejoindreServeur(player_name, ipHote):
 	""" Fait rejoindre un serveur à un utilisateur"""
 #	dataStruct.nom = player_name
 	self.nom = player_name
 	var peer = NetworkedMultiplayerENet.new()
-	peer.create_client(DEFAUT_IP, DEFAUT_PORT)
+	peer.create_client(ipHote, DEFAUT_PORT)
 	get_tree().set_network_peer(peer)
 
 

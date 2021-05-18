@@ -4,6 +4,8 @@ onready var editPseudo = $VBoxContainer/HBoxPseudo/EditPseudo
 onready var errPseudo = $VBoxContainer/LabelErrpseudo
 
 onready var editIp = $VBoxContainer/HBoxLancer/VBoxRejoindre/HBoxContainer/EditIp
+onready var IpHost = $VBoxContainer/HBoxLancer/VBoxCreer/HBoxContainer/IpHost
+
 onready var errIp = $VBoxContainer/HBoxLancer/VBoxRejoindre/LabelErrIp
 
 
@@ -80,13 +82,13 @@ func _on_ImgPseudoAleatoire_gui_input(event):
 
 func _on_ButtonCreer_pressed():
 	if self.verifPseudo():
-		Network.creerServeur( self.editPseudo.text )
+		Network.creerServeur( self.editPseudo.text, self.IpHost )
 		Transition.transitionVers("res://Scenes/Lobby/Lobby.tscn")
 
 
 func _on_ButtonRejoindre_pressed():
 	if self.verifPseudo():
-		Network.rejoindreServeur( self.editPseudo.text )
+		Network.rejoindreServeur( self.editPseudo.text, self.editIp )
 		Transition.transitionVers("res://Scenes/Lobby/Lobby.tscn")
 
 
