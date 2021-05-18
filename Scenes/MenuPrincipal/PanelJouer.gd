@@ -3,6 +3,9 @@ extends Panel
 onready var editPseudo = $VBoxContainer/HBoxPseudo/EditPseudo
 onready var errPseudo = $VBoxContainer/LabelErrpseudo
 
+onready var editIp = $VBoxContainer/HBoxLancer/VBoxRejoindre/HBoxContainer/EditIp
+onready var errIp = $VBoxContainer/HBoxLancer/VBoxRejoindre/LabelErrIp
+
 
 func _ready():
 	self.initUi()
@@ -27,6 +30,9 @@ func initUi():
 	
 	$VBoxContainer/HBoxLancer/VBoxCreer/ButtonCreer.disabled = true
 	$VBoxContainer/HBoxLancer/VBoxRejoindre/ButtonRejoindre.disabled = true
+	
+	self.errIp.text = ""
+	$VBoxContainer/HBoxLancer/VBoxCreer/ButtonCreer.disabled = true
 
 
 func verifPseudo()->bool:
@@ -43,6 +49,25 @@ func verifPseudo()->bool:
 	$VBoxContainer/HBoxLancer/VBoxCreer/ButtonCreer.disabled = not res
 	$VBoxContainer/HBoxLancer/VBoxRejoindre/ButtonRejoindre.disabled = not res
 	
+	return res
+
+
+func verifIp()-> bool:
+	var res: bool = true
+	res = res and (self.editIp.text != "")
+	res = res and self.verifPseudo()
+	
+	if res:
+		self.errIp.text = ""
+		self.editIp.modulate = Color.white
+	
+	else:
+		self.editIp.modulate = Color.orange
+		if self.editIp.text == "":
+			self.errIp.text = R.getString("errIp")
+		else:
+			self.errIp.text = ""
+	$VBoxContainer/HBoxLancer/VBoxRejoindre/ButtonRejoindre.disabled = not res
 	return res
 
 
@@ -67,6 +92,12 @@ func _on_ButtonRejoindre_pressed():
 
 func _on_EditPseudo_text_changed():
 	self.verifPseudo()
+	self.verifIp()
+
+
+func _on_EditIp_text_changed():
+	self.verifPseudo()
+	self.verifIp()
 
 
 func _on_ButtonHost_pressed():
@@ -77,3 +108,6 @@ func _on_ButtonHost_pressed():
 
 func _on_ButtonFermer_pressed():
 	self.visible = false
+
+
+

@@ -7,13 +7,15 @@ const MAX_UTILISATEURS: int = 99
 
 var id: int = 0
 var nom = ""
-
+var erreur_connexion
 var tabCouleur=[Color.rebeccapurple,Color.orange,Color.maroon,Color.cadetblue,Color.red,Color.green]
 
 
 func _ready():
 	get_tree().connect("connected_to_server", self, "_lobby_se_declarer")
-
+	get_tree().connect("connection_failed", self, "_retour_menu")
+	get_tree().connect("server_disconnected", self, "_deconnexion_server")
+	get_tree().connect("network_peer_disconnected", self, "_deconnexion_client")
 
 
 func creerServeur(player_name):
@@ -55,6 +57,7 @@ signal nvStatuUtilisateur(idUtilisateur, statu)
 signal partieLancee
 
 
+
 func _lobby_se_declarer():
 	""" Quand un joueur se connecte au serveur
 	Il recupère son ID propre.
@@ -76,6 +79,26 @@ func _lobby_se_declarer():
 	if id > 1 :
 		rpc_id(1, "_lobby_declareUtilisateur", id, self.data)
 
+func _retour_menu():
+	Transition.transitionVers("res://Scenes/MenuPrincipal/MenuPrincipal.tscn")
+
+signal decoJoueur(id)
+func _deconnexion_client(id):
+	
+	utilisateurs.erase(id)
+	emit_signal("decoJoueur", id)
+	
+func _deconnexion_server():
+	erreur_connexion = R.getString("networkErrHoteQuitte")
+	print(erreur_connexion)
+
+	
+	get_tree().set_network_peer(null)
+
+	self.data=self.dataStruct.duplicate()
+	self.utilisateurs={}
+	
+	_retour_menu()
 
 remote func _lobby_declareUtilisateur(idUtilisateur: int, curentData:Dictionary ):
 	""" Quand un utilisateur se déclare,

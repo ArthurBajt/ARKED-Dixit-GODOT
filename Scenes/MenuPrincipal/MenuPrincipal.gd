@@ -9,6 +9,10 @@ export(String, FILE, "*.ogg") var musiquePath
 func _ready():
 	initUi()
 	Music.setMusic(self.musiquePath)
+	
+	if Network.erreur_connexion != null:
+		Globals.afficheErreur(Network.erreur_connexion)
+		Network.erreur_connexion = null
 
 func _physics_process(delta):
 	self.camRoot.rotation.y += self.vitesseRotation * delta
