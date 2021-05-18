@@ -251,6 +251,7 @@ __meta__ = {
 [node name="Mesh" type="Spatial" parent="Root3d"]
 
 [node name="Castle" parent="Root3d/Mesh" instance=ExtResource( 4 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.383555 )
 
 [node name="Porte" parent="Root3d/Mesh" instance=ExtResource( 6 )]
 
