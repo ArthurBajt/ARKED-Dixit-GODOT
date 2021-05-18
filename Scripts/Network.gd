@@ -48,7 +48,7 @@ const dataStruct = {nom = "",
 					cartesPlateau = {},
 					points = 0,
 					estConteur = false,
-					couleur = Color.black
+					couleur = Globals.couleursValeurs[ Globals.couleurs.ROUGE ]
 					}
 
 
@@ -153,23 +153,7 @@ func lobby_lancerPartie():
 
 remotesync func _lobby_lancePartie():
 	""" Signal a tt les utilisateurs du lobby que la partie commence."""
-	
-	
-	assigneCouleur()
 	emit_signal("partieLancee")
-
-func assigneCouleur():
-
-
-	var i=0
-	var tabTemp=[]
-	for usId in utilisateurs:
-		tabTemp.append(usId)
-	
-	tabTemp.sort()
-	for usId in tabTemp:
-		var couleurTemp=tabCouleur.pop_front()
-		utilisateurs[usId].couleur=couleurTemp
 
 
 func _peutLancerPartie()->bool:
@@ -323,14 +307,38 @@ func verifEtat():
 					self.utilisateurs[user].etat=Globals.EtatJoueur.VOTE
 					
 				print("V1 Etat de %s [%s]: %s" % [utilisateurs[user].nom, user,utilisateurs[user].etat])
-
-
+	
+	
 	for usId in self.utilisateurs:
 		print("V2 Etat de %s [%s]: %s" % [utilisateurs[usId].nom, usId,utilisateurs[usId].etat])
 
-func couleurJoueur(idJoueur):
 
-	for usId in utilisateurs:
-		if usId == idJoueur:
-			return utilisateurs[usId].couleur
-		
+# =================================================
+# Couleur Joueur
+signal joueurChangeCouleur(id, coul)
+func setCouleurJoueur(idJoueur: int, coul: Color):
+	rpc("couleurDeclare", id, coul)
+
+
+remotesync func couleurDeclare(idJoueur: int, coul: Color):
+	if self.id == idJoueur:
+		self.data.couleur = coul
+	self.utilisateurs[idJoueur].couleur = coul
+	emit_signal("joueurChangeCouleur", idJoueur, coul)
+
+
+func getCouleurUtilisee():
+	""" Renvoie les couleurs déjà utilisées par les utilisateurs"""
+	var res: Array = []
+	for usId in self.utilisateurs:
+		if usId != self.id:
+			var coul = self.utilisateurs[usId].couleur
+			if coul in Globals.couleursValeurs.values() and not coul in res:
+				res.append(coul) 
+	return res
+
+func getCouleursPossibles()-> Array:
+	var res: Array = Globals.couleursValeurs.values().duplicate()
+	for c in self.getCouleurUtilisee():
+		res.erase(c)
+	return res
