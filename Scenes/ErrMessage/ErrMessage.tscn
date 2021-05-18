@@ -1,0 +1,61 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Assets/Font/CatChild_base_24.tres" type="DynamicFont" id=1]
+[ext_resource path="res://Scenes/ErrMessage/ErrMessage.gd" type="Script" id=2]
+
+[node name="ErrMessage" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 1, 0, 0, 0.156863 )
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+alignment = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer"]
+margin_left = 390.0
+margin_right = 890.0
+margin_bottom = 720.0
+alignment = 1
+
+[node name="Panel" type="Panel" parent="HBoxContainer/VBoxContainer"]
+margin_top = 310.0
+margin_right = 500.0
+margin_bottom = 410.0
+rect_min_size = Vector2( 500, 100 )
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/VBoxContainer/Panel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+alignment = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="LabelErr" type="Label" parent="HBoxContainer/VBoxContainer/Panel/VBoxContainer"]
+margin_top = 15.0
+margin_right = 500.0
+margin_bottom = 45.0
+custom_fonts/font = ExtResource( 1 )
+align = 1
+
+[node name="ButtonOk" type="Button" parent="HBoxContainer/VBoxContainer/Panel/VBoxContainer"]
+margin_top = 49.0
+margin_right = 500.0
+margin_bottom = 85.0
+custom_fonts/font = ExtResource( 1 )
+text = "OK"
+
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/Panel/VBoxContainer/ButtonOk" to="." method="_on_ButtonOk_pressed"]

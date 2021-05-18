@@ -1,0 +1,92 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://Assets/Font/CatChild_base_48.tres" type="DynamicFont" id=1]
+[ext_resource path="res://Assets/Sprites/Led/led_red.png" type="Texture" id=2]
+[ext_resource path="res://Scenes/Lobby/InfoJoueur.gd" type="Script" id=3]
+[ext_resource path="res://Assets/Sprites/crown.png" type="Texture" id=4]
+[ext_resource path="res://Assets/Sfx/click.ogg" type="AudioStream" id=5]
+
+[node name="InfoJoueur" type="Panel"]
+margin_right = 720.0
+margin_bottom = 70.0
+rect_min_size = Vector2( 0, 70 )
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+margin_right = 669.0
+margin_bottom = 60.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer"]
+margin_right = 60.0
+margin_bottom = 60.0
+rect_min_size = Vector2( 60, 0 )
+alignment = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="LedPret" type="TextureRect" parent="HBoxContainer/VBoxContainer"]
+margin_top = 6.0
+margin_right = 60.0
+margin_bottom = 54.0
+texture = ExtResource( 2 )
+
+[node name="LabelPret" type="Label" parent="HBoxContainer"]
+margin_left = 64.0
+margin_right = 225.0
+margin_bottom = 60.0
+custom_fonts/font = ExtResource( 1 )
+text = "Pas Prêt"
+
+[node name="tiret" type="Label" parent="HBoxContainer"]
+margin_left = 229.0
+margin_right = 274.0
+margin_bottom = 60.0
+rect_min_size = Vector2( 45, 0 )
+custom_fonts/font = ExtResource( 1 )
+text = "-"
+align = 1
+
+[node name="LabelNom" type="Label" parent="HBoxContainer"]
+margin_left = 278.0
+margin_right = 615.0
+margin_bottom = 60.0
+custom_fonts/font = ExtResource( 1 )
+text = "Le Nom du joueur"
+
+[node name="SymboleHote" type="TextureRect" parent="HBoxContainer"]
+margin_left = 619.0
+margin_right = 669.0
+margin_bottom = 60.0
+rect_min_size = Vector2( 50, 0 )
+texture = ExtResource( 4 )
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="HBoxContainer"]
+margin_left = 673.0
+margin_right = 723.0
+margin_bottom = 60.0
+rect_min_size = Vector2( 50, 0 )
+alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/HBoxContainer2"]
+margin_left = 10.0
+margin_right = 40.0
+margin_bottom = 60.0
+alignment = 1
+
+[node name="Couleur" type="ColorRect" parent="HBoxContainer/HBoxContainer2/VBoxContainer"]
+margin_top = 15.0
+margin_right = 30.0
+margin_bottom = 45.0
+rect_min_size = Vector2( 30, 30 )
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 5 )
+volume_db = 8.0
+bus = "Sfx"

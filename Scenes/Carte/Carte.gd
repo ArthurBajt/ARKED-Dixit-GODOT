@@ -2,6 +2,10 @@ extends Spatial
 class_name Carte
 
 var nom: String
+var coef = 1
+var bonus = 0
+var malus = 0
+
 var texture
 
 var estVisible: bool setget setVisible
@@ -20,9 +24,14 @@ var hover: bool = false
 
 var estDansMain: bool = false
 var estSurPlateau: bool  = false
+var cache: bool
+
+var pionsDessus: Array = []
+
+var joueurQuiAPose: int
 
 func _ready():
-	pass
+	self.connect("carteVotee", Network, "voteCarte")
 
 
 func _process(delta):
@@ -36,8 +45,10 @@ func _process(delta):
 			self.animation.setAnimationCible( "DansMain" )
 	
 	elif self.estSurPlateau:
-		self.animation.setAnimationCible( "Cachee" )
-
+		if self.cache:
+			self.animation.setAnimationCible( "Cachee" )
+		else:
+			self.animation.setAnimationCible( "Decouverte" )
 
 func init(nom, visible: bool = true, estHover: bool= true, positionDepart: Vector3 = Vector3.ZERO, positionCible: Vector3 = Vector3.ZERO):
 	self.nom = nom
@@ -78,7 +89,27 @@ func _on_Area_mouse_exited():
 
 # si on clique sur la carte
 signal carteCliquee(laCarte)
+signal carteVotee(laCarte, idJoueur)
+
 func _on_Area_input_event(camera, event, click_position, click_normal, shape_idx):
 	if event is InputEventMouseButton:
 		if event.button_index == BUTTON_LEFT and event.pressed == true:
-			emit_signal("carteCliquee", self)
+			if(self.estDansMain):
+				self.joueurQuiAPose = Network.id
+				emit_signal("carteCliquee", self)
+			if(self.estSurPlateau && self.joueurQuiAPose != Network.id):
+				emit_signal("carteVotee", self, Network.id)
+				
+func AjoutePion(pion):
+	for pion in self.pionsDessus:
+		pion.transform.origin.z += 0.05
+	
+	self.pionsDessus.append(pion)
+	
+	
+	pion.rotation_degrees.x = 0
+	pion.rotation_degrees.y = 90
+	pion.rotation_degrees.z = 0
+	pion.transform.origin.x = self.global_transform.origin.x
+	pion.transform.origin.y = self.global_transform.origin.y
+	pion.transform.origin.z = self.global_transform.origin.z + (0.05 * -(self.pionsDessus.size() - 1))
