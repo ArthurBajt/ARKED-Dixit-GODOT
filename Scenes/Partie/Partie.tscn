@@ -2,7 +2,7 @@
 
 [ext_resource path="res://Scenes/Partie/Partie.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/Plateau/Plateau.tscn" type="PackedScene" id=2]
-[ext_resource path="res://Scenes/Partie/Mesh/Mesh_Partie.escn" type="PackedScene" id=3]
+[ext_resource path="res://Scenes/Partie/Mesh/MeshPartie.escn" type="PackedScene" id=3]
 [ext_resource path="res://Assets/Set/PictureFrame/PictureFrame.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Assets/Sprites/BGs/chevalier_loris.jpg" type="Image" id=5]
 [ext_resource path="res://Assets/Sprites/BGs/chevalier_léo.jpg" type="Image" id=6]
@@ -38,7 +38,7 @@ transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 1.45702
 [node name="Flag2" parent="Scene/Mesh" instance=ExtResource( 8 )]
 transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -1.71899, 3.33916, 5.98526 )
 
-[node name="Mesh_Partie" parent="Scene/Mesh" instance=ExtResource( 3 )]
+[node name="MeshPartie" parent="Scene/Mesh" instance=ExtResource( 3 )]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="Scene/Mesh"]
 environment = SubResource( 2 )

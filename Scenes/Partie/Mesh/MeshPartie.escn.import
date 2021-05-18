@@ -2,12 +2,12 @@
 
 importer="scene"
 type="PackedScene"
-path="res://.import/Mesh_Partie.escn-e9455a8f0ddeffc4fb15c9b88b2b06d3.scn"
+path="res://.import/MeshPartie.escn-ecfdeb26799ff985e0293ba53279d5f8.scn"
 
 [deps]
 
-source_file="res://Scenes/Partie/Mesh/Mesh_Partie.escn"
-dest_files=[ "res://.import/Mesh_Partie.escn-e9455a8f0ddeffc4fb15c9b88b2b06d3.scn" ]
+source_file="res://Scenes/Partie/Mesh/MeshPartie.escn"
+dest_files=[ "res://.import/MeshPartie.escn-ecfdeb26799ff985e0293ba53279d5f8.scn" ]
 
 [params]
 
