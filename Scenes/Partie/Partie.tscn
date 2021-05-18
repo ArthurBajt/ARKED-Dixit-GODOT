@@ -25,7 +25,7 @@ musiquePath = "res://Assets/Songs/pippin-the-hunchback-kevin-macleod.ogg"
 [node name="Mesh" type="Spatial" parent="Scene"]
 
 [node name="ChevalierLoris" parent="Scene/Mesh" instance=ExtResource( 4 )]
-transform = Transform( 2.5, 0, 0, 0, 2.5, 0, 0, 0, 2.5, 0, 1.22953, -5.9999 )
+transform = Transform( 2.5, 0, 0, 0, 2.5, 0, 0, 0, 2.5, 0, 2.89388, -5.9999 )
 image = ExtResource( 5 )
 
 [node name="ChevalierLeo" parent="Scene/Mesh" instance=ExtResource( 4 )]
