@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Assets/Set/Flag/Mesh/Mesh_Flag.escn" type="PackedScene" id=1]
+
+[node name="Flag" type="Spatial"]
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Mesh_Flag" parent="." instance=ExtResource( 1 )]

@@ -7,30 +7,34 @@ const MAX_UTILISATEURS: int = 99
 
 var id: int = 0
 var nom = ""
-
+var erreur_connexion
 var tabCouleur=[Color.rebeccapurple,Color.orange,Color.maroon,Color.cadetblue,Color.red,Color.green]
 
 
 func _ready():
 	get_tree().connect("connected_to_server", self, "_lobby_se_declarer")
+	get_tree().connect("connection_failed", self, "_retour_menu")
+	get_tree().connect("server_disconnected", self, "_deconnexion_server")
+	get_tree().connect("network_peer_disconnected", self, "_deconnexion_client")
 
 
-
-func creerServeur(player_name):
+func creerServeur(player_name, ip):
 	""" Creer un serveur """
 #	dataStruct.nom = player_name
+
 	self.nom = player_name
 	var peer = NetworkedMultiplayerENet.new()
+	peer.set_bind_ip(ip)
 	peer.create_server(DEFAUT_PORT, MAX_UTILISATEURS)
 	get_tree().set_network_peer(peer)
 	_lobby_se_declarer()
 	
-func rejoindreServeur(player_name):
+func rejoindreServeur(player_name, ipHote):
 	""" Fait rejoindre un serveur à un utilisateur"""
 #	dataStruct.nom = player_name
 	self.nom = player_name
 	var peer = NetworkedMultiplayerENet.new()
-	peer.create_client(DEFAUT_IP, DEFAUT_PORT)
+	peer.create_client(ipHote, DEFAUT_PORT)
 	get_tree().set_network_peer(peer)
 
 
@@ -47,13 +51,14 @@ const dataStruct = {nom = "",
 					cartesPlateau = {},
 					points = 0,
 					estConteur = false,
-					couleur = Color.black
+					couleur = Globals.couleursValeurs[ Globals.couleurs.ROUGE ]
 					}
 var VuPlateau
 
 signal nvUtilisateur(idUtilisateur)
 signal nvStatuUtilisateur(idUtilisateur, statu)
 signal partieLancee
+
 
 
 func _lobby_se_declarer():
@@ -80,6 +85,26 @@ func _lobby_se_declarer():
 	if id > 1 :
 		rpc_id(1, "_lobby_declareUtilisateur", id, self.data)
 
+func _retour_menu():
+	Transition.transitionVers("res://Scenes/MenuPrincipal/MenuPrincipal.tscn")
+
+signal decoJoueur(id)
+func _deconnexion_client(id):
+	
+	utilisateurs.erase(id)
+	emit_signal("decoJoueur", id)
+	
+func _deconnexion_server():
+	erreur_connexion = R.getString("networkErrHoteQuitte")
+	print(erreur_connexion)
+
+	
+	get_tree().set_network_peer(null)
+
+	self.data=self.dataStruct.duplicate()
+	self.utilisateurs={}
+	
+	_retour_menu()
 
 remote func _lobby_declareUtilisateur(idUtilisateur: int, curentData:Dictionary ):
 	""" Quand un utilisateur se déclare,
@@ -134,23 +159,7 @@ func lobby_lancerPartie():
 
 remotesync func _lobby_lancePartie():
 	""" Signal a tt les utilisateurs du lobby que la partie commence."""
-	
-	
-	assigneCouleur()
 	emit_signal("partieLancee")
-
-func assigneCouleur():
-
-
-	var i=0
-	var tabTemp=[]
-	for usId in utilisateurs:
-		tabTemp.append(usId)
-	
-	tabTemp.sort()
-	for usId in tabTemp:
-		var couleurTemp=tabCouleur.pop_front()
-		utilisateurs[usId].couleur=couleurTemp
 
 
 func _peutLancerPartie()->bool:
@@ -304,14 +313,38 @@ func verifEtat():
 					self.utilisateurs[user].etat=Globals.EtatJoueur.VOTE
 					
 				print("V1 Etat de %s [%s]: %s" % [utilisateurs[user].nom, user,utilisateurs[user].etat])
-
-
+	
+	
 	for usId in self.utilisateurs:
 		print("V2 Etat de %s [%s]: %s" % [utilisateurs[usId].nom, usId,utilisateurs[usId].etat])
 
-func couleurJoueur(idJoueur):
 
-	for usId in utilisateurs:
-		if usId == idJoueur:
-			return utilisateurs[usId].couleur
-		
+# =================================================
+# Couleur Joueur
+signal joueurChangeCouleur(id, coul)
+func setCouleurJoueur(idJoueur: int, coul: Color):
+	rpc("couleurDeclare", id, coul)
+
+
+remotesync func couleurDeclare(idJoueur: int, coul: Color):
+	if self.id == idJoueur:
+		self.data.couleur = coul
+	self.utilisateurs[idJoueur].couleur = coul
+	emit_signal("joueurChangeCouleur", idJoueur, coul)
+
+
+func getCouleurUtilisee():
+	""" Renvoie les couleurs déjà utilisées par les utilisateurs"""
+	var res: Array = []
+	for usId in self.utilisateurs:
+		if usId != self.id:
+			var coul = self.utilisateurs[usId].couleur
+			if coul in Globals.couleursValeurs.values() and not coul in res:
+				res.append(coul) 
+	return res
+
+func getCouleursPossibles()-> Array:
+	var res: Array = Globals.couleursValeurs.values().duplicate()
+	for c in self.getCouleurUtilisee():
+		res.erase(c)
+	return res

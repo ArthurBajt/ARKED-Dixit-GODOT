@@ -11,6 +11,9 @@ margin_right = 720.0
 margin_bottom = 70.0
 rect_min_size = Vector2( 0, 70 )
 script = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 margin_right = 669.0
@@ -63,6 +66,25 @@ margin_right = 669.0
 margin_bottom = 60.0
 rect_min_size = Vector2( 50, 0 )
 texture = ExtResource( 4 )
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="HBoxContainer"]
+margin_left = 673.0
+margin_right = 723.0
+margin_bottom = 60.0
+rect_min_size = Vector2( 50, 0 )
+alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/HBoxContainer2"]
+margin_left = 10.0
+margin_right = 40.0
+margin_bottom = 60.0
+alignment = 1
+
+[node name="Couleur" type="ColorRect" parent="HBoxContainer/HBoxContainer2/VBoxContainer"]
+margin_top = 15.0
+margin_right = 30.0
+margin_bottom = 45.0
+rect_min_size = Vector2( 30, 30 )
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 5 )

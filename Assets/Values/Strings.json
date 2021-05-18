@@ -15,9 +15,20 @@
   "optionsTitre":"Options",
   "optionsMusique":"Musique",
   "optionsSfx":"SFX",
+  "optionTailleEcrand": "Taille de l'ecrand :",
+  "optionTailleEcrandPetit": "Petit",
+  "optionTailleEcrandGrand": "Grand",
 
+  "panelJouer": "Jouer",
+  "panelJouerPseudo": "Pseudo :",
+  "errPseudo": "Ce pseudo n'est pas valide !",
+  "panelJouerCreer": "Creer une partie.\nEt laisser vos amis la rejoindre.",
+  "panelJouerRejoindre": "Rejoingnez une partie déjà existante.",
+  "panelJouerHost": "Hébergez une partie, et rassemblez vos amis\nautour d'un support. ",
   "buttonCreer": "Créer une partie",
   "buttonRejoindre": "Rejoindre une partie en local",
+  "errIp":"Adresse Invalide !",
+  "buttonHost":"Héberger",
 
   "lobbyPasPret": "Pas prêt",
   "lobbyPret": "Prêt",
@@ -29,5 +40,7 @@
 
   "labelNom": "Je suis le joueur : %s .",
   "labelPoints": "Et j'ai %s point(s).",
-  "labelConteur": "Le conteur choisi le thème..."
+  "labelConteur": "Le conteur choisi le thème...",
+
+  "networkErrHoteQuitte": "L'hote à quitter la partie !"
 }
