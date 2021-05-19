@@ -276,18 +276,18 @@ remotesync func joueurVoteCarte(nomCarte,idJoueur):
 # =================================================
 # Cartes
 
-signal joueurApiocherCarte(id, carte)
+signal joueurApiocherCarte(id, carte, coef)
 
-func joueurPioche(idJoueur: int, carte: String):
-	rpc("_joueurPiocheCarte", idJoueur, carte)
+func joueurPioche(idJoueur: int, carte: String, coef: int):
+	rpc("_joueurPiocheCarte", idJoueur, carte,coef)
 
 
 
-remotesync func _joueurPiocheCarte(idJoueur: int, carte: String):
+remotesync func _joueurPiocheCarte(idJoueur: int, carte: String, coef: int):
 	if idJoueur == id:
 		self.data.main = self.data.main + [carte]
 	utilisateurs[idJoueur].main = utilisateurs[idJoueur].main + [carte]
-	emit_signal("joueurApiocherCarte", idJoueur, carte)
+	emit_signal("joueurApiocherCarte", idJoueur, carte,coef)
 
 # =================================================
 # Plateau

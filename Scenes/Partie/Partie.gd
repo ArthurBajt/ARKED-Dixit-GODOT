@@ -97,7 +97,8 @@ func affichePoseurs():
 			if(Network.data.cartesPlateau[j] == carte.nom):
 				jId = j
 		PionJoueur(jId,0.05,0.05,0.05,carte.global_transform.origin.x,carte.global_transform.origin.y,carte.global_transform.origin.z+0.3,0.0,90,90)
-
+		carte.afficheEffets()
+		
 func afficheVoteurs(nomCarte,votants):
 	for carte in plateau.cartes:
 		if carte.nom == nomCarte:
