@@ -50,7 +50,7 @@ func _instancierJoueurs():
 	
 	if Network.withHost == true and Network.id == 1:
 		var vuPlat = VU_PLATEAU.instance()
-		vuPlat.init(1,plateau)
+		vuPlat.init(Network.id,plateau)
 	
 
 func _placerJoueurs():

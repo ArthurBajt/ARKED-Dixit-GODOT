@@ -4,11 +4,11 @@ const NODE_INFOJOUEUR = preload("res://Scenes/Lobby/InfoJoueur.tscn")
 
 onready var layoutJoueur = $Control/LayoutListe/VBoxContainer/LayoutJoueurs
 
-onready var buttonPret = $Control/HBoxContainer/LayoutBtn/ButtonPret
-onready var buttonLancer = $Control/HBoxContainer/LayoutBtn/ButtonLancer
-onready var labelCouleur = $Control/HBoxContainer/LayoutBtn/LabelCouleur
-onready var buttonGauche = $Control/HBoxContainer/LayoutBtn/HBoxContainer/ButtonCouleurPrec
-onready var buttonDroit = $Control/HBoxContainer/LayoutBtn/HBoxContainer/ButtonCouleurSuiv
+onready var buttonPret = $Control/MainLayout/VBoxContainer/ButtonPret
+onready var buttonLancer = $Control/MainLayout/VBoxContainer/ButtonLancer
+onready var labelCouleur = $Control/MainLayout/VBoxContainer/VBoxContainer/LabelCouleur
+onready var buttonGaucheCoul = $Control/MainLayout/VBoxContainer/VBoxContainer/LayoutCouleur/ButtonCouleurPrec
+onready var buttonDroitCoul = $Control/MainLayout/VBoxContainer/VBoxContainer/LayoutCouleur/ButtonCouleurSuiv
 
 onready var selectionCouleur = $Control/MainLayout/VBoxContainer/VBoxContainer/LayoutCouleur/CouleurSelection
 onready var NbPoint = $Control/MainLayout/VBoxContainer/VBoxContainer/changePoint/LayoutPoint/NbPoint
@@ -32,9 +32,9 @@ func _ready():
 	Network.setCouleurJoueur(Network.id, Network.getCouleursPossibles()[0])
 	
 	if Network.id == 1 and Network.withHost == true:
-		buttonDroit.visible = false
-		buttonGauche.visible = false
-		panelCouleur.visible = false
+		buttonDroitCoul.visible = false
+		buttonGaucheCoul.visible = false
+		selectionCouleur.visible = false
 		labelCouleur.visible = false
 		buttonPret.visible = false
 	

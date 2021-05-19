@@ -2,7 +2,7 @@ extends Spatial
 
 var plateau
 var main: Array
-
+var id: int
 onready var cameraPos: Spatial = $VuPlateau
 onready var CAM = get_node("/root/Partie/Scene/Camera")
 const NODE_CAM = preload("res://Scenes/Joueur/CameraJoueur.tscn")
@@ -11,7 +11,6 @@ var estConteur: bool = false
 var ui 
 var uiConteur
 var myCam
-
 
 var etat: int
 	
