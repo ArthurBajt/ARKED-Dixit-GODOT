@@ -37,8 +37,11 @@ func init(joueursDeLaPartie: Array, cartesMax: int = 6):
 
 func _initPioche():
 	var nodePioche
-	if Network.id == 1:
+	if Network.id == 1 and Network.withHost == false:
 		nodePioche = NODE_PIOCHE_HOTE.instance()
+	elif Network.id == 1 and Network.withHost == true:
+		if Network.id == Network.utilisateurs[0].id :
+			nodePioche = NODE_PIOCHE_HOTE.instance()
 	else:
 		nodePioche = NODE_PIOCHE_CLIENT.instance()
 	
@@ -161,8 +164,11 @@ func attribuerPoints(idJoueur,points,nomCartePosee,nomCarteVotee):
 		var carteVoted = getCarte(nomCarteVotee)
 		j.points -= carteVoted.malus
 		
-	if(Network.id == 1):
+	if(Network.id == 1 and Network.withHost == false):
 		Network.setPointsJoueur(j.id,j.points)
+	elif Network.id == 1 and Network.withHost == true:
+		if Network.id == Network.utilisateurs[0].id :
+			Network.setPointsJoueur(j.id,j.points)
 	
 func nouvelleManche():
 	for carte in self.cartes:
@@ -173,6 +179,9 @@ func nouvelleManche():
 		j.nouvelleManche()
 		self.pioche.piocher(j)
 	
-	if(Network.id == 1):
+	if(Network.id == 1 and Network.withHost == false):
 		self.changeConteur()
+	elif Network.id == 1 and Network.withHost == true:
+		if Network.id == Network.utilisateurs[0].id :
+			self.changeConteur()
 	

@@ -6,6 +6,10 @@ onready var layoutJoueur = $Control/HBoxContainer/LayoutJoueur
 
 onready var buttonPret = $Control/HBoxContainer/LayoutBtn/ButtonPret
 onready var buttonLancer = $Control/HBoxContainer/LayoutBtn/ButtonLancer
+onready var labelCouleur = $Control/HBoxContainer/LayoutBtn/LabelCouleur
+onready var buttonGauche = $Control/HBoxContainer/LayoutBtn/HBoxContainer/ButtonCouleurPrec
+onready var panelCouleur = $Control/HBoxContainer/LayoutBtn/HBoxContainer/CouleurSelection
+onready var buttonDroit = $Control/HBoxContainer/LayoutBtn/HBoxContainer/ButtonCouleurSuiv
 
 onready var selectionCouleur = $Control/HBoxContainer/LayoutBtn/HBoxContainer/CouleurSelection
 
@@ -24,6 +28,13 @@ func _ready():
 	$Control/HBoxContainer/LayoutJoueur/LabelListe.text = R.getString("lobbyListe")
 	
 	Network.setCouleurJoueur(Network.id, Network.getCouleursPossibles()[0])
+	
+	if Network.id == 1 and Network.withHost == true:
+		buttonDroit.visible = false
+		buttonGauche.visible = false
+		panelCouleur.visible = false
+		labelCouleur.visible = false
+		buttonPret.visible = false
 	
 	self.recupereJoueurs()
 
@@ -115,3 +126,6 @@ func _on_ButtonCouleurSuiv_pressed():
 		var index: int = arr.find(self.selectionCouleur.color)
 		index = (index + 1) % arr.size()
 		Network.setCouleurJoueur(Network.id, arr[index])
+		
+
+

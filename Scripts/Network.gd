@@ -33,10 +33,9 @@ func creerServeur(player_name, ip):
 
 func hostServeur():
 	""" Host un serveur """
-	""" Ip défini à 127.0.0.1 pour le moment"""
 	var peer = NetworkedMultiplayerENet.new()
 	withHost = true
-	peer.set_bind_ip("127.0.0.1")
+	peer.set_bind_ip("127.0.0.1")   # Ip défini à 127.0.0.1 pour le moment
 	peer.create_server(DEFAUT_PORT, MAX_UTILISATEURS)
 	get_tree().set_network_peer(peer)
 	_lobby_se_declarer()
@@ -414,7 +413,8 @@ func setCouleurJoueur(idJoueur: int, coul: Color):
 remotesync func couleurDeclare(idJoueur: int, coul: Color):
 	if self.id == idJoueur and self.id == 1 and !withHost:
 		self.data.couleur = coul
-	self.utilisateurs[idJoueur].couleur = coul
+	if !(self.id == 1 and withHost == true):
+		self.utilisateurs[idJoueur].couleur = coul
 	emit_signal("joueurChangeCouleur", idJoueur, coul)
 
 

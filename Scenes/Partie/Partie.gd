@@ -46,7 +46,7 @@ func _instancierJoueurs():
 	
 	joueurs.sort_custom(TrieJoueurs, "sort")
 	
-	if Network.withHost == true:
+	if Network.withHost == true and Network.id == 1:
 		var vuPlat = VU_PLATEAU.instance()
 		vuPlat.init(1,plateau)
 	
