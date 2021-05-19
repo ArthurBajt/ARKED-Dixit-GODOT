@@ -289,8 +289,8 @@ func posercarte(idJoueur: int, carte: String):
 	rpc("appliquePoseCarte", idJoueur, carte)
 	
 remotesync func appliquePoseCarte(idJoueur: int, carte: String):
+	self.data.cartesPlateau[idJoueur] = carte
 	if idJoueur == self.id:
-		self.data.cartesPlateau[idJoueur] = carte
 		self.data.main.erase(carte)
 	
 	for jId in self.utilisateurs:
