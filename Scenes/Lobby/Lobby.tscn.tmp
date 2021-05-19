@@ -1,0 +1,438 @@
+[gd_scene load_steps=20 format=2]
+
+[ext_resource path="res://Scenes/Lobby/Lobby.gd" type="Script" id=1]
+[ext_resource path="res://Assets/Font/CatChild_base_48.tres" type="DynamicFont" id=2]
+[ext_resource path="res://Assets/Font/CatChild_base_24.tres" type="DynamicFont" id=3]
+[ext_resource path="res://Scenes/Lobby/Mesh/Castle.escn" type="PackedScene" id=4]
+[ext_resource path="res://Assets/Font/CatChild_base_64.tres" type="DynamicFont" id=5]
+[ext_resource path="res://Scenes/Lobby/Mesh/Porte.escn" type="PackedScene" id=6]
+[ext_resource path="res://Scenes/Camera/Camera.tscn" type="PackedScene" id=7]
+[ext_resource path="res://Assets/Sfx/Porte.ogg" type="AudioStream" id=8]
+[ext_resource path="res://Scenes/MenuPrincipal/Mesh/dikhololo_night_2k.hdr" type="Texture" id=9]
+[ext_resource path="res://Scenes/Lobby/Mesh/backRoom.jpg" type="Texture" id=10]
+[ext_resource path="res://Assets/Font/CatChild_titre_128.tres" type="DynamicFont" id=11]
+
+[sub_resource type="CubeMesh" id=1]
+
+[sub_resource type="QuadMesh" id=2]
+
+[sub_resource type="VisualShaderNodeTexture" id=3]
+texture = ExtResource( 10 )
+
+[sub_resource type="VisualShader" id=4]
+code = "shader_type spatial;
+render_mode specular_schlick_ggx;
+
+uniform sampler2D tex_frg_2;
+
+
+
+void vertex() {
+// Output:0
+
+}
+
+void fragment() {
+// Texture:2
+	vec4 tex_frg_2_read = texture(tex_frg_2, UV.xy);
+	vec3 n_out2p0 = tex_frg_2_read.rgb;
+	float n_out2p1 = tex_frg_2_read.a;
+
+// Output:0
+	ALBEDO = n_out2p0;
+
+}
+
+void light() {
+// Output:0
+
+}
+"
+graph_offset = Vector2( -134, 118.5 )
+nodes/fragment/2/node = SubResource( 3 )
+nodes/fragment/2/position = Vector2( 68, 240 )
+nodes/fragment/connections = PoolIntArray( 2, 0, 0, 0 )
+
+[sub_resource type="ShaderMaterial" id=5]
+shader = SubResource( 4 )
+
+[sub_resource type="PanoramaSky" id=6]
+panorama = ExtResource( 9 )
+
+[sub_resource type="Environment" id=7]
+background_mode = 2
+background_sky = SubResource( 6 )
+
+[sub_resource type="Animation" id=8]
+length = 3.5
+tracks/0/type = "bezier"
+tracks/0/path = NodePath("Root3d/Camera:translation:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"points": PoolRealArray( -2.3814, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.9, 3.5 )
+}
+tracks/1/type = "bezier"
+tracks/1/path = NodePath("Root3d/Camera:translation:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"points": PoolRealArray( 1.16989, -0.25, 0, 0.25, 0, 3.88, -0.25, 0, 0.25, 0, 3.88, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.9, 3.5 )
+}
+tracks/2/type = "bezier"
+tracks/2/path = NodePath("Root3d/Camera:translation:z")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"points": PoolRealArray( 8.76686, -0.25, 0, 0.25, 0, 2.759, -0.25, 0, 0.25, 0, -18.6329, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.9, 3.5 )
+}
+tracks/3/type = "bezier"
+tracks/3/path = NodePath("Root3d/Camera:rotation_degrees:x")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"points": PoolRealArray( 9.749, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.9, 3.5 )
+}
+tracks/4/type = "bezier"
+tracks/4/path = NodePath("Root3d/Camera:rotation_degrees:y")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"points": PoolRealArray( -7.157, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.9, 3.5 )
+}
+tracks/5/type = "bezier"
+tracks/5/path = NodePath("Root3d/Camera:rotation_degrees:z")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.9, 3.5 )
+}
+tracks/6/type = "bezier"
+tracks/6/path = NodePath("Root3d/Mesh/Porte:translation:x")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.5, 1.5 )
+}
+tracks/7/type = "bezier"
+tracks/7/path = NodePath("Root3d/Mesh/Porte:translation:y")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 5.30669, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.5, 1.5 )
+}
+tracks/8/type = "bezier"
+tracks/8/path = NodePath("Root3d/Mesh/Porte:translation:z")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.5, 1.5 )
+}
+tracks/9/type = "value"
+tracks/9/path = NodePath("AudioStreamPlayer:playing")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/keys = {
+"times": PoolRealArray( 0, 0.2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ false, true ]
+}
+
+[node name="Lobby" type="Node"]
+script = ExtResource( 1 )
+
+[node name="Control" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="LayoutListe" type="HBoxContainer" parent="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VSeparator" type="VSeparator" parent="Control/LayoutListe"]
+modulate = Color( 1, 1, 1, 0 )
+margin_right = 20.0
+margin_bottom = 720.0
+rect_min_size = Vector2( 20, 0 )
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/LayoutListe"]
+margin_left = 24.0
+margin_right = 469.0
+margin_bottom = 720.0
+
+[node name="LabelListe" type="Label" parent="Control/LayoutListe/VBoxContainer"]
+margin_right = 445.0
+margin_bottom = 79.0
+custom_fonts/font = ExtResource( 5 )
+text = "Liste des Joueurs"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HSeparator" type="HSeparator" parent="Control/LayoutListe/VBoxContainer"]
+modulate = Color( 1, 1, 1, 0 )
+margin_top = 83.0
+margin_right = 445.0
+margin_bottom = 93.0
+rect_min_size = Vector2( 0, 10 )
+
+[node name="LayoutJoueurs" type="VBoxContainer" parent="Control/LayoutListe/VBoxContainer"]
+margin_top = 97.0
+margin_right = 445.0
+margin_bottom = 97.0
+
+[node name="MainLayout" type="HBoxContainer" parent="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+alignment = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/MainLayout"]
+margin_left = 926.0
+margin_right = 1226.0
+margin_bottom = 720.0
+alignment = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/MainLayout/VBoxContainer"]
+margin_top = 141.0
+margin_right = 300.0
+margin_bottom = 520.0
+alignment = 1
+
+[node name="changePoint" type="VBoxContainer" parent="Control/MainLayout/VBoxContainer/VBoxContainer"]
+margin_right = 300.0
+margin_bottom = 191.0
+alignment = 1
+
+[node name="LabelPoint" type="Label" parent="Control/MainLayout/VBoxContainer/VBoxContainer/changePoint"]
+margin_right = 300.0
+margin_bottom = 30.0
+custom_fonts/font = ExtResource( 3 )
+text = "Points pour gagner la partie :"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="LayoutPoint" type="HBoxContainer" parent="Control/MainLayout/VBoxContainer/VBoxContainer/changePoint"]
+margin_top = 34.0
+margin_right = 300.0
+margin_bottom = 191.0
+alignment = 1
+
+[node name="ButtonPointPrec" type="Button" parent="Control/MainLayout/VBoxContainer/VBoxContainer/changePoint/LayoutPoint"]
+margin_left = 10.0
+margin_right = 56.0
+margin_bottom = 157.0
+custom_fonts/font = ExtResource( 3 )
+text = " < "
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="NbPoint" type="Label" parent="Control/MainLayout/VBoxContainer/VBoxContainer/changePoint/LayoutPoint"]
+margin_left = 60.0
+margin_right = 240.0
+margin_bottom = 157.0
+rect_min_size = Vector2( 180, 34 )
+custom_fonts/font = ExtResource( 11 )
+text = "30"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ButtonPointSuiv" type="Button" parent="Control/MainLayout/VBoxContainer/VBoxContainer/changePoint/LayoutPoint"]
+margin_left = 244.0
+margin_right = 290.0
+margin_bottom = 157.0
+custom_fonts/font = ExtResource( 3 )
+text = " > "
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="LabelCouleur" type="Label" parent="Control/MainLayout/VBoxContainer/VBoxContainer"]
+margin_top = 195.0
+margin_right = 300.0
+margin_bottom = 225.0
+custom_fonts/font = ExtResource( 3 )
+text = "couleur  :"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="LayoutCouleur" type="HBoxContainer" parent="Control/MainLayout/VBoxContainer/VBoxContainer"]
+margin_top = 229.0
+margin_right = 300.0
+margin_bottom = 379.0
+alignment = 1
+
+[node name="ButtonCouleurPrec" type="Button" parent="Control/MainLayout/VBoxContainer/VBoxContainer/LayoutCouleur"]
+margin_left = 25.0
+margin_right = 71.0
+margin_bottom = 150.0
+custom_fonts/font = ExtResource( 3 )
+text = " < "
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CouleurSelection" type="ColorRect" parent="Control/MainLayout/VBoxContainer/VBoxContainer/LayoutCouleur"]
+margin_left = 75.0
+margin_right = 225.0
+margin_bottom = 150.0
+rect_min_size = Vector2( 150, 150 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ButtonCouleurSuiv" type="Button" parent="Control/MainLayout/VBoxContainer/VBoxContainer/LayoutCouleur"]
+margin_left = 229.0
+margin_right = 275.0
+margin_bottom = 150.0
+custom_fonts/font = ExtResource( 3 )
+text = " > "
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HSeparator2" type="HSeparator" parent="Control/MainLayout/VBoxContainer"]
+modulate = Color( 1, 1, 1, 0 )
+margin_top = 524.0
+margin_right = 300.0
+margin_bottom = 554.0
+rect_min_size = Vector2( 0, 30 )
+
+[node name="ButtonPret" type="Button" parent="Control/MainLayout/VBoxContainer"]
+margin_top = 558.0
+margin_right = 300.0
+margin_bottom = 608.0
+rect_min_size = Vector2( 200, 50 )
+custom_fonts/font = ExtResource( 3 )
+text = "Pas prêt"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ButtonLancer" type="Button" parent="Control/MainLayout/VBoxContainer"]
+margin_top = 612.0
+margin_right = 300.0
+margin_bottom = 712.0
+rect_min_size = Vector2( 0, 100 )
+custom_fonts/font = ExtResource( 2 )
+text = "Lancer"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HSeparator" type="HSeparator" parent="Control/MainLayout/VBoxContainer"]
+modulate = Color( 1, 1, 1, 0 )
+margin_top = 716.0
+margin_right = 300.0
+margin_bottom = 720.0
+rect_min_size = Vector2( 300, 0 )
+
+[node name="VSeparator" type="VSeparator" parent="Control/MainLayout"]
+modulate = Color( 1, 1, 1, 0 )
+margin_left = 1230.0
+margin_right = 1280.0
+margin_bottom = 720.0
+rect_min_size = Vector2( 50, 0 )
+
+[node name="Root3d" type="Spatial" parent="."]
+
+[node name="Mesh" type="Spatial" parent="Root3d"]
+
+[node name="Castle" parent="Root3d/Mesh" instance=ExtResource( 4 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.383555 )
+
+[node name="Porte" parent="Root3d/Mesh" instance=ExtResource( 6 )]
+
+[node name="OmbreCouloir" type="MeshInstance" parent="Root3d/Mesh"]
+transform = Transform( 1, 0, 0, 0, 20, 0, 0, 0, 28, 4.95507, -3.57612, -31.137 )
+mesh = SubResource( 1 )
+material/0 = null
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Backroom" type="MeshInstance" parent="Root3d/Mesh"]
+transform = Transform( 10, 0, 0, 0, 10, 0, 0, 0, 10, 0, 4.00316, -62.2105 )
+mesh = SubResource( 2 )
+material/0 = SubResource( 5 )
+
+[node name="Lights" type="Spatial" parent="Root3d/Mesh"]
+
+[node name="OmniLight" type="OmniLight" parent="Root3d/Mesh/Lights"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.12192, -61.3651 )
+light_color = Color( 0.968627, 0.372549, 0.0509804, 1 )
+light_energy = 3.96
+omni_range = 36.1
+omni_attenuation = 2.92817
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Root3d"]
+environment = SubResource( 7 )
+
+[node name="DirectionalLight" type="DirectionalLight" parent="Root3d"]
+transform = Transform( 0.735195, -0.48419, 0.474392, 0.100073, 0.769702, 0.630511, -0.670428, -0.416075, 0.614336, 3.85164, 19.7204, 10.601 )
+light_color = Color( 1, 0.8, 0.588235, 1 )
+shadow_enabled = true
+
+[node name="Camera" parent="Root3d" instance=ExtResource( 7 )]
+transform = Transform( 0.992208, -0.0210969, -0.122789, 0, 0.985559, -0.169332, 0.124589, 0.168013, 0.97788, -2.3814, 1.16989, 8.76686 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/Entre = SubResource( 8 )
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 8 )
+bus = "Sfx"
+
+[connection signal="pressed" from="Control/MainLayout/VBoxContainer/VBoxContainer/changePoint/LayoutPoint/ButtonPointPrec" to="." method="_on_ButtonPointPrec_pressed"]
+[connection signal="pressed" from="Control/MainLayout/VBoxContainer/VBoxContainer/changePoint/LayoutPoint/ButtonPointSuiv" to="." method="_on_ButtonPointSuiv_pressed"]
+[connection signal="pressed" from="Control/MainLayout/VBoxContainer/VBoxContainer/LayoutCouleur/ButtonCouleurPrec" to="." method="_on_ButtonCouleurPrec_pressed"]
+[connection signal="pressed" from="Control/MainLayout/VBoxContainer/VBoxContainer/LayoutCouleur/ButtonCouleurSuiv" to="." method="_on_ButtonCouleurSuiv_pressed"]
+[connection signal="pressed" from="Control/MainLayout/VBoxContainer/ButtonPret" to="." method="_on_ButtonPret_pressed"]
+[connection signal="pressed" from="Control/MainLayout/VBoxContainer/ButtonLancer" to="." method="_on_ButtonLancer_pressed"]

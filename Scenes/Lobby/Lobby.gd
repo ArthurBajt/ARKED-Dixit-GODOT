@@ -8,10 +8,7 @@ onready var buttonPret = $Control/HBoxContainer/LayoutBtn/ButtonPret
 onready var buttonLancer = $Control/HBoxContainer/LayoutBtn/ButtonLancer
 onready var labelCouleur = $Control/HBoxContainer/LayoutBtn/LabelCouleur
 onready var buttonGauche = $Control/HBoxContainer/LayoutBtn/HBoxContainer/ButtonCouleurPrec
-onready var panelCouleur = $Control/HBoxContainer/LayoutBtn/HBoxContainer/CouleurSelection
 onready var buttonDroit = $Control/HBoxContainer/LayoutBtn/HBoxContainer/ButtonCouleurSuiv
-
-onready var selectionCouleur = $Control/HBoxContainer/LayoutBtn/HBoxContainer/CouleurSelection
 
 onready var selectionCouleur = $Control/MainLayout/VBoxContainer/VBoxContainer/LayoutCouleur/CouleurSelection
 onready var NbPoint = $Control/MainLayout/VBoxContainer/VBoxContainer/changePoint/LayoutPoint/NbPoint
