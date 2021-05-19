@@ -16,7 +16,14 @@ func piocher(joueur: Joueur):
 		_initDeck()
 	
 	var carte = deck.pop_front()
-	Network.joueurPioche(joueur.id, carte)
+	var coef = 1
+	var rng = RandomNumberGenerator.new()
+	rng.randomize()
+	var number = rng.randf_range(0,20)
+	if(number<=1):
+		coef = 2 
+	
+	Network.joueurPioche(joueur.id, carte,coef)
 
 
 func _initDeck():

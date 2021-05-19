@@ -105,7 +105,12 @@ func _input(event):
 				CAM_MID.current = false
 				self.myCam.current = true
 
-func piocheCarte(nomCarte: String):
+func _process(delta):
+	if(self.id == Network.id):
+		for carte in self.main:
+			carte.afficheEffets()
+
+func piocheCarte(nomCarte: String, coef: int):
 	var instanceCarte = NODE_CARTE.instance()
 	mainRoot.add_child(instanceCarte)
 	instanceCarte.init(nomCarte, estLocal(), estLocal())
@@ -116,6 +121,7 @@ func piocheCarte(nomCarte: String):
 	if estLocal:
 		instanceCarte.connect("carteCliquee", self, "localPoseCarte")
 	
+	instanceCarte.coef = coef
 	instanceCarte.estDansMain = true
 	instanceCarte.estSurPlateau =  false
 
