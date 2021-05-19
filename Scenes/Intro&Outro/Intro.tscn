@@ -116,9 +116,9 @@ __meta__ = {
 
 [node name="disclamer" type="Label" parent="Ui/Bk/VBoxContainer"]
 modulate = Color( 1, 1, 1, 0 )
-margin_top = 330.0
+margin_top = 335.0
 margin_right = 1280.0
-margin_bottom = 390.0
+margin_bottom = 385.0
 custom_fonts/font = ExtResource( 2 )
 text = "Ce jeu est une preuve de concept..."
 align = 1
