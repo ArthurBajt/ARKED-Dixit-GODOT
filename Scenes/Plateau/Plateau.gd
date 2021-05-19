@@ -2,7 +2,7 @@ extends Spatial
 
 var joueurs: Array
 var estHote: bool
-var indexConteur: int = 0
+var indexConteur: int = -1
 
 var pioche: Pioche
 const NODE_PIOCHE_CLIENT = preload("res://Scenes/Pioche/PiocheClient.tscn")
@@ -20,7 +20,9 @@ var cartes: Array = []
 func _ready():
 	Network.connect("joueurApiocherCarte", self, "_on_joueurApiocherCarte")
 	Network.connect("JoueurPoseCarte", self, "_fairePoserCarte")
-	
+	Network.connect("vote", self, "voteMoment")
+	Network.connect("voirRes", self, "voirRes")
+	Network.connect("pointsCumules", self, "attribuerPoints")
 
 
 func init(joueursDeLaPartie: Array, cartesMax: int = 6):
@@ -46,7 +48,7 @@ func _initPioche():
 func lancePartie():
 	
 	distribuCarte()
-	Network.changeConteur(self.joueurs[0].id)
+	self.changeConteur()
 
 func distribuCarte():
 	for j in joueurs:
@@ -76,7 +78,6 @@ func _fairePoserCarte(idJoueur: int, nomCarte: String):
 func ajouteCartePlateau(carte: Carte, transform = null):
 	self.cartes.append(carte)
 	for child in rootCartes.get_children():
-		print(child)
 		child.positionCible.x += 0.28
 	self.rootCartes.add_child(carte)
 	
@@ -90,8 +91,39 @@ func ajouteCartePlateau(carte: Carte, transform = null):
 	
 	carte.estDansMain = false
 	carte.estSurPlateau =  true
-	
+	carte.cache = true
 
+func voteMoment():
+	
+	#Mélange des cartes
+	self.cartes.shuffle()
+	for carte in self.cartes:
+		carte.positionCible = Vector3(0,0,1)
+	
+	yield(get_tree().create_timer(0.5), "timeout")
+
+	var cartePosees = []
+	for carte in self.cartes:
+		for cartezer in cartePosees:
+			cartezer.positionCible.x += 0.14
+		cartePosees.append(carte)
+		
+		carte.positionCible = Vector3(0.14, 0, 0) * -(cartePosees.size() - 1)
+		
+		yield(get_tree().create_timer(0.2), "timeout")
+
+	for cartezer in cartePosees:
+		cartezer.positionCible.x -= 0.14
+
+	#retourner les cartes
+	for child in self.cartes:
+		yield(get_tree(), "idle_frame")
+		child.setVisible(true)
+
+func voirRes():
+	for j in self.joueurs:
+		j.voirRes()
+	
 #================
 #	getters et trucs utiles toi même tu sais
 func getJoueur(id: int):
@@ -100,16 +132,47 @@ func getJoueur(id: int):
 			return j
 	return null
 
+func getCarte(nom: String):
+	for carte in self.cartes:
+		if(carte.nom == nom):
+			return carte
+	return null
 #================
 #	Conteur
 
 func changeConteur():
-	indexConteur+=1 % joueurs.size()
-	Network.changeConteur(indexConteur)
+	self.indexConteur = (self.indexConteur + 1) % self.joueurs.size()
+	Network.changeConteur(self.joueurs[self.indexConteur].id)
 
 func setTheme(themezer):
 	self.theme = themezer
+	Network.verifEtat(Globals.EtatJoueur.ATTENTE_SELECTIONS)
 	
 func getTheme():
 	return self.theme
 
+func attribuerPoints(idJoueur,points,nomCartePosee,nomCarteVotee):
+	var j = getJoueur(idJoueur)	
+	var cartePosed = getCarte(nomCartePosee)
+	
+	j.points += points * cartePosed.coef + cartePosed.bonus 
+	
+	if(nomCarteVotee != null):
+		var carteVoted = getCarte(nomCarteVotee)
+		j.points -= carteVoted.malus
+		
+	if(Network.id == 1):
+		Network.setPointsJoueur(j.id,j.points)
+	
+func nouvelleManche():
+	for carte in self.cartes:
+		carte.queue_free()
+	self.cartes = []
+	
+	for j in self.joueurs:
+		j.nouvelleManche()
+		self.pioche.piocher(j)
+	
+	if(Network.id == 1):
+		self.changeConteur()
+	

@@ -1,44 +1,75 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://Scenes/Partie/Partie.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/Plateau/Plateau.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Scenes/Partie/Mesh/MeshPartie.escn" type="PackedScene" id=3]
+[ext_resource path="res://Assets/Set/PictureFrame/PictureFrame.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Assets/Sprites/BGs/chevalier_loris.jpg" type="Image" id=5]
+[ext_resource path="res://Assets/Sprites/BGs/chevalier_léo.jpg" type="Image" id=6]
+[ext_resource path="res://Assets/Hdri/fireplace_1k.hdr" type="Texture" id=7]
+[ext_resource path="res://Assets/Set/Flag/Flag.tscn" type="PackedScene" id=8]
 
-[sub_resource type="QuadMesh" id=1]
-size = Vector2( 25, 25 )
+[sub_resource type="PanoramaSky" id=1]
+panorama = ExtResource( 7 )
 
-[sub_resource type="CubeMesh" id=2]
-
-[sub_resource type="SpatialMaterial" id=3]
-albedo_color = Color( 0.678431, 0.556863, 0.556863, 1 )
+[sub_resource type="Environment" id=2]
+background_mode = 2
+background_sky = SubResource( 1 )
 
 [node name="Partie" type="Node"]
 script = ExtResource( 1 )
+musiquePath = "res://Assets/Songs/pippin-the-hunchback-kevin-macleod.ogg"
 
 [node name="Scene" type="Spatial" parent="."]
 
-[node name="Decor" type="Spatial" parent="Scene"]
+[node name="Mesh" type="Spatial" parent="Scene"]
 
-[node name="Sol" type="Spatial" parent="Scene/Decor"]
+[node name="ChevalierLoris" parent="Scene/Mesh" instance=ExtResource( 4 )]
+transform = Transform( 2.5, 0, 0, 0, 2.5, 0, 0, 0, 2.5, 0, 2.89388, -5.9999 )
+image = ExtResource( 5 )
 
-[node name="MeshInstance" type="MeshInstance" parent="Scene/Decor/Sol"]
-transform = Transform( 1, 0, 0, 0, -1.62921e-07, 1, 0, -1, -1.62921e-07, 0, 0, 0 )
-mesh = SubResource( 1 )
-material/0 = null
+[node name="ChevalierLeo" parent="Scene/Mesh" instance=ExtResource( 4 )]
+transform = Transform( -2.5, 0, -3.77489e-07, 0, 2.5, 0, 3.77489e-07, 0, -2.5, 0, 2.78379, 5.99301 )
+image = ExtResource( 6 )
 
-[node name="Table" type="Spatial" parent="Scene/Decor"]
+[node name="Flag" parent="Scene/Mesh" instance=ExtResource( 8 )]
+transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 1.45702, 3.33916, 5.98526 )
 
-[node name="MeshInstance" type="MeshInstance" parent="Scene/Decor/Table"]
-transform = Transform( 3, 0, 0, 0, 1, 0, 0, 0, 3, 0, 0, 0 )
-mesh = SubResource( 2 )
-material/0 = SubResource( 3 )
+[node name="Flag2" parent="Scene/Mesh" instance=ExtResource( 8 )]
+transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -1.71899, 3.33916, 5.98526 )
+
+[node name="MeshPartie" parent="Scene/Mesh" instance=ExtResource( 3 )]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Scene/Mesh"]
+environment = SubResource( 2 )
+
+[node name="Lights" type="Spatial" parent="Scene"]
+
+[node name="DirectionalLight" type="DirectionalLight" parent="Scene/Lights"]
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 8.2741, 0 )
+light_color = Color( 0.984314, 0.964706, 0.941176, 1 )
+light_energy = 0.5
+shadow_enabled = true
+
+[node name="SpotLight" type="SpotLight" parent="Scene/Lights"]
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 4.54261, 0 )
+light_color = Color( 0.968627, 0.866667, 0.756863, 1 )
+
+[node name="OmniLight" type="OmniLight" parent="Scene/Lights"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6, 0 )
+light_color = Color( 1, 0.658824, 0.0745098, 1 )
+light_energy = 10.0
+omni_attenuation = 1.8025
 
 [node name="Joueurs" type="Spatial" parent="Scene"]
+
+[node name="Pions" type="Spatial" parent="Scene"]
 
 [node name="Plateau" parent="Scene" instance=ExtResource( 2 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.04439, 0 )
 
 [node name="Camera" type="Camera" parent="Scene"]
-transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 3.28625, 0 )
+transform = Transform( -1, 3.25841e-07, 5.30863e-14, 0, -1.62921e-07, 1, 3.25841e-07, 1, 1.62921e-07, 0, 3.28625, 0 )
 
 [node name="Ui" type="Control" parent="."]
 margin_right = 40.0

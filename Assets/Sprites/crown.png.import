@@ -2,11 +2,16 @@
 
 importer="texture"
 type="StreamTexture"
-valid=false
+path="res://.import/crown.png-af6c9c9d5b2b1a29fb4ac8f65d23aedb.stex"
+metadata={
+"vram_texture": false
+}
 
 [deps]
 
 source_file="res://Assets/Sprites/crown.png"
+dest_files=[ "res://.import/crown.png-af6c9c9d5b2b1a29fb4ac8f65d23aedb.stex" ]
+
 [params]
 
 compress/mode=0

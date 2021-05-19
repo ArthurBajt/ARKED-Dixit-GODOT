@@ -1,0 +1,13 @@
+[remap]
+
+importer="image"
+type="Image"
+path="res://.import/chevalier_loris.jpg-720d922080081de497d0becabce4083e.image"
+
+[deps]
+
+source_file="res://Assets/Sprites/BGs/chevalier_loris.jpg"
+dest_files=[ "res://.import/chevalier_loris.jpg-720d922080081de497d0becabce4083e.image" ]
+
+[params]
+

@@ -19,10 +19,25 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Scenes/Chat/Chat.gd"
 }, {
+"base": "Panel",
+"class": "InfoJoueur",
+"language": "GDScript",
+"path": "res://Scenes/Lobby/InfoJoueur.gd"
+}, {
 "base": "Spatial",
 "class": "Joueur",
 "language": "GDScript",
 "path": "res://Scenes/Joueur/Joueur.gd"
+}, {
+"base": "Node",
+"class": "MusicPlayer",
+"language": "GDScript",
+"path": "res://Scenes/MusicPlayer/MusicPlayer.gd"
+}, {
+"base": "Node",
+"class": "Options",
+"language": "GDScript",
+"path": "res://Scenes/Options/Options.gd"
 }, {
 "base": "Node",
 "class": "Pioche",
@@ -37,7 +52,10 @@ _global_script_classes=[ {
 _global_script_class_icons={
 "Carte": "",
 "Chat": "",
+"InfoJoueur": "",
 "Joueur": "",
+"MusicPlayer": "",
+"Options": "",
 "Pioche": "",
 "TransitionScene": ""
 }
@@ -57,7 +75,6 @@ R="*res://Scripts/R.gd"
 Debug="*res://Scripts/Debug.gd"
 Transition="*res://Scripts/Transition.gd"
 Music="*res://Scripts/Music.gd"
-SilentWolf="*res://addons/silent_wolf/SilentWolf.gd"
 
 [display]
 

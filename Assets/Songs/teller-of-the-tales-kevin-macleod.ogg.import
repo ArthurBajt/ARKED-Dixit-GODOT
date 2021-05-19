@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/teller-of-the-tales-kevin-macleod.ogg-cbcb95d726889a551a558fb2503c0a93.oggstr"
+
+[deps]
+
+source_file="res://Assets/Songs/teller-of-the-tales-kevin-macleod.ogg"
+dest_files=[ "res://.import/teller-of-the-tales-kevin-macleod.ogg-cbcb95d726889a551a558fb2503c0a93.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

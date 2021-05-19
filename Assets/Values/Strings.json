@@ -4,14 +4,42 @@
   "titreJeu": "ARKED Dixit",
   "copyright": "Illustrations tirées du jeu Dixit Origins. Un jeu de Jean-Louis Roubira, illustré par Clément Lefèvre et édité par Libellud©",
 
+  "introDisclamer": "Ce jeu est une preuve de concept pour un projet universitaire.\nIl n'est pas destiné à être distribué.",
+
+  "outroMessage": "Merci d'avoir joué.",
+
   "btnJouer": "Jouer",
   "btnOptions": "Options",
   "btnQuitter": "Quitter",
 
+  "optionsTitre":"Options",
+  "optionsMusique":"Musique",
+  "optionsSfx":"SFX",
+  "optionTailleEcrand": "Taille de l'ecrand :",
+  "optionTailleEcrandPetit": "Petit",
+  "optionTailleEcrandGrand": "Grand",
+
+  "panelJouer": "Jouer",
+  "panelJouerPseudo": "Pseudo :",
+  "errPseudo": "Ce pseudo n'est pas valide !",
+  "panelJouerCreer": "Creer une partie.\nEt laisser vos amis la rejoindre.",
+  "panelJouerRejoindre": "Rejoingnez une partie déjà existante.",
+  "panelJouerHost": "Hébergez une partie, et rassemblez vos amis\nautour d'un support. ",
   "buttonCreer": "Créer une partie",
   "buttonRejoindre": "Rejoindre une partie en local",
+  "errIp":"Adresse Invalide !",
+  "buttonHost":"Héberger",
 
-  "labelNom": "Je suis le joueur : %s .",
-  "labelPoints": "Et j'ai %s point(s).",
-  "labelConteur": "Le conteur choisi le thème..."
+  "lobbyPasPret": "Pas prêt",
+  "lobbyPret": "Prêt",
+
+  "lobbyListe": "Liste de Joueurs :",
+  "lobbyCouleur": "Couleur Joueur :",
+  "lobbylancer": "Lancer",
+  "lobbyAttendre": "En Attente",
+  
+  "labelPoints": "%s points",
+  "labelConteur": "Le conteur choisi le thème...",
+
+  "networkErrHoteQuitte": "L'hote à quitter la partie !"
 }
