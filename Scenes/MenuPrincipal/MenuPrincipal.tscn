@@ -127,18 +127,18 @@ rect_min_size = Vector2( 0, 15 )
 [node name="HBoxContainer" type="HBoxContainer" parent="Ui/LayoutTitre"]
 margin_top = 19.0
 margin_right = 1280.0
-margin_bottom = 57.0
+margin_bottom = 176.0
 
 [node name="VSeparator" type="VSeparator" parent="Ui/LayoutTitre/HBoxContainer"]
 modulate = Color( 1, 1, 1, 0 )
 margin_right = 50.0
-margin_bottom = 38.0
+margin_bottom = 157.0
 rect_min_size = Vector2( 50, 0 )
 
 [node name="Titre" type="Label" parent="Ui/LayoutTitre/HBoxContainer"]
 margin_left = 54.0
-margin_right = 174.0
-margin_bottom = 38.0
+margin_right = 367.0
+margin_bottom = 157.0
 custom_fonts/font = ExtResource( 3 )
 text = "Dixit"
 align = 1

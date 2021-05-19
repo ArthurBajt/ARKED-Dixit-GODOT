@@ -1,0 +1,36 @@
+[remap]
+
+importer="texture"
+type="StreamTexture"
+path.s3tc="res://.import/Rock002_1K_Roughness.jpg-a4aeab2d8bca5281b1524aa0ed0c1d7b.s3tc.stex"
+path.etc="res://.import/Rock002_1K_Roughness.jpg-a4aeab2d8bca5281b1524aa0ed0c1d7b.etc.stex"
+metadata={
+"imported_formats": [ "s3tc", "etc" ],
+"vram_texture": true
+}
+
+[deps]
+
+source_file="res://Assets/Set/Column/Rock002_1K_Roughness.jpg"
+dest_files=[ "res://.import/Rock002_1K_Roughness.jpg-a4aeab2d8bca5281b1524aa0ed0c1d7b.s3tc.stex", "res://.import/Rock002_1K_Roughness.jpg-a4aeab2d8bca5281b1524aa0ed0c1d7b.etc.stex" ]
+
+[params]
+
+compress/mode=2
+compress/lossy_quality=0.7
+compress/hdr_mode=0
+compress/bptc_ldr=0
+compress/normal_map=0
+flags/repeat=true
+flags/filter=true
+flags/mipmaps=true
+flags/anisotropic=false
+flags/srgb=2
+process/fix_alpha_border=true
+process/premult_alpha=false
+process/HDR_as_SRGB=false
+process/invert_color=false
+stream=false
+size_limit=0
+detect_3d=false
+svg/scale=1.0
