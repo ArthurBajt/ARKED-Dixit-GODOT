@@ -14,9 +14,9 @@ var tabCouleur=[Color.rebeccapurple,Color.orange,Color.maroon,Color.cadetblue,Co
 func _ready():
 # warning-ignore:return_value_discarded
 	get_tree().connect("connected_to_server", self, "_lobby_se_declarer")
-	get_tree().connect("connection_failed", self, "_retour_menu")
-	get_tree().connect("server_disconnected", self, "_deconnexion_server")
-	get_tree().connect("network_peer_disconnected", self, "_deconnexion_client")
+	get_tree().connect("connection_failed", self, "retour_menu")
+	get_tree().connect("server_disconnected", self, "deconnexion_server")
+	get_tree().connect("network_peer_disconnected", self, "deconnexion_client")
 
 
 func creerServeur(player_name, ip):
@@ -85,18 +85,21 @@ func _lobby_se_declarer():
 	if id > 1 :
 		rpc_id(1, "_lobby_declareUtilisateur", id, self.data)
 
-func _retour_menu():
+func retour_menu():
 	Transition.transitionVers("res://Scenes/MenuPrincipal/MenuPrincipal.tscn")
 
 signal decoJoueur(id)
-func _deconnexion_client(id):
+remotesync func deconnexion_client(id):
 	
 	utilisateurs.erase(id)
 	emit_signal("decoJoueur", id)
-	
-func _deconnexion_server():
-	erreur_connexion = R.getString("networkErrHoteQuitte")
-	print(erreur_connexion)
+
+
+
+remotesync func deconnexion_server():
+	if self.id!=1:
+		erreur_connexion = R.getString("networkErrHoteQuitte")
+
 
 	
 	get_tree().set_network_peer(null)
@@ -105,7 +108,26 @@ func _deconnexion_server():
 	self.data=self.dataStruct.duplicate()
 	self.utilisateurs={}
 	
-	_retour_menu()
+	retour_menu()
+
+#func retourMenuClient(id):
+#
+#	utilisateurs.erase(id)
+#	emit_signal("decoJoueur", id)
+#	retour_menu()
+#
+#func _deconnexion_server():
+#	erreur_connexion = R.getString("networkErrHoteQuitte")
+#	print(erreur_connexion)
+#
+#
+#	get_tree().set_network_peer(null)
+#
+#	self.data={}
+#	self.data=self.dataStruct.duplicate()
+#	self.utilisateurs={}
+#
+#	retour_menu()
 
 remote func _lobby_declareUtilisateur(idUtilisateur: int, curentData:Dictionary ):
 	""" Quand un utilisateur se déclare,

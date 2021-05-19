@@ -25,6 +25,8 @@ __meta__ = {
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
+margin_left = -4.495
+margin_right = -4.495
 alignment = 1
 __meta__ = {
 "_edit_use_anchors_": false
@@ -48,27 +50,27 @@ __meta__ = {
 }
 
 [node name="LabelTitre" type="Label" parent="HBoxContainer/Panel/VBoxContainer"]
-margin_top = 124.0
+margin_top = 60.0
 margin_right = 500.0
-margin_bottom = 203.0
+margin_bottom = 139.0
 custom_fonts/font = ExtResource( 1 )
 text = "Options"
 align = 1
 valign = 1
 
 [node name="LabelVolume" type="Label" parent="HBoxContainer/Panel/VBoxContainer"]
-margin_top = 207.0
+margin_top = 143.0
 margin_right = 500.0
-margin_bottom = 267.0
+margin_bottom = 203.0
 custom_fonts/font = ExtResource( 4 )
 text = "Volume"
 align = 1
 valign = 1
 
 [node name="HBoxVolume" type="HBoxContainer" parent="HBoxContainer/Panel/VBoxContainer"]
-margin_top = 271.0
+margin_top = 207.0
 margin_right = 500.0
-margin_bottom = 287.0
+margin_bottom = 223.0
 alignment = 1
 __meta__ = {
 "_edit_use_anchors_": false
@@ -84,18 +86,18 @@ max_value = 0.0
 step = 0.5
 
 [node name="LabelMusique" type="Label" parent="HBoxContainer/Panel/VBoxContainer"]
-margin_top = 291.0
+margin_top = 227.0
 margin_right = 500.0
-margin_bottom = 351.0
+margin_bottom = 287.0
 custom_fonts/font = ExtResource( 4 )
 text = "Musique"
 align = 1
 valign = 1
 
 [node name="HBoxMusique" type="HBoxContainer" parent="HBoxContainer/Panel/VBoxContainer"]
-margin_top = 355.0
+margin_top = 291.0
 margin_right = 500.0
-margin_bottom = 371.0
+margin_bottom = 307.0
 alignment = 1
 __meta__ = {
 "_edit_use_anchors_": false
@@ -111,9 +113,9 @@ max_value = 0.0
 step = 0.5
 
 [node name="LabelSfx" type="Label" parent="HBoxContainer/Panel/VBoxContainer"]
-margin_top = 375.0
+margin_top = 311.0
 margin_right = 500.0
-margin_bottom = 435.0
+margin_bottom = 371.0
 custom_fonts/font = ExtResource( 4 )
 text = "SFX"
 align = 1
@@ -123,9 +125,9 @@ __meta__ = {
 }
 
 [node name="HBoxSfx" type="HBoxContainer" parent="HBoxContainer/Panel/VBoxContainer"]
-margin_top = 439.0
+margin_top = 375.0
 margin_right = 500.0
-margin_bottom = 455.0
+margin_bottom = 391.0
 alignment = 1
 __meta__ = {
 "_edit_use_anchors_": false
@@ -142,26 +144,26 @@ step = 0.5
 
 [node name="HSeparator" type="HSeparator" parent="HBoxContainer/Panel/VBoxContainer"]
 modulate = Color( 1, 1, 1, 0 )
-margin_top = 459.0
+margin_top = 395.0
 margin_right = 500.0
-margin_bottom = 479.0
+margin_bottom = 415.0
 rect_min_size = Vector2( 0, 20 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="LabelTailleEcrand" type="Label" parent="HBoxContainer/Panel/VBoxContainer"]
-margin_top = 483.0
+margin_top = 419.0
 margin_right = 500.0
-margin_bottom = 543.0
+margin_bottom = 479.0
 custom_fonts/font = ExtResource( 4 )
 text = "Taille de l'ecrand"
 align = 1
 
 [node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/Panel/VBoxContainer"]
-margin_top = 547.0
+margin_top = 483.0
 margin_right = 500.0
-margin_bottom = 595.0
+margin_bottom = 531.0
 alignment = 1
 __meta__ = {
 "_edit_use_anchors_": false
@@ -239,6 +241,29 @@ margin_bottom = 34.0
 custom_fonts/font = ExtResource( 3 )
 text = "Petit"
 
+[node name="HSeparator2" type="HSeparator" parent="HBoxContainer/Panel/VBoxContainer"]
+modulate = Color( 1, 1, 1, 0 )
+margin_top = 535.0
+margin_right = 500.0
+margin_bottom = 615.0
+rect_min_size = Vector2( 0, 80 )
+
+[node name="retourMenuCont" type="HBoxContainer" parent="HBoxContainer/Panel/VBoxContainer"]
+margin_top = 619.0
+margin_right = 500.0
+margin_bottom = 659.0
+alignment = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="retourMenu" type="Button" parent="HBoxContainer/Panel/VBoxContainer/retourMenuCont"]
+margin_left = 150.0
+margin_right = 350.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 200, 40 )
+text = "Retour au menu"
+
 [node name="ButtonFermer" type="Button" parent="."]
 margin_left = 390.0
 margin_right = 456.0
@@ -254,4 +279,5 @@ __meta__ = {
 [connection signal="value_changed" from="HBoxContainer/Panel/VBoxContainer/HBoxMusique/SliderMusique" to="." method="_on_SliderMusique_value_changed"]
 [connection signal="value_changed" from="HBoxContainer/Panel/VBoxContainer/HBoxSfx/SliderSfx" to="." method="_on_SliderSfx_value_changed"]
 [connection signal="gui_input" from="HBoxContainer/Panel/VBoxContainer/HBoxContainer/ResetTailleEcrand" to="." method="_on_ResetTailleEcrand_gui_input"]
+[connection signal="pressed" from="HBoxContainer/Panel/VBoxContainer/retourMenuCont/retourMenu" to="." method="_on_retourMenu_pressed"]
 [connection signal="pressed" from="ButtonFermer" to="." method="_on_ButtonFermer_pressed"]
