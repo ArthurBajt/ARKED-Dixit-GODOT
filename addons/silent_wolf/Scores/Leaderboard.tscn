@@ -84,5 +84,6 @@ margin_bottom = 303.0
 margin_left = 582.0
 margin_right = 1281.0
 margin_bottom = 118.0
+action_mode = 0
 text = "Close Leaderboard"
 [connection signal="pressed" from="Board/CloseButtonContainer/CloseButton" to="." method="_on_CloseButton_pressed"]

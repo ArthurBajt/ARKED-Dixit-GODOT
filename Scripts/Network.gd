@@ -52,7 +52,7 @@ const dataStruct = {nom = "",
 					carteVotee = null,
 					points = 0,
 					estConteur = false,
-					couleur = Globals.COULEUR_DEFAUT,
+					#couleur = Globals.COULEUR_DEFAUT,
 					objectif = 30
 					}
 
@@ -520,16 +520,26 @@ remotesync func getVoteurs(nomCarte):
 
 #=================================
 # 	leaderboard
+func getNom():
+	var tab = []
+	for user in self.utilisateurs:
+		tab.append(self.utilisateurs[user])
+	print(tab[0])
+	return tab[0].nom
 
 func load_leaderboard_screen():
 	get_tree().change_scene("res://addons/silent_wolf/Scores/Leaderboard.tscn")
 
 func _input(event):
-	if (event.type == ( InputEventKey.scancode == KEY_T) ):
-		Globals.set_player_name(joueurs)
-		SilentWolf.Scores.persist_score(Globals.player_name, Globals.total_score)
+	if (event is  InputEventKey and event.scancode == KEY_T ):
+		SilentWolf.Scores.persist_score(getNom(), getNom())
 		SilentWolf.Scores.get_high_scores()
 		load_leaderboard_screen()
+
+
+
+
+
 func pretPourTour():
 	rpc("joueurPretPourTour", Network.id)
 

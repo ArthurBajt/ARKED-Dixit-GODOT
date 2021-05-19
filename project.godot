@@ -75,6 +75,7 @@ R="*res://Scripts/R.gd"
 Debug="*res://Scripts/Debug.gd"
 Transition="*res://Scripts/Transition.gd"
 Music="*res://Scripts/Music.gd"
+SilentWolf="*res://addons/silent_wolf/SilentWolf.gd"
 
 [display]
 

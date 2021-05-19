@@ -54,7 +54,7 @@ func setDebug(value: bool):
 	"game_version": "0.0.0"
 	})
 	SilentWolf.configure_scores({
-	"open_scene_on_close": "res://Scenes/Splash.tscn"
+	"open_scene_on_close": "res://Scenes/Joueur/CameraJoueur.tscn"
 	})
 
 
