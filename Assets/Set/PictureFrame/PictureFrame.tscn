@@ -87,6 +87,3 @@ material/0 = SubResource( 5 )
 [node name="Image" type="MeshInstance" parent="."]
 mesh = ExtResource( 2 )
 material/0 = SubResource( 6 )
-
-[node name="Camera" type="Camera" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.363505, 1.14182 )

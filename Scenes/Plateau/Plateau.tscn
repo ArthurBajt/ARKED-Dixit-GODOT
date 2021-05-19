@@ -1,19 +1,15 @@
 [gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://Scenes/Plateau/Plateau.gd" type="Script" id=1]
-
-[sub_resource type="CubeMesh" id=1]
-size = Vector3( 1.75, 0.05, 1 )
+[ext_resource path="res://Assets/Set/TapisDeJeu/TapisDeJeu.escn" type="PackedScene" id=2]
 
 [node name="Plateau" type="Spatial"]
 script = ExtResource( 1 )
 
 [node name="Mesh" type="Spatial" parent="."]
 
-[node name="MeshInstance" type="MeshInstance" parent="Mesh"]
-transform = Transform( 3, 0, 0, 0, 1, 0, 0, 0, 3, 0, 0.026, 0 )
-mesh = SubResource( 1 )
-material/0 = null
+[node name="TapisDeJeu" parent="Mesh" instance=ExtResource( 2 )]
+transform = Transform( -4.5, 0, -3.93403e-07, 0, 4.5, 0, 3.93403e-07, 0, -4.5, 0, 0, 0 )
 
 [node name="RootCartes" type="Spatial" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.400442, 0 )
