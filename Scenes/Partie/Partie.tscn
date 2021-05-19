@@ -5,7 +5,7 @@
 [ext_resource path="res://Scenes/Partie/Mesh/MeshPartie.escn" type="PackedScene" id=3]
 [ext_resource path="res://Assets/Set/PictureFrame/PictureFrame.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Assets/Sprites/BGs/chevalier_loris.jpg" type="Image" id=5]
-[ext_resource path="res://Assets/Sprites/BGs/chevalier_léo.jpg" type="Image" id=6]
+[ext_resource path="res://Assets/Sprites/BGs/chevalier_leo.jpg" type="Image" id=6]
 [ext_resource path="res://Assets/Hdri/fireplace_1k.hdr" type="Texture" id=7]
 [ext_resource path="res://Assets/Set/Flag/Flag.tscn" type="PackedScene" id=8]
 

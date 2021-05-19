@@ -3,16 +3,17 @@
 importer="texture"
 type="StreamTexture"
 path.s3tc="res://.import/Metal007_1K_Metalness.jpg-f0c2c78e0a9b592b5ce16ccc984576d5.s3tc.stex"
+path.etc2="res://.import/Metal007_1K_Metalness.jpg-f0c2c78e0a9b592b5ce16ccc984576d5.etc2.stex"
 path.etc="res://.import/Metal007_1K_Metalness.jpg-f0c2c78e0a9b592b5ce16ccc984576d5.etc.stex"
 metadata={
-"imported_formats": [ "s3tc", "etc" ],
+"imported_formats": [ "s3tc", "etc2", "etc" ],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://Assets/Set/PictureFrame/Mesh/Metal007_1K_Metalness.jpg"
-dest_files=[ "res://.import/Metal007_1K_Metalness.jpg-f0c2c78e0a9b592b5ce16ccc984576d5.s3tc.stex", "res://.import/Metal007_1K_Metalness.jpg-f0c2c78e0a9b592b5ce16ccc984576d5.etc.stex" ]
+dest_files=[ "res://.import/Metal007_1K_Metalness.jpg-f0c2c78e0a9b592b5ce16ccc984576d5.s3tc.stex", "res://.import/Metal007_1K_Metalness.jpg-f0c2c78e0a9b592b5ce16ccc984576d5.etc2.stex", "res://.import/Metal007_1K_Metalness.jpg-f0c2c78e0a9b592b5ce16ccc984576d5.etc.stex" ]
 
 [params]
 

@@ -3,16 +3,17 @@
 importer="texture"
 type="StreamTexture"
 path.s3tc="res://.import/Rock_9_Normal.jpg-d77a05b0a61a18b05c4a7cad189fc791.s3tc.stex"
+path.etc2="res://.import/Rock_9_Normal.jpg-d77a05b0a61a18b05c4a7cad189fc791.etc2.stex"
 path.etc="res://.import/Rock_9_Normal.jpg-d77a05b0a61a18b05c4a7cad189fc791.etc.stex"
 metadata={
-"imported_formats": [ "s3tc", "etc" ],
+"imported_formats": [ "s3tc", "etc2", "etc" ],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://Scenes/MenuPrincipal/Mesh/Rock_9_Normal.jpg"
-dest_files=[ "res://.import/Rock_9_Normal.jpg-d77a05b0a61a18b05c4a7cad189fc791.s3tc.stex", "res://.import/Rock_9_Normal.jpg-d77a05b0a61a18b05c4a7cad189fc791.etc.stex" ]
+dest_files=[ "res://.import/Rock_9_Normal.jpg-d77a05b0a61a18b05c4a7cad189fc791.s3tc.stex", "res://.import/Rock_9_Normal.jpg-d77a05b0a61a18b05c4a7cad189fc791.etc2.stex", "res://.import/Rock_9_Normal.jpg-d77a05b0a61a18b05c4a7cad189fc791.etc.stex" ]
 
 [params]
 
