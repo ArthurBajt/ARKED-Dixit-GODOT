@@ -61,9 +61,6 @@ margin_bottom = 48.0
 rect_min_size = Vector2( 250, 45 )
 custom_fonts/font = ExtResource( 2 )
 text = "Un nom"
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="ImgPseudoAleatoire" type="TextureRect" parent="VBoxContainer/HBoxPseudo"]
 margin_left = 604.0
