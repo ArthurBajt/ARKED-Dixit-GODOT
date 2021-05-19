@@ -1,0 +1,13 @@
+[remap]
+
+importer="image"
+type="Image"
+path="res://.import/chevalier_Theo.jpg-19fb65cddc000b414fb62964864966b7.image"
+
+[deps]
+
+source_file="res://Assets/Sprites/BGs/chevalier_Theo.jpg"
+dest_files=[ "res://.import/chevalier_Theo.jpg-19fb65cddc000b414fb62964864966b7.image" ]
+
+[params]
+

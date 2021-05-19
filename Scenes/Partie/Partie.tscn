@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://Scenes/Partie/Partie.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/Plateau/Plateau.tscn" type="PackedScene" id=2]
@@ -10,6 +10,9 @@
 [ext_resource path="res://Assets/Set/Flag/Flag.tscn" type="PackedScene" id=8]
 [ext_resource path="res://Assets/Sprites/BGs/Roi_JCM.jpg" type="Image" id=9]
 [ext_resource path="res://Assets/Sprites/BGs/Roi_Carron.jpg" type="Image" id=10]
+[ext_resource path="res://Assets/Sprites/BGs/chevalier_Theo.jpg" type="Image" id=11]
+[ext_resource path="res://Assets/Sprites/BGs/chevalier_Arthur.jpg" type="Image" id=12]
+[ext_resource path="res://Assets/Set/Table/Table.escn" type="PackedScene" id=13]
 
 [sub_resource type="PanoramaSky" id=1]
 panorama = ExtResource( 7 )
@@ -24,34 +27,68 @@ musiquePath = "res://Assets/Songs/pippin-the-hunchback-kevin-macleod.ogg"
 
 [node name="Scene" type="Spatial" parent="."]
 
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Scene"]
+environment = SubResource( 2 )
+
 [node name="Mesh" type="Spatial" parent="Scene"]
 
-[node name="ChevalierLoris" parent="Scene/Mesh" instance=ExtResource( 4 )]
+[node name="Murs" type="Spatial" parent="Scene/Mesh"]
+
+[node name="ChevalierLoris" parent="Scene/Mesh/Murs" instance=ExtResource( 4 )]
 transform = Transform( -2.5, 0, -2.18557e-07, 0, 2.5, 0, 2.18557e-07, 0, -2.5, -3.18777, 2.894, 5.99 )
 image = ExtResource( 5 )
 
-[node name="ChevalierLeo" parent="Scene/Mesh" instance=ExtResource( 4 )]
+[node name="ChevalierLeo" parent="Scene/Mesh/Murs" instance=ExtResource( 4 )]
 transform = Transform( -2.5, 0, -3.77489e-07, 0, 2.5, 0, 3.77489e-07, 0, -2.5, 2.8442, 2.784, 5.99 )
 image = ExtResource( 6 )
 
-[node name="PictureFrame" parent="Scene/Mesh" instance=ExtResource( 4 )]
+[node name="Roi_Marty" parent="Scene/Mesh/Murs" instance=ExtResource( 4 )]
 transform = Transform( -4, 0, -3.57628e-07, 0, 4, 0, 3.57628e-07, 0, -4, 0.973296, 4.13028, 5.99 )
 image = ExtResource( 9 )
 
-[node name="PictureFrame2" parent="Scene/Mesh" instance=ExtResource( 4 )]
+[node name="Roi_Carron" parent="Scene/Mesh/Murs" instance=ExtResource( 4 )]
 transform = Transform( -4, 0, -3.57628e-07, 0, 4, 0, 3.57628e-07, 0, -4, -1.31212, 4.13028, 5.99 )
 image = ExtResource( 10 )
 
-[node name="Flag" parent="Scene/Mesh" instance=ExtResource( 8 )]
+[node name="ChevalierTheo" parent="Scene/Mesh/Murs" instance=ExtResource( 4 )]
+transform = Transform( -1.09278e-07, 0, 2.5, 0, 2.5, 0, -2.5, 0, -1.09278e-07, -5.98515, 3.03476, -0.493286 )
+image = ExtResource( 11 )
+
+[node name="PictureFrame4" parent="Scene/Mesh/Murs" instance=ExtResource( 4 )]
+transform = Transform( 3.27835e-07, 0, -2.5, 0, 2.5, 0, 2.5, 0, 3.27835e-07, 5.99179, 3.03476, -0.493286 )
+
+[node name="ChevalierArthur" parent="Scene/Mesh/Murs" instance=ExtResource( 4 )]
+transform = Transform( 2.5, 0, 0, 0, 2.5, 0, 0, 0, 2.5, 0, 2.98582, -5.99098 )
+image = ExtResource( 12 )
+
+[node name="Flag" parent="Scene/Mesh/Murs" instance=ExtResource( 8 )]
 transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 1.45702, 3.33916, 5.98526 )
 
-[node name="Flag2" parent="Scene/Mesh" instance=ExtResource( 8 )]
+[node name="Flag2" parent="Scene/Mesh/Murs" instance=ExtResource( 8 )]
 transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -1.71899, 3.33916, 5.98526 )
 
-[node name="MeshPartie" parent="Scene/Mesh" instance=ExtResource( 3 )]
+[node name="Flag7" parent="Scene/Mesh/Murs" instance=ExtResource( 8 )]
+transform = Transform( 1, 0, 1.74846e-07, 0, 1, 0, -1.74846e-07, 0, 1, -1.71899, 4.15128, -5.98741 )
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="Scene/Mesh"]
-environment = SubResource( 2 )
+[node name="Flag8" parent="Scene/Mesh/Murs" instance=ExtResource( 8 )]
+transform = Transform( 1, 0, 1.74846e-07, 0, 1, 0, -1.74846e-07, 0, 1, 1.45702, 4.15128, -5.98741 )
+
+[node name="Flag3" parent="Scene/Mesh/Murs" instance=ExtResource( 8 )]
+transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -5.98893, 4.15128, 1.88212 )
+
+[node name="Flag4" parent="Scene/Mesh/Murs" instance=ExtResource( 8 )]
+transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -5.98893, 4.15128, -2.82929 )
+
+[node name="Flag5" parent="Scene/Mesh/Murs" instance=ExtResource( 8 )]
+transform = Transform( 1.31134e-07, 0, -1, 0, 1, 0, 1, 0, 1.31134e-07, 5.99365, 4.15128, -2.82929 )
+
+[node name="Flag6" parent="Scene/Mesh/Murs" instance=ExtResource( 8 )]
+transform = Transform( 1.31134e-07, 0, -1, 0, 1, 0, 1, 0, 1.31134e-07, 5.99365, 4.15128, 1.88212 )
+
+[node name="Table" parent="Scene/Mesh" instance=ExtResource( 13 )]
+transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 0, 0 )
+
+[node name="MeshPartie" parent="Scene/Mesh" instance=ExtResource( 3 )]
 
 [node name="Lights" type="Spatial" parent="Scene"]
 
@@ -76,7 +113,7 @@ omni_attenuation = 1.8025
 [node name="Pions" type="Spatial" parent="Scene"]
 
 [node name="Plateau" parent="Scene" instance=ExtResource( 2 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.04439, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.20111, 0 )
 
 [node name="Camera" type="Camera" parent="Scene"]
 transform = Transform( -1, 3.25841e-07, 5.30863e-14, 0, -1.62921e-07, 1, 3.25841e-07, 1, 1.62921e-07, 0, 3.28625, 0 )

@@ -3,7 +3,7 @@
 [ext_resource path="res://Scenes/Plateau/Plateau.gd" type="Script" id=1]
 
 [sub_resource type="CubeMesh" id=1]
-size = Vector3( 1.75, 0.05, 1 )
+size = Vector3( 1, 0.05, 0.5 )
 
 [node name="Plateau" type="Spatial"]
 script = ExtResource( 1 )
