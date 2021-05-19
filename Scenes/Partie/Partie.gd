@@ -12,6 +12,7 @@ export(String, FILE, "*.ogg") var musiquePath
 
 
 func _ready():
+	
 	Music.setMusic(self.musiquePath)
 	_instancierJoueurs()
 	_placerJoueurs()

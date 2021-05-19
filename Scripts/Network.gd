@@ -52,7 +52,8 @@ const dataStruct = {nom = "",
 					carteVotee = null,
 					points = 0,
 					estConteur = false,
-					couleur = Globals.COULEUR_DEFAUT
+					couleur = Globals.COULEUR_DEFAUT,
+					objectif = 30
 					}
 
 
@@ -383,6 +384,16 @@ remotesync func verifEtats(etat, idClient):
 
 # =================================================
 # Couleur Joueur
+
+func changeObjectif(nbPoint):
+	rpc("objectifDeclare",nbPoint)
+
+remotesync func objectifDeclare(nbPoint):
+	self.data.objectif = nbPoint
+	for idJoueur in utilisateurs:
+		self.utilisateurs[idJoueur].objectif = nbPoint
+
+
 signal joueurChangeCouleur(id, coul)
 func setCouleurJoueur(idJoueur: int, coul: Color):
 	rpc("couleurDeclare", id, coul)

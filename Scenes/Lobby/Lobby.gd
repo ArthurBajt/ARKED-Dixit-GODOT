@@ -8,7 +8,8 @@ onready var buttonPret = $Control/MainLayout/VBoxContainer/ButtonPret
 onready var buttonLancer = $Control/MainLayout/VBoxContainer/ButtonLancer
 
 onready var selectionCouleur = $Control/MainLayout/VBoxContainer/VBoxContainer/LayoutCouleur/CouleurSelection
-
+onready var NbPoint = $Control/MainLayout/VBoxContainer/VBoxContainer/changePoint/LayoutPoint/NbPoint
+onready var changePoint = $Control/MainLayout/VBoxContainer/VBoxContainer/changePoint
 var peutLancer: bool = false
 
 var joueurs: Dictionary = {}
@@ -20,6 +21,7 @@ func _ready():
 	Network.connect("decoJoueur", self, "decoJoueur")
 	Network.connect("joueurChangeCouleur", self, "on_joueurChangeCouleur")
 	buttonLancer.visible = Network.id == 1
+	changePoint.visible = Network.id == 1
 	
 	$Control/LayoutListe/VBoxContainer/LabelListe.text = R.getString("lobbyListe")
 	$Control/MainLayout/VBoxContainer/VBoxContainer/LabelCouleur.text = R.getString("lobbyCouleur")
@@ -116,3 +118,23 @@ func _on_ButtonCouleurSuiv_pressed():
 		var index: int = arr.find(self.selectionCouleur.color)
 		index = (index + 1) % arr.size()
 		Network.setCouleurJoueur(Network.id, arr[index])
+
+
+func _on_ButtonPointPrec_pressed():
+	var nbPoints = int(NbPoint.text)
+	if nbPoints <=10:
+		NbPoint.set_text("100")
+	else:
+		nbPoints-=5
+		NbPoint.set_text(String(nbPoints))
+		
+	Network.changeObjectif(int(NbPoint.text))
+	
+func _on_ButtonPointSuiv_pressed():
+	var nbPoints = int(NbPoint.text)
+	if nbPoints >=100:
+		NbPoint.set_text("10")
+	else:
+		nbPoints+=5
+		NbPoint.set_text(String(nbPoints))
+	Network.changeObjectif(int(NbPoint.text))
