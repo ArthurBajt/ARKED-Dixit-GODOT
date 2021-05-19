@@ -37,6 +37,7 @@ const couleursValeurs: Dictionary = {
 	couleurs.JAUNE: Color("#ffff00"),
 }
 
+const COULEUR_DEFAUT: Color = Color("#ff0000")
 
 func _ready():
 	self.options = self.NODE_OPTIONS.instance()
