@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://Scenes/Partie/Partie.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/Plateau/Plateau.tscn" type="PackedScene" id=2]
@@ -13,6 +13,8 @@
 [ext_resource path="res://Assets/Sprites/BGs/chevalier_Theo.jpg" type="Image" id=11]
 [ext_resource path="res://Assets/Sprites/BGs/chevalier_Arthur.jpg" type="Image" id=12]
 [ext_resource path="res://Assets/Set/Table/Table.escn" type="PackedScene" id=13]
+[ext_resource path="res://Assets/Set/Chest/Chest.escn" type="PackedScene" id=14]
+[ext_resource path="res://Assets/Set/Column/Column.escn" type="PackedScene" id=15]
 
 [sub_resource type="PanoramaSky" id=1]
 panorama = ExtResource( 7 )
@@ -84,6 +86,31 @@ transform = Transform( 1.31134e-07, 0, -1, 0, 1, 0, 1, 0, 1.31134e-07, 5.99365, 
 
 [node name="Flag6" parent="Scene/Mesh/Murs" instance=ExtResource( 8 )]
 transform = Transform( 1.31134e-07, 0, -1, 0, 1, 0, 1, 0, 1.31134e-07, 5.99365, 4.15128, 1.88212 )
+
+[node name="Accesoires" type="Spatial" parent="Scene/Mesh"]
+
+[node name="Chest" parent="Scene/Mesh/Accesoires" instance=ExtResource( 14 )]
+transform = Transform( 0.956727, 0, 0.290986, 0, 1, 0, -0.290986, 0, 0.956727, 2.29851, 2.38419e-07, 4.94311 )
+
+[node name="Chest2" parent="Scene/Mesh/Accesoires" instance=ExtResource( 14 )]
+transform = Transform( -0.929841, 0, -0.367962, 0, 1, 0, 0.367962, 0, -0.929841, -4.70003, 2.38419e-07, -2.29952 )
+
+[node name="Chest3" parent="Scene/Mesh/Accesoires" instance=ExtResource( 14 )]
+transform = Transform( -0.0432531, 0, -0.999064, 0, 1, 0, 0.999064, 0, -0.0432531, -3.12716, 2.38419e-07, -4.86238 )
+
+[node name="Colones" type="Spatial" parent="Scene/Mesh"]
+
+[node name="Column4" parent="Scene/Mesh/Colones" instance=ExtResource( 15 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4.642, 0, -4.595 )
+
+[node name="Column3" parent="Scene/Mesh/Colones" instance=ExtResource( 15 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 4.642, 0, -4.595 )
+
+[node name="Column2" parent="Scene/Mesh/Colones" instance=ExtResource( 15 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 4.642, 0, 4.595 )
+
+[node name="Column" parent="Scene/Mesh/Colones" instance=ExtResource( 15 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4.64166, -4.76837e-07, 4.59537 )
 
 [node name="Table" parent="Scene/Mesh" instance=ExtResource( 13 )]
 transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 0, 0 )
