@@ -527,12 +527,19 @@ func getNom():
 	print(tab[0])
 	return tab[0].nom
 
+func getScore():
+	var tab = []
+	for user in self.utilisateurs:
+		tab.append(self.utilisateurs[user])
+	print(tab[0])
+	return tab[0].points
+
 func load_leaderboard_screen():
 	get_tree().change_scene("res://addons/silent_wolf/Scores/Leaderboard.tscn")
 
 func _input(event):
 	if (event is  InputEventKey and event.scancode == KEY_T ):
-		SilentWolf.Scores.persist_score(getNom(), getNom())
+		SilentWolf.Scores.persist_score(getNom(), getScore())
 		SilentWolf.Scores.get_high_scores()
 		load_leaderboard_screen()
 
