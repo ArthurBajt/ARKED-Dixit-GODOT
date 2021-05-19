@@ -93,13 +93,19 @@ func _on_ButtonRejoindre_pressed():
 
 
 func _on_EditPseudo_text_changed():
+	self.editPseudo.text = self.editPseudo.text.replace("\n", "")
 	self.verifPseudo()
 	self.verifIp()
 
 
 func _on_EditIp_text_changed():
+	self.editIp.text = self.editIp.text.replace("\n", "")
 	self.verifPseudo()
 	self.verifIp()
+
+
+func _on_IpHost_text_changed():
+	self.IpHost.text = self.IpHost.text.replace("\n", "")
 
 
 func _on_ButtonHost_pressed():
@@ -110,6 +116,9 @@ func _on_ButtonHost_pressed():
 
 func _on_ButtonFermer_pressed():
 	self.visible = false
+
+
+
 
 
 

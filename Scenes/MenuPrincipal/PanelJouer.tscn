@@ -130,6 +130,7 @@ margin_right = 248.0
 margin_bottom = 45.0
 rect_min_size = Vector2( 200, 45 )
 custom_fonts/font = ExtResource( 2 )
+context_menu_enabled = false
 
 [node name="ButtonCreer" type="Button" parent="VBoxContainer/HBoxLancer/VBoxCreer"]
 margin_top = 317.0
@@ -246,6 +247,7 @@ text = "X"
 
 [connection signal="text_changed" from="VBoxContainer/HBoxPseudo/EditPseudo" to="." method="_on_EditPseudo_text_changed"]
 [connection signal="gui_input" from="VBoxContainer/HBoxPseudo/ImgPseudoAleatoire" to="." method="_on_ImgPseudoAleatoire_gui_input"]
+[connection signal="text_changed" from="VBoxContainer/HBoxLancer/VBoxCreer/HBoxContainer/IpHost" to="." method="_on_IpHost_text_changed"]
 [connection signal="pressed" from="VBoxContainer/HBoxLancer/VBoxCreer/ButtonCreer" to="." method="_on_ButtonCreer_pressed"]
 [connection signal="text_changed" from="VBoxContainer/HBoxLancer/VBoxRejoindre/HBoxContainer/EditIp" to="." method="_on_EditIp_text_changed"]
 [connection signal="pressed" from="VBoxContainer/HBoxLancer/VBoxRejoindre/ButtonRejoindre" to="." method="_on_ButtonRejoindre_pressed"]
