@@ -110,24 +110,6 @@ remotesync func deconnexion_server():
 	
 	retour_menu()
 
-#func retourMenuClient(id):
-#
-#	utilisateurs.erase(id)
-#	emit_signal("decoJoueur", id)
-#	retour_menu()
-#
-#func _deconnexion_server():
-#	erreur_connexion = R.getString("networkErrHoteQuitte")
-#	print(erreur_connexion)
-#
-#
-#	get_tree().set_network_peer(null)
-#
-#	self.data={}
-#	self.data=self.dataStruct.duplicate()
-#	self.utilisateurs={}
-#
-#	retour_menu()
 
 remote func _lobby_declareUtilisateur(idUtilisateur: int, curentData:Dictionary ):
 	""" Quand un utilisateur se déclare,
