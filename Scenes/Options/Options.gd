@@ -90,11 +90,17 @@ func _on_ResetTailleEcrand_gui_input(event):
 
 
 func _on_retourMenu_pressed():
-	if Network.id == 1:
-		Network.rpc("deconnexion_server")
+
+	if Network.id !=1:
+		Network.peerClient.close_connection()
 	else:
-		Network.rpc("deconnexion_client",Network.id)
-		Network.retour_menu()
+		Network.peerServ.close_connection()
+		
+	Network.data={}
+	Network.data=Network.dataStruct.duplicate()
+	Network.utilisateurs={}
+	
+	Network.retour_menu()
 	cache()
 
 

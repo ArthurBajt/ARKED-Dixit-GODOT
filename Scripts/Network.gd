@@ -5,6 +5,8 @@ const DEFAUT_PORT: int = 31400
 const MAX_UTILISATEURS: int = 99
 
 
+var peerServ
+var peerClient
 var id: int = 0
 var nom = ""
 var erreur_connexion
@@ -24,19 +26,19 @@ func creerServeur(player_name, ip):
 #	dataStruct.nom = player_name
 
 	self.nom = player_name
-	var peer = NetworkedMultiplayerENet.new()
-	peer.set_bind_ip(ip)
-	peer.create_server(DEFAUT_PORT, MAX_UTILISATEURS)
-	get_tree().set_network_peer(peer)
+	peerServ = NetworkedMultiplayerENet.new()
+	peerServ.set_bind_ip(ip)
+	peerServ.create_server(DEFAUT_PORT, MAX_UTILISATEURS)
+	get_tree().set_network_peer(peerServ)
 	_lobby_se_declarer()
 	
 func rejoindreServeur(player_name, ipHote):
 	""" Fait rejoindre un serveur à un utilisateur"""
 #	dataStruct.nom = player_name
 	self.nom = player_name
-	var peer = NetworkedMultiplayerENet.new()
-	peer.create_client(ipHote, DEFAUT_PORT)
-	get_tree().set_network_peer(peer)
+	peerClient = NetworkedMultiplayerENet.new()
+	peerClient.create_client(ipHote, DEFAUT_PORT)
+	get_tree().set_network_peer(peerClient)
 
 
 # =================================================
@@ -89,14 +91,39 @@ func retour_menu():
 	Transition.transitionVers("res://Scenes/MenuPrincipal/MenuPrincipal.tscn")
 
 signal decoJoueur(id)
-remotesync func deconnexion_client(id):
+func deconnexion_client(id):
+	
+	print("c'est l'id : ", id)
 	
 	utilisateurs.erase(id)
+
+	for usId in utilisateurs: 
+		print(usId)
+		
+	var saveEtat = self.data.etat
+	match saveEtat:
+		Globals.EtatJoueur.SELECTION_CARTE:
+			self.verifEtat(Globals.EtatJoueur.ATTENTE_SELECTIONS)
+		Globals.EtatJoueur.ATTENTE_SELECTIONS:
+			self.verifEtat(saveEtat)
+		Globals.EtatJoueur.VOTE:
+			self.verifEtat(Globals.EtatJoueur.ATTENTE_VOTES)
+		Globals.EtatJoueur.ATTENTE_VOTES:
+			self.verifEtat(saveEtat)
+		Globals.EtatJoueur.VOIR_RESULTAT:
+			self.verifEtat(Globals.EtatJoueur.ATTENTE_PROCHAINE_MANCHE)
+		Globals.EtatJoueur.ATTENTE_PROCHAINE_MANCHE:
+			self.verifEtat(saveEtat)
+
+	
+		
+	
 	emit_signal("decoJoueur", id)
+	
+	
 
 
-
-remotesync func deconnexion_server():
+func deconnexion_server():
 	if self.id!=1:
 		erreur_connexion = R.getString("networkErrHoteQuitte")
 
@@ -109,6 +136,7 @@ remotesync func deconnexion_server():
 	self.utilisateurs={}
 	
 	retour_menu()
+
 
 
 remote func _lobby_declareUtilisateur(idUtilisateur: int, curentData:Dictionary ):
