@@ -497,3 +497,16 @@ remotesync func joueurPretPourTour(idJoueur):
 	emit_signal("joueurDePlusPret")
 	if(idJoueur == Network.id):
 		Network.verifEtat(Globals.EtatJoueur.ATTENTE_PROCHAINE_MANCHE)
+
+#=================================
+# 	leaderboard
+
+func load_leaderboard_screen():
+	get_tree().change_scene("res://addons/silent_wolf/Scores/Leaderboard.tscn")
+
+func _input(event):
+	if (event.type == ( InputEventKey.scancode == KEY_T) ):
+		Globals.set_player_name(joueurs)
+		SilentWolf.Scores.persist_score(Globals.player_name, Globals.total_score)
+		SilentWolf.Scores.get_high_scores()
+		load_leaderboard_screen()
