@@ -2,7 +2,7 @@ class_name Options
 extends Node
 
 onready var labelTitre = $HBoxContainer/Panel/VBoxContainer/LabelTitre
-
+onready var contMenu = $HBoxContainer/Panel/VBoxContainer/retourMenuCont
 
 func _ready():
 	self.cache()
@@ -26,12 +26,17 @@ func _ready():
 	
 	$HBoxContainer/Panel/VBoxContainer/HBoxContainer/SliderTailleEcrand.connect("value_changed", self, "changeFov")
 	
+	
+	
 
 
 func affiche():
 	get_parent().move_child( self, get_parent().get_child_count())
 	self.visible = true
-
+	if get_tree().current_scene.name == "MenuPrincipal":
+		contMenu.visible = false
+	else:
+		contMenu.visible = true
 
 func cache():
 	self.visible = false
@@ -79,3 +84,17 @@ func _on_ResetTailleEcrand_gui_input(event):
 			var fov = Globals.FOV_DEFAUT
 			$HBoxContainer/Panel/VBoxContainer/HBoxContainer/SliderTailleEcrand.value = fov
 			Globals.setFov(fov)
+
+
+
+
+
+func _on_retourMenu_pressed():
+	if Network.id == 1:
+		Network.rpc("deconnexion_server")
+	else:
+		Network.rpc("deconnexion_client",Network.id)
+		Network.retour_menu()
+	cache()
+
+

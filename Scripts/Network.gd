@@ -15,9 +15,9 @@ var withHost = false
 func _ready():
 # warning-ignore:return_value_discarded
 	get_tree().connect("connected_to_server", self, "_lobby_se_declarer")
-	get_tree().connect("connection_failed", self, "_retour_menu")
-	get_tree().connect("server_disconnected", self, "_deconnexion_server")
-	get_tree().connect("network_peer_disconnected", self, "_deconnexion_client")
+	get_tree().connect("connection_failed", self, "retour_menu")
+	get_tree().connect("server_disconnected", self, "deconnexion_server")
+	get_tree().connect("network_peer_disconnected", self, "deconnexion_client")
 
 
 func creerServeur(player_name, ip):
@@ -64,7 +64,8 @@ const dataStruct = {nom = "",
 					carteVotee = null,
 					points = 0,
 					estConteur = false,
-					couleur = Globals.couleursValeurs[ Globals.couleurs.ROUGE ]
+					couleur = Globals.COULEUR_DEFAUT,
+					objectif = 30
 					}
 var VuPlateau
 
@@ -105,26 +106,31 @@ func _lobby_se_declarer():
 		
 
 
-func _retour_menu():
+func retour_menu():
 	Transition.transitionVers("res://Scenes/MenuPrincipal/MenuPrincipal.tscn")
 
 signal decoJoueur(id)
-func _deconnexion_client(id):
+remotesync func deconnexion_client(id):
 	
 	utilisateurs.erase(id)
 	emit_signal("decoJoueur", id)
-	
-func _deconnexion_server():
-	erreur_connexion = R.getString("networkErrHoteQuitte")
-	print(erreur_connexion)
+
+
+
+remotesync func deconnexion_server():
+	if self.id!=1:
+		erreur_connexion = R.getString("networkErrHoteQuitte")
+
 
 	
 	get_tree().set_network_peer(null)
 
+	self.data={}
 	self.data=self.dataStruct.duplicate()
 	self.utilisateurs={}
 	
-	_retour_menu()
+	retour_menu()
+
 
 remote func _lobby_declareUtilisateur(idUtilisateur: int, curentData:Dictionary ):
 	""" Quand un utilisateur se déclare,
@@ -184,8 +190,6 @@ remotesync func _lobby_lancePartie():
 func assigneCouleur():
 
 
-# warning-ignore:unused_variable
-	var i=0
 	var tabTemp=[]
 	for usId in utilisateurs:
 		tabTemp.append(usId)
@@ -265,18 +269,18 @@ remotesync func joueurVoteCarte(nomCarte,idJoueur):
 # =================================================
 # Cartes
 
-signal joueurApiocherCarte(id, carte)
+signal joueurApiocherCarte(id, carte, coef)
 
-func joueurPioche(idJoueur: int, carte: String):
-	rpc("_joueurPiocheCarte", idJoueur, carte)
+func joueurPioche(idJoueur: int, carte: String, coef: int):
+	rpc("_joueurPiocheCarte", idJoueur, carte,coef)
 
 
 
-remotesync func _joueurPiocheCarte(idJoueur: int, carte: String):
+remotesync func _joueurPiocheCarte(idJoueur: int, carte: String, coef: int):
 	if idJoueur == id:
 		self.data.main = self.data.main + [carte]
 	utilisateurs[idJoueur].main = utilisateurs[idJoueur].main + [carte]
-	emit_signal("joueurApiocherCarte", idJoueur, carte)
+	emit_signal("joueurApiocherCarte", idJoueur, carte,coef)
 
 # =================================================
 # Plateau
@@ -288,8 +292,8 @@ func posercarte(idJoueur: int, carte: String):
 	rpc("appliquePoseCarte", idJoueur, carte)
 	
 remotesync func appliquePoseCarte(idJoueur: int, carte: String):
+	self.data.cartesPlateau[idJoueur] = carte
 	if idJoueur == self.id:
-		self.data.cartesPlateau[idJoueur] = carte
 		self.data.main.erase(carte)
 	
 	for jId in self.utilisateurs:
@@ -405,6 +409,16 @@ remotesync func verifEtats(etat, idClient):
 
 # =================================================
 # Couleur Joueur
+
+func changeObjectif(nbPoint):
+	rpc("objectifDeclare",nbPoint)
+
+remotesync func objectifDeclare(nbPoint):
+	self.data.objectif = nbPoint
+	for idJoueur in utilisateurs:
+		self.utilisateurs[idJoueur].objectif = nbPoint
+
+
 signal joueurChangeCouleur(id, coul)
 func setCouleurJoueur(idJoueur: int, coul: Color):
 	rpc("couleurDeclare", id, coul)

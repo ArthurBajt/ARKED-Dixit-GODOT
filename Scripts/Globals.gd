@@ -39,6 +39,7 @@ const couleursValeurs: Dictionary = {
 	couleurs.JAUNE: Color("#ffff00"),
 }
 
+const COULEUR_DEFAUT: Color = Color("#ff0000")
 
 func _ready():
 	self.options = self.NODE_OPTIONS.instance()
@@ -60,17 +61,23 @@ func quitter():
 const NODE_OPTIONS = preload("res://Scenes/Options/Options.tscn")
 var options: Options
 
+func _input(event):
+	# Pour afficher les options
+	if event is InputEventKey:
+		if event.pressed and event.scancode == KEY_ESCAPE:
+			if self.options.visible==true:
+				self.options.cache()
+			else:
+				self.options.affiche()
+				
 func optionAffiche():
 	""" Si on fait une Ui pour des options """
 	self.options.affiche()
-	pass
 
 
 func optionCache():
 	""" Si on fait une Ui pour des options, on la cache. """
 	self.options.cache()
-	pass
-
 #======================
 #	Fov dynamique pour diff ecrand
 

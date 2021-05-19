@@ -114,3 +114,7 @@ func AjoutePion(pion):
 	pion.transform.origin.x = self.global_transform.origin.x
 	pion.transform.origin.y = self.global_transform.origin.y
 	pion.transform.origin.z = self.global_transform.origin.z + (0.05 * -(self.pionsDessus.size() - 1))
+	
+func afficheEffets():
+	if(coef == 2):
+		$ParticulesRoot/CPUParticles.emitting = true

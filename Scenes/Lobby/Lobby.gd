@@ -2,7 +2,7 @@ extends Node
 
 const NODE_INFOJOUEUR = preload("res://Scenes/Lobby/InfoJoueur.tscn")
 
-onready var layoutJoueur = $Control/HBoxContainer/LayoutJoueur
+onready var layoutJoueur = $Control/LayoutListe/VBoxContainer/LayoutJoueurs
 
 onready var buttonPret = $Control/HBoxContainer/LayoutBtn/ButtonPret
 onready var buttonLancer = $Control/HBoxContainer/LayoutBtn/ButtonLancer
@@ -13,6 +13,9 @@ onready var buttonDroit = $Control/HBoxContainer/LayoutBtn/HBoxContainer/ButtonC
 
 onready var selectionCouleur = $Control/HBoxContainer/LayoutBtn/HBoxContainer/CouleurSelection
 
+onready var selectionCouleur = $Control/MainLayout/VBoxContainer/VBoxContainer/LayoutCouleur/CouleurSelection
+onready var NbPoint = $Control/MainLayout/VBoxContainer/VBoxContainer/changePoint/LayoutPoint/NbPoint
+onready var changePoint = $Control/MainLayout/VBoxContainer/VBoxContainer/changePoint
 var peutLancer: bool = false
 
 var joueurs: Dictionary = {}
@@ -24,8 +27,10 @@ func _ready():
 	Network.connect("decoJoueur", self, "decoJoueur")
 	Network.connect("joueurChangeCouleur", self, "on_joueurChangeCouleur")
 	buttonLancer.visible = Network.id == 1
+	changePoint.visible = Network.id == 1
 	
-	$Control/HBoxContainer/LayoutJoueur/LabelListe.text = R.getString("lobbyListe")
+	$Control/LayoutListe/VBoxContainer/LabelListe.text = R.getString("lobbyListe")
+	$Control/MainLayout/VBoxContainer/VBoxContainer/LabelCouleur.text = R.getString("lobbyCouleur")
 	
 	Network.setCouleurJoueur(Network.id, Network.getCouleursPossibles()[0])
 	
@@ -60,6 +65,8 @@ func joueurCo(idJoueur):
 	self.majPeutLancer()
 
 func decoJoueur(idJoueur):
+	print(idJoueur)
+	print("pouet")
 	if idJoueur in self.joueurs.keys():
 		self.layoutJoueur.remove_child(self.joueurs[idJoueur])
 		self.joueurs.erase(idJoueur)
@@ -126,6 +133,23 @@ func _on_ButtonCouleurSuiv_pressed():
 		var index: int = arr.find(self.selectionCouleur.color)
 		index = (index + 1) % arr.size()
 		Network.setCouleurJoueur(Network.id, arr[index])
+
+
+func _on_ButtonPointPrec_pressed():
+	var nbPoints = int(NbPoint.text)
+	if nbPoints <=10:
+		NbPoint.set_text("100")
+	else:
+		nbPoints-=5
+		NbPoint.set_text(String(nbPoints))
 		
-
-
+	Network.changeObjectif(int(NbPoint.text))
+	
+func _on_ButtonPointSuiv_pressed():
+	var nbPoints = int(NbPoint.text)
+	if nbPoints >=100:
+		NbPoint.set_text("10")
+	else:
+		nbPoints+=5
+		NbPoint.set_text(String(nbPoints))
+	Network.changeObjectif(int(NbPoint.text))

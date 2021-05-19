@@ -1,12 +1,13 @@
-[gd_scene load_steps=43 format=2]
+[gd_scene load_steps=47 format=2]
 
 [ext_resource path="res://Scenes/Carte/Carte.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/Carte/Mesh/CarteDixit.obj" type="ArrayMesh" id=2]
 [ext_resource path="res://Scenes/Carte/Mesh/shader.tres" type="Material" id=3]
 [ext_resource path="res://Scenes/Carte/AnimationTree.gd" type="Script" id=4]
+[ext_resource path="res://Assets/Sprites/star_01.png" type="Texture" id=5]
 
 [sub_resource type="QuadMesh" id=1]
-size = Vector2( 0.68, 1 )
+size = Vector2( 0.68, 0.98 )
 
 [sub_resource type="SpatialMaterial" id=2]
 flags_unshaded = true
@@ -1099,6 +1100,22 @@ graph_offset = Vector2( 41.4066, -1 )
 
 [sub_resource type="AnimationNodeStateMachinePlayback" id=38]
 
+[sub_resource type="SpatialMaterial" id=39]
+flags_transparent = true
+flags_unshaded = true
+params_billboard_mode = 3
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
+albedo_color = Color( 0.968627, 1, 0.596078, 1 )
+albedo_texture = ExtResource( 5 )
+
+[sub_resource type="QuadMesh" id=40]
+material = SubResource( 39 )
+
+[sub_resource type="Curve" id=41]
+_data = [ Vector2( 0, 0 ), 0.0, 0.0, 0, 0, Vector2( 0.488506, 1 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
+
 [node name="Carte" type="Spatial"]
 transform = Transform( 0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, 0, 0, 0 )
 script = ExtResource( 1 )
@@ -1140,6 +1157,18 @@ active = true
 parameters/playback = SubResource( 38 )
 script = ExtResource( 4 )
 
+[node name="ParticulesRoot" type="Spatial" parent="."]
+
+[node name="CPUParticles" type="CPUParticles" parent="ParticulesRoot"]
+transform = Transform( 0.999552, 0, -0.0299454, 0, 1, 0, 0.0299454, 0, 0.999552, 0, 0, 0 )
+emitting = false
+mesh = SubResource( 40 )
+emission_shape = 2
+emission_box_extents = Vector3( 0.309, 0.491, 1 )
+gravity = Vector3( 0, 0, 0 )
+scale_amount = 0.1
+scale_amount_random = 0.33
+scale_amount_curve = SubResource( 41 )
 [connection signal="input_event" from="Mesh/Area" to="." method="_on_Area_input_event"]
 [connection signal="mouse_entered" from="Mesh/Area" to="." method="_on_Area_mouse_entered"]
 [connection signal="mouse_exited" from="Mesh/Area" to="." method="_on_Area_mouse_exited"]

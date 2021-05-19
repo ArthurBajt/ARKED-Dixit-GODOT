@@ -100,7 +100,12 @@ func _input(event):
 				CAM_MID.current = false
 				self.myCam.current = true
 
-func piocheCarte(nomCarte: String):
+func _process(delta):
+	if(self.id == Network.id):
+		for carte in self.main:
+			carte.afficheEffets()
+
+func piocheCarte(nomCarte: String, coef: int):
 	var instanceCarte = NODE_CARTE.instance()
 	mainRoot.add_child(instanceCarte)
 	instanceCarte.init(nomCarte, estLocal(), estLocal())
@@ -111,6 +116,7 @@ func piocheCarte(nomCarte: String):
 	if estLocal:
 		instanceCarte.connect("carteCliquee", self, "localPoseCarte")
 	
+	instanceCarte.coef = coef
 	instanceCarte.estDansMain = true
 	instanceCarte.estSurPlateau =  false
 
@@ -121,7 +127,7 @@ func localPoseCarte(carte):
 		self.uiConteur.attendreSelections()
 		self.etat = Globals.EtatJoueur.ATTENTE_SELECTIONS
 	else:
-		self.uiConteur.afficheUiConteur()
+		self.uiConteur.afficheUiConteur(carte.nom)
 		self.etat= Globals.EtatJoueur.CHOIX_THEME
 		
 	Network.posercarte(self.id, carte.nom)
@@ -233,6 +239,7 @@ func nouvelleManche():
 		self.uiTourDePartie.resetNbPrets()
 		self.myCam.current = true
 		CAM_MID.current = false
+		self.ui.resetTheme()
 		self.uiConteur.attendreChoixConteur()
 	while(self.main.size() < 5):
 		pass

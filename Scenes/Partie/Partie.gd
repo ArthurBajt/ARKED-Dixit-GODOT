@@ -13,6 +13,7 @@ export(String, FILE, "*.ogg") var musiquePath
 
 
 func _ready():
+	
 	Music.setMusic(self.musiquePath)
 	_instancierJoueurs()
 	_placerJoueurs()
@@ -22,7 +23,8 @@ func _ready():
 
 	Network.connect("decoJoueur", self, "decoJoueur")
 
-	Network.connect("giveVoteurs",self,"afficheVoteurs")
+	Network.connect("voirRes", self, "affichePoseurs")
+	Network.connect("giveVoteurs",self, "afficheVoteurs")
 	Network.connect("prochaineManche", self, "nouvelleManche")
 
 class TrieJoueurs:
@@ -81,21 +83,35 @@ func PionJoueur(idJoueur, ScX,ScY,ScZ,PosX, PosY, PosZ, rX, rY, rZ):
 				pion.transform.origin.x=PosX
 				pion.transform.origin.y=PosY
 				pion.transform.origin.z=PosZ
-				pion.rotate_x(rX)
-				pion.rotate_x(rY)
-				pion.rotate_x(rZ)
 
 				$Scene/Pions.add_child(pion)
+				
+				pion.rotation.x = 0
+				pion.rotation.y = 0
+				pion.rotation.z = 0
+				pion.rotation_degrees.x = rX
+				pion.rotation_degrees.y = rY
+				pion.rotation_degrees.z = rZ
 				return pion
 
+func affichePoseurs():
+	print("Devrait afficher les poseurs")
+	for carte in plateau.cartes:
+		var jId
+		for j in Network.data.cartesPlateau:
+			if(Network.data.cartesPlateau[j] == carte.nom):
+				jId = j
+		PionJoueur(jId,0.05,0.05,0.05,carte.global_transform.origin.x,carte.global_transform.origin.y,carte.global_transform.origin.z+0.3,0.0,90,90)
+		carte.afficheEffets()
+		
 func afficheVoteurs(nomCarte,votants):
 	for carte in plateau.cartes:
 		if carte.nom == nomCarte:
 			var pion
 			for jId in votants:
-				pion = PionJoueur(jId,0.05,0.05,0.05,carte.positionCible.x,carte.positionCible.y,carte.positionCible.z,0.0,0.0,0.0)
+				pion = PionJoueur(jId,0.05,0.05,0.05,carte.positionCible.x,carte.positionCible.y+0.01,carte.positionCible.z,0.0,90,0.0)
 				carte.AjoutePion(pion)
-	
+
 func clearPions():
 	for pion in $Scene/Pions.get_children():
 		pion.queue_free()

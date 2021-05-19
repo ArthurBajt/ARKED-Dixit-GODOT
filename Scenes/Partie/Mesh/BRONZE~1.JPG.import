@@ -3,16 +3,17 @@
 importer="texture"
 type="StreamTexture"
 path.s3tc="res://.import/BRONZE~1.JPG-166e73dfe53cfcf6c0396d4849a8bc75.s3tc.stex"
+path.etc2="res://.import/BRONZE~1.JPG-166e73dfe53cfcf6c0396d4849a8bc75.etc2.stex"
 path.etc="res://.import/BRONZE~1.JPG-166e73dfe53cfcf6c0396d4849a8bc75.etc.stex"
 metadata={
-"imported_formats": [ "s3tc", "etc" ],
+"imported_formats": [ "s3tc", "etc2", "etc" ],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://Scenes/Partie/Mesh/BRONZE~1.JPG"
-dest_files=[ "res://.import/BRONZE~1.JPG-166e73dfe53cfcf6c0396d4849a8bc75.s3tc.stex", "res://.import/BRONZE~1.JPG-166e73dfe53cfcf6c0396d4849a8bc75.etc.stex" ]
+dest_files=[ "res://.import/BRONZE~1.JPG-166e73dfe53cfcf6c0396d4849a8bc75.s3tc.stex", "res://.import/BRONZE~1.JPG-166e73dfe53cfcf6c0396d4849a8bc75.etc2.stex", "res://.import/BRONZE~1.JPG-166e73dfe53cfcf6c0396d4849a8bc75.etc.stex" ]
 
 [params]
 
