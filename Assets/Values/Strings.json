@@ -36,10 +36,8 @@
   "lobbyListe": "Liste de Joueurs :",
   "lobbylancer": "Lancer",
   "lobbyAttendre": "En Attente",
-
-
-  "labelNom": "Je suis le joueur : %s .",
-  "labelPoints": "Et j'ai %s point(s).",
+  
+  "labelPoints": "%s points",
   "labelConteur": "Le conteur choisi le thème...",
 
   "networkErrHoteQuitte": "L'hote à quitter la partie !"

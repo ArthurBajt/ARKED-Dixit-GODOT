@@ -126,7 +126,7 @@ func localPoseCarte(carte):
 		self.uiConteur.attendreSelections()
 		self.etat = Globals.EtatJoueur.ATTENTE_SELECTIONS
 	else:
-		self.uiConteur.afficheUiConteur()
+		self.uiConteur.afficheUiConteur(carte.nom)
 		self.etat= Globals.EtatJoueur.CHOIX_THEME
 		
 	Network.posercarte(self.id, carte.nom)
@@ -238,6 +238,7 @@ func nouvelleManche():
 		self.uiTourDePartie.resetNbPrets()
 		self.myCam.current = true
 		CAM_MID.current = false
+		self.ui.resetTheme()
 		self.uiConteur.attendreChoixConteur()
 	while(self.main.size() < 5):
 		pass
