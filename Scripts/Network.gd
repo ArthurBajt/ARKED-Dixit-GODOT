@@ -52,7 +52,7 @@ const dataStruct = {nom = "",
 					carteVotee = null,
 					points = 0,
 					estConteur = false,
-					couleur = Globals.couleursValeurs[ Globals.couleurs.ROUGE ]
+					couleur = Globals.COULEUR_DEFAUT
 					}
 
 

@@ -2,12 +2,12 @@ extends Node
 
 const NODE_INFOJOUEUR = preload("res://Scenes/Lobby/InfoJoueur.tscn")
 
-onready var layoutJoueur = $Control/HBoxContainer/LayoutJoueur
+onready var layoutJoueur = $Control/LayoutListe/VBoxContainer/LayoutJoueurs
 
-onready var buttonPret = $Control/HBoxContainer/LayoutBtn/ButtonPret
-onready var buttonLancer = $Control/HBoxContainer/LayoutBtn/ButtonLancer
+onready var buttonPret = $Control/MainLayout/VBoxContainer/ButtonPret
+onready var buttonLancer = $Control/MainLayout/VBoxContainer/ButtonLancer
 
-onready var selectionCouleur = $Control/HBoxContainer/LayoutBtn/HBoxContainer/CouleurSelection
+onready var selectionCouleur = $Control/MainLayout/VBoxContainer/VBoxContainer/LayoutCouleur/CouleurSelection
 
 var peutLancer: bool = false
 
@@ -21,7 +21,8 @@ func _ready():
 	Network.connect("joueurChangeCouleur", self, "on_joueurChangeCouleur")
 	buttonLancer.visible = Network.id == 1
 	
-	$Control/HBoxContainer/LayoutJoueur/LabelListe.text = R.getString("lobbyListe")
+	$Control/LayoutListe/VBoxContainer/LabelListe.text = R.getString("lobbyListe")
+	$Control/MainLayout/VBoxContainer/VBoxContainer/LabelCouleur.text = R.getString("lobbyCouleur")
 	
 	Network.setCouleurJoueur(Network.id, Network.getCouleursPossibles()[0])
 	
