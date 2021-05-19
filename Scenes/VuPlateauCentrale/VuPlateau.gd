@@ -1,9 +1,9 @@
 extends Spatial
 
 var plateau
-var main: Array
+
 var id: int
-onready var cameraPos: Spatial = $VuPlateau
+onready var cameraPos: Spatial = $Spat
 onready var CAM = get_node("/root/Partie/Scene/Camera")
 const NODE_CAM = preload("res://Scenes/Joueur/CameraJoueur.tscn")
 const NODE_CARTE = preload("res://Scenes/Carte/Carte.tscn")
@@ -22,7 +22,7 @@ func _ready():
 
 
 func init(idJoueur: int, plateauDePartie):
-	print('appelé par ')
+	print('appelé par: ')
 	print(idJoueur)
 	self.id = idJoueur
 	self.plateau = plateauDePartie
@@ -32,10 +32,9 @@ func init(idJoueur: int, plateauDePartie):
 	cameraPos.add_child(cam)
 	cam.set_current(true)
 	# UI dans le joueur car c'est celui qui est en local qui en a besoin
-	self.add_child(uiConteur)
+	"""self.add_child(uiConteur)
 	self.add_child(ui)
-	self.myCam = cam
+	self.myCam = cam"""
 	NODE_CAM.current = false
 	CAM.current = true
-
 
