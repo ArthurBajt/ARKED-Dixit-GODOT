@@ -44,7 +44,7 @@ func _ready():
 	Network.connect("vote",self,"peuxVoter")
 	Network.connect("voirRes",self,"voirRes")
 	Network.connect("carteVotee", self, "aVote")
-
+	Network.connect("reVote", self, "peutReVoter")
 
 
 func init(idJoueur: int, plateauDePartie, couleurJoueur):
@@ -218,6 +218,22 @@ func peuxVoter():
 		CAM_MID.current = true
 		Network.verifEtat(Globals.EtatJoueur.ATTENTE_VOTES)
 	
+func peutReVoter(idJoueur):
+	if self.id==idJoueur:
+		if(self.estConteur):
+			self.etat = Globals.EtatJoueur.ATTENTE_VOTES
+			if(estLocal()):
+				self.uiConteur.attendreVotes()
+		else:
+			
+			
+			self.etat = Globals.EtatJoueur.VOTE
+			if(estLocal()):
+				self.uiConteur.enlever()
+		if(estLocal()):
+			self.myCam.current = false
+			CAM_MID.current = true
+			Network.verifEtat(Globals.EtatJoueur.ATTENTE_VOTES)
 
 func aVote(nomCarte, idJoueur):
 	if(idJoueur == self.id):

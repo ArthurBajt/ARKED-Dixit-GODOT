@@ -55,7 +55,8 @@ const dataStruct = {nom = "",
 					points = 0,
 					estConteur = false,
 					couleur = Globals.COULEUR_DEFAUT,
-					objectif = 30
+					objectif = 30,
+					etat = Globals.EtatJoueur.ATTENTE_CHOIX_THEME
 					}
 
 
@@ -90,9 +91,12 @@ func _lobby_se_declarer():
 func retour_menu():
 	Transition.transitionVers("res://Scenes/MenuPrincipal/MenuPrincipal.tscn")
 
-signal decoJoueur(id)
+signal decoJoueur(id, nomCarte, eraseCarte)
+signal reVote(idJoueur)
 func deconnexion_client(id):
-	
+	var saveEtat = self.utilisateurs[id].etat
+	var saveNomCarte = self.utilisateurs[id].cartesPlateau[id]
+	var eraseCarte = false
 	print("c'est l'id : ", id)
 	
 	utilisateurs.erase(id)
@@ -100,27 +104,37 @@ func deconnexion_client(id):
 	for usId in utilisateurs: 
 		print(usId)
 		
-	var saveEtat = self.data.etat
+
 	match saveEtat:
 		Globals.EtatJoueur.SELECTION_CARTE:
 			self.verifEtat(Globals.EtatJoueur.ATTENTE_SELECTIONS)
+			emit_signal("decoJoueur", id, saveNomCarte, eraseCarte)
 		Globals.EtatJoueur.ATTENTE_SELECTIONS:
 			self.verifEtat(saveEtat)
+			for user in self.utilisateurs:
+				self.utilisateurs[user].cartesPlateau.erase(id)
+			eraseCarte = true
+			emit_signal("decoJoueur", id, saveNomCarte, eraseCarte)
 		Globals.EtatJoueur.VOTE:
+			for user in self.utilisateurs:
+				if self.utilisateurs[user].carteVotee == saveNomCarte:
+					self.utilisateurs[user].etat=Globals.EtatJoueur.VOTE
+					if user == self.id:
+						self.data.etat=Globals.EtatJoueur.VOTE
+					emit_signal("reVote", user)
+					
+			eraseCarte=true
 			self.verifEtat(Globals.EtatJoueur.ATTENTE_VOTES)
+			emit_signal("decoJoueur", id, saveNomCarte, eraseCarte)
 		Globals.EtatJoueur.ATTENTE_VOTES:
 			self.verifEtat(saveEtat)
+			emit_signal("decoJoueur", id, saveNomCarte, eraseCarte)
 		Globals.EtatJoueur.VOIR_RESULTAT:
 			self.verifEtat(Globals.EtatJoueur.ATTENTE_PROCHAINE_MANCHE)
+			emit_signal("decoJoueur", id, saveNomCarte, eraseCarte)
 		Globals.EtatJoueur.ATTENTE_PROCHAINE_MANCHE:
+			emit_signal("decoJoueur", id, saveNomCarte, eraseCarte)
 			self.verifEtat(saveEtat)
-
-	
-		
-	
-	emit_signal("decoJoueur", id)
-	
-	
 
 
 func deconnexion_server():
@@ -136,6 +150,7 @@ func deconnexion_server():
 	self.utilisateurs={}
 	
 	retour_menu()
+
 
 
 

@@ -57,7 +57,8 @@ func _placerJoueurs():
 		j.rotation = Vector3(0, deg2rad( angle ), 0)
 		angle += 360 / nbJoueurs
 
-func decoJoueur(idJoueur):
+
+func decoJoueur(idJoueur, nomCarte, eraseCarte):
 	for joueur in nodeJoueurs.get_children():
 		if joueur != null:
 			if joueur.getId()==idJoueur:
@@ -66,7 +67,21 @@ func decoJoueur(idJoueur):
 	for joueur in joueurs: 
 		if joueur.getId()==idJoueur:
 			joueurs.erase(joueur)
+	
+	for joueur in plateau.joueurs:
+		if joueur.id == idJoueur:
+			plateau.joueurs.erase(joueur)
+	
+	if eraseCarte:
+		for carte in plateau.cartes:
+			if nomCarte == carte.nom:
+				plateau.cartes.erase(carte)
+				
+		for child in plateau.rootCartes.get_children():
+			if nomCarte == child.nom:
+				child.queue_free()
 
+	
 
 func PionJoueur(idJoueur, ScX,ScY,ScZ,PosX, PosY, PosZ, rX, rY, rZ):
 	for joueur in nodeJoueurs.get_children():
