@@ -3,17 +3,16 @@
 importer="texture"
 type="StreamTexture"
 path.s3tc="res://.import/Rock_9_Base_Color.jpg-ed53e13bfadfc87a19648dfe7cdb8943.s3tc.stex"
-path.etc2="res://.import/Rock_9_Base_Color.jpg-ed53e13bfadfc87a19648dfe7cdb8943.etc2.stex"
 path.etc="res://.import/Rock_9_Base_Color.jpg-ed53e13bfadfc87a19648dfe7cdb8943.etc.stex"
 metadata={
-"imported_formats": [ "s3tc", "etc2", "etc" ],
+"imported_formats": [ "s3tc", "etc" ],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://Scenes/MenuPrincipal/Mesh/Rock_9_Base_Color.jpg"
-dest_files=[ "res://.import/Rock_9_Base_Color.jpg-ed53e13bfadfc87a19648dfe7cdb8943.s3tc.stex", "res://.import/Rock_9_Base_Color.jpg-ed53e13bfadfc87a19648dfe7cdb8943.etc2.stex", "res://.import/Rock_9_Base_Color.jpg-ed53e13bfadfc87a19648dfe7cdb8943.etc.stex" ]
+dest_files=[ "res://.import/Rock_9_Base_Color.jpg-ed53e13bfadfc87a19648dfe7cdb8943.s3tc.stex", "res://.import/Rock_9_Base_Color.jpg-ed53e13bfadfc87a19648dfe7cdb8943.etc.stex" ]
 
 [params]
 
