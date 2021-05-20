@@ -1,0 +1,37 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Assets/Font/CatChild_base_24.tres" type="DynamicFont" id=1]
+[ext_resource path="res://Scenes/Joueur/UiBoutonsDisplay.gd" type="Script" id=2]
+
+[node name="Control" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+margin_left = 10.0
+margin_top = 92.104
+margin_right = 125.0
+margin_bottom = 139.104
+custom_constants/separation = 10
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ButtonOptions" type="Button" parent="HBoxContainer"]
+margin_right = 89.0
+margin_bottom = 47.0
+custom_fonts/font = ExtResource( 1 )
+text = "Options"
+
+[node name="ButtonScoreboard" type="Button" parent="HBoxContainer"]
+margin_left = 99.0
+margin_right = 223.0
+margin_bottom = 47.0
+custom_fonts/font = ExtResource( 1 )
+text = "Classement"
+[connection signal="pressed" from="HBoxContainer/ButtonOptions" to="." method="_on_ButtonOptions_pressed"]
+[connection signal="pressed" from="HBoxContainer/ButtonScoreboard" to="." method="_on_ButtonScoreboard_pressed"]

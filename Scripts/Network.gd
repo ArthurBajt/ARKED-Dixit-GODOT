@@ -67,10 +67,22 @@ const dataStruct = {nom = "",
 					points = 0,
 					estConteur = false,
 					couleur = Globals.COULEUR_DEFAUT,
-					objectif = 30
+					objectif = 30,
+					etat = Globals.EtatJoueur.ATTENTE_CHOIX_THEME
 					}
 
 var idOneExisting = false
+var nbTours = 1
+
+var stats = {	
+				sociabilite = {},
+				tmpsReac = 	{
+								poseCarte = {},
+								voteCarte = {},
+								voirResultats = {}
+							},
+				cartesJouees = {}
+			}
 
 signal nvUtilisateur(idUtilisateur)
 signal nvStatuUtilisateur(idUtilisateur, statu)
@@ -145,15 +157,70 @@ remote func HoteRecu(donnee):
 func retour_menu():
 	Transition.transitionVers("res://Scenes/MenuPrincipal/MenuPrincipal.tscn")
 
-signal decoJoueur(id)
-remotesync func deconnexion_client(id):
+signal decoJoueur(id, nomCarte, eraseCarte)
+signal reVote(idJoueur)
+signal changeConteurzer()
+func deconnexion_client(id):
+	var saveEtat = self.utilisateurs[id].etat
+	var saveNomCarte = self.utilisateurs[id].cartesPlateau.get(id)
+	var eraseCarte = false
+	print("c'est l'id : ", id)
 	
 	utilisateurs.erase(id)
-	emit_signal("decoJoueur", id)
+
+	for usId in utilisateurs: 
+		print(usId)
+		
+
+	match saveEtat:
+		Globals.EtatJoueur.SELECTION_CARTE_THEME:
+			emit_signal("decoJoueur", id, saveNomCarte, eraseCarte)
+			emit_signal("changeConteurzer")
+			
+		Globals.EtatJoueur.CHOIX_THEME:
+			for user in self.utilisateurs:
+				self.utilisateurs[user].cartesPlateau.erase(id)
+			eraseCarte = true
+			emit_signal("decoJoueur", id, saveNomCarte, eraseCarte)
+			emit_signal("changeConteurzer")
+			
+		Globals.EtatJoueur.SELECTION_CARTE:
+			self.verifEtat(Globals.EtatJoueur.ATTENTE_SELECTIONS)
+			emit_signal("decoJoueur", id, saveNomCarte, eraseCarte)
+			
+		Globals.EtatJoueur.ATTENTE_SELECTIONS:
+			self.verifEtat(saveEtat)
+			for user in self.utilisateurs:
+				self.utilisateurs[user].cartesPlateau.erase(id)
+			eraseCarte = true
+			emit_signal("decoJoueur", id, saveNomCarte, eraseCarte)
+			
+		Globals.EtatJoueur.VOTE:
+			for user in self.utilisateurs:
+				if self.utilisateurs[user].carteVotee == saveNomCarte:
+					self.utilisateurs[user].etat=Globals.EtatJoueur.VOTE
+					if user == self.id:
+						self.data.etat=Globals.EtatJoueur.VOTE
+					emit_signal("reVote", user)
+			eraseCarte=true
+			self.verifEtat(Globals.EtatJoueur.ATTENTE_VOTES)
+			emit_signal("decoJoueur", id, saveNomCarte, eraseCarte)
+			
+		Globals.EtatJoueur.ATTENTE_VOTES:
+			self.verifEtat(saveEtat)
+			emit_signal("decoJoueur", id, saveNomCarte, eraseCarte)
+			
+		Globals.EtatJoueur.VOIR_RESULTAT:
+			self.verifEtat(Globals.EtatJoueur.ATTENTE_PROCHAINE_MANCHE)
+			emit_signal("decoJoueur", id, saveNomCarte, eraseCarte)
+			
+		Globals.EtatJoueur.ATTENTE_PROCHAINE_MANCHE:
+			emit_signal("decoJoueur", id, saveNomCarte, eraseCarte)
+			self.verifEtat(saveEtat)
 
 
 
-remotesync func deconnexion_server():
+func deconnexion_server():
 	if (self.id!=1 and idOneNotHost) or (!withHost and self.id!=0):
 		erreur_connexion = R.getString("networkErrHoteQuitte")
 
@@ -167,6 +234,8 @@ remotesync func deconnexion_server():
 	idOneNotHost = false
 	
 	retour_menu()
+
+
 
 
 remote func _lobby_declareUtilisateur(idUtilisateur: int, curentData:Dictionary ):
@@ -224,6 +293,8 @@ func lobby_lancerPartie():
 
 remotesync func _lobby_lancePartie():
 	""" Signal a tt les utilisateurs du lobby que la partie commence."""
+	for user in self.utilisateurs:
+		self.stats.sociabilite[user] = 0
 	emit_signal("partieLancee")
 
 func assigneCouleur():
@@ -309,18 +380,18 @@ remotesync func joueurVoteCarte(nomCarte,idJoueur):
 # =================================================
 # Cartes
 
-signal joueurApiocherCarte(id, carte, coef)
+signal joueurApiocherCarte(id, carte, type)
 
-func joueurPioche(idJoueur: int, carte: String, coef: int):
-	rpc("_joueurPiocheCarte", idJoueur, carte,coef)
+func joueurPioche(idJoueur: int, carte: String, type: int):
+	rpc("_joueurPiocheCarte", idJoueur, carte, type)
 
 
 
-remotesync func _joueurPiocheCarte(idJoueur: int, carte: String, coef: int):
+remotesync func _joueurPiocheCarte(idJoueur: int, carte: String, type: int):
 	if idJoueur == id:
 		self.data.main = self.data.main + [carte]
 	utilisateurs[idJoueur].main = utilisateurs[idJoueur].main + [carte]
-	emit_signal("joueurApiocherCarte", idJoueur, carte,coef)
+	emit_signal("joueurApiocherCarte", idJoueur, carte, type)
 
 # =================================================
 # Plateau
@@ -372,24 +443,26 @@ remotesync func declareChangementConteur(idJoueur):
 # Chat
 signal updateChat
 func envoieMessage(msg):
-	rpc("messageRecu", self.data.nom , msg)
+	rpc("messageRecu", self.id , msg)
 	
-remotesync func messageRecu(pseudo, msg):
+remotesync func messageRecu(id, msg):
+	stats.sociabilite[id] += 1
+	var pseudo = self.utilisateurs[id].nom
 	emit_signal("updateChat", pseudo, msg)
 
 # =================================================
 # Theme
 signal updateTheme
 func defineTheme(theme):
-	rpc("changeTheme", theme, self.data.nom)
+	rpc("changeTheme", self.id, theme)
 	
-remotesync func changeTheme(theme, nomConteur):
+remotesync func changeTheme(id, theme):
 	for usId in self.utilisateurs:
 		if(self.utilisateurs[usId].estConteur):
 			self.utilisateurs[usId].etat = Globals.EtatJoueur.ATTENTE_SELECTIONS
 		else:
 			self.utilisateurs[usId].etat = Globals.EtatJoueur.SELECTION_CARTE
-		
+	var nomConteur = self.utilisateurs[id].nom
 	emit_signal("updateTheme", theme, nomConteur)
 
 func verifEtat(etat):
@@ -411,6 +484,11 @@ remotesync func verifEtats(etat, idClient):
 	
 	if (compteur == nbJoueur):
 		if(etat==Globals.EtatJoueur.ATTENTE_SELECTIONS):
+			self.stats.cartesJouees[self.nbTours] = self.data.cartesPlateau
+			if(self.data.estConteur):
+				self.data.etat = Globals.EtatJoueur.ATTENTE_VOTES
+			else:
+				self.data.etat = Globals.EtatJoueur.VOTE
 			for user in self.utilisateurs:
 				if self.utilisateurs[user].estConteur:
 					self.utilisateurs[user].etat=Globals.EtatJoueur.ATTENTE_VOTES
@@ -422,6 +500,7 @@ remotesync func verifEtats(etat, idClient):
 				print("V1 Etat de %s [%s]: %s" % [utilisateurs[user].nom, user,utilisateurs[user].etat])
 		
 		elif(etat==Globals.EtatJoueur.ATTENTE_VOTES):
+			self.data.etat = Globals.EtatJoueur.VOIR_RESULTAT
 			for user in self.utilisateurs:
 				self.utilisateurs[user].etat = Globals.EtatJoueur.VOIR_RESULTAT
 			emit_signal("voirRes")
@@ -431,6 +510,8 @@ remotesync func verifEtats(etat, idClient):
 		
 		elif(etat==Globals.EtatJoueur.ATTENTE_PROCHAINE_MANCHE):
 			self.data.cartesPlateau = {}
+			self.data.carteVotee = null
+			self.data.etat = Globals.EtatJoueur.ATTENTE_CHOIX_THEME
 			for user in self.utilisateurs:
 				self.utilisateurs[user].cartesPlateau = {}
 				self.utilisateurs[user].carteVotee = null
@@ -438,10 +519,11 @@ remotesync func verifEtats(etat, idClient):
 			
 			var aFini = false
 			for user in self.utilisateurs:
-				aFini = aFini or self.utilisateurs[user].points>=30
+				aFini = aFini or self.utilisateurs[user].points>=self.utilisateurs[user].objectif
 			if aFini:
 				emit_signal("finDePartie")
 			else:
+				self.nbTours += 1
 				emit_signal("prochaineManche")
 
 #	for usId in self.utilisateurs:
@@ -575,3 +657,22 @@ remotesync func joueurPretPourTour(idJoueur):
 	emit_signal("joueurDePlusPret")
 	if(idJoueur == Network.id):
 		Network.verifEtat(Globals.EtatJoueur.ATTENTE_PROCHAINE_MANCHE)
+		
+func rejouer():
+	rpc("rejouer_rpc")
+
+signal versLobby()
+remotesync func rejouer_rpc():
+	self.data.estPret = false
+	self.data.estDansPartie = false
+	self.data.main = []
+	self.data.points = 0
+	
+	for user in self.utilisateurs:
+		self.utilisateurs[user].estPret = false
+		self.utilisateurs[user].estDansPartie = false
+		self.utilisateurs[user].main = []
+		self.utilisateurs[user].points = 0
+	
+	emit_signal("versLobby")
+	

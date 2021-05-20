@@ -42,9 +42,10 @@ func cache():
 	self.visible = false
 
 
-
+signal fermeOptions
 func _on_ButtonFermer_pressed():
 	self.cache()
+	emit_signal("fermeOptions")
 
 
 #==========================
@@ -91,12 +92,17 @@ func _on_ResetTailleEcrand_gui_input(event):
 
 func _on_retourMenu_pressed():
 	if Network.id == 1 and !Network.idOneNotHost:
-		Network.rpc("deconnexion_server")
+		Network.peerServ.close_connection()
 	elif Network.id == 0 and Network.withHost == true:
-		Network.rpc("deconnexion_server")
+		Network.peerServ.close_connection()
 	else:
-		Network.rpc("deconnexion_client",Network.id)
-		Network.retour_menu()
+		Network.peerClient.close_connection()
+	
+		
+		
+	Network.data={}
+	Network.data=Network.dataStruct.duplicate()
+	Network.utilisateurs={}
+	
+	Network.retour_menu()
 	cache()
-
-

@@ -1,7 +1,7 @@
 extends Node
 
 
-var isDebug: bool = true setget setDebug
+var isDebug: bool = false setget setDebug
 
 var isMobile:bool = false
 
@@ -26,6 +26,13 @@ enum couleurs {
 	CYAN,
 	VERT,
 	JAUNE
+}
+
+enum typesCartes {
+	NORMALE,
+	DOUBLE,
+	PIQUES,
+	BOURRE
 }
 
 const couleursValeurs: Dictionary = {
@@ -105,3 +112,7 @@ func afficheErreur(erreur: String):
 	yield(get_tree(), "idle_frame")
 	errNode.setMessage(erreur)
 	get_parent().move_child( errNode, get_parent().get_child_count() )
+
+signal getDrunked()
+func plateauDrunked():
+	emit_signal("getDrunked")

@@ -11,7 +11,6 @@ onready var plateau = $Scene/Plateau
 
 export(String, FILE, "*.ogg") var musiquePath
 
-
 func _ready():
 	
 	Music.setMusic(self.musiquePath)
@@ -26,6 +25,9 @@ func _ready():
 	Network.connect("voirRes", self, "affichePoseurs")
 	Network.connect("giveVoteurs",self, "afficheVoteurs")
 	Network.connect("prochaineManche", self, "nouvelleManche")
+	Network.connect("changeConteurzer", self, "changeConteur")
+	
+	Network.connect("finDePartie", self, "finDePartie")
 
 class TrieJoueurs:
 	# c'est comme les fonctions discrettes en js.
@@ -63,7 +65,8 @@ func _placerJoueurs():
 		j.rotation = Vector3(0, deg2rad( angle ), 0)
 		angle += 360 / nbJoueurs
 
-func decoJoueur(idJoueur):
+
+func decoJoueur(idJoueur, nomCarte, eraseCarte):
 	for joueur in nodeJoueurs.get_children():
 		if joueur != null:
 			if joueur.getId()==idJoueur:
@@ -72,7 +75,21 @@ func decoJoueur(idJoueur):
 	for joueur in joueurs: 
 		if joueur.getId()==idJoueur:
 			joueurs.erase(joueur)
+	
+	for joueur in plateau.joueurs:
+		if joueur.id == idJoueur:
+			plateau.joueurs.erase(joueur)
+	
+	if eraseCarte:
+		for carte in plateau.cartes:
+			if nomCarte == carte.nom:
+				plateau.cartes.erase(carte)
+				
+		for child in plateau.rootCartes.get_children():
+			if nomCarte == child.nom:
+				child.queue_free()
 
+	
 
 func PionJoueur(idJoueur, ScX,ScY,ScZ,PosX, PosY, PosZ, rX, rY, rZ):
 	for joueur in nodeJoueurs.get_children():
@@ -96,7 +113,6 @@ func PionJoueur(idJoueur, ScX,ScY,ScZ,PosX, PosY, PosZ, rX, rY, rZ):
 				return pion
 
 func affichePoseurs():
-	print("Devrait afficher les poseurs")
 	for carte in plateau.cartes:
 		var jId
 		for j in Network.data.cartesPlateau:
@@ -120,3 +136,9 @@ func clearPions():
 func nouvelleManche():
 	self.clearPions()
 	plateau.nouvelleManche()
+	
+func changeConteur():
+	self.plateau.changeConteur()
+
+func finDePartie():
+	Transition.transitionVers("res://Scenes/FinDePartie/FinDePartie.tscn")

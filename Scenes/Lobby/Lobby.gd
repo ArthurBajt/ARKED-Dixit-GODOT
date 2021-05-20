@@ -1,6 +1,7 @@
 extends Node
 
 const NODE_INFOJOUEUR = preload("res://Scenes/Lobby/InfoJoueur.tscn")
+const NODE_OPTIONS = preload("res://Scenes/Options/Options.tscn")
 
 onready var layoutJoueur = $Control/LayoutListe/VBoxContainer/LayoutJoueurs
 
@@ -14,6 +15,8 @@ onready var selectionCouleur = $Control/MainLayout/VBoxContainer/VBoxContainer/L
 onready var NbPoint = $Control/MainLayout/VBoxContainer/VBoxContainer/changePoint/LayoutPoint/NbPoint
 onready var changePoint = $Control/MainLayout/VBoxContainer/VBoxContainer/changePoint
 var peutLancer: bool = false
+
+var uiOptions
 
 var joueurs: Dictionary = {}
 
@@ -45,6 +48,8 @@ func _ready():
 		selectionCouleur.visible = false
 		labelCouleur.visible = false
 		buttonPret.visible = false
+	self.uiOptions = NODE_OPTIONS.instance()
+	self.add_child(uiOptions)
 	
 	self.recupereJoueurs()
 
@@ -70,8 +75,6 @@ func joueurCo(idJoueur):
 	self.majPeutLancer()
 
 func decoJoueur(idJoueur):
-	print(idJoueur)
-	print("pouet")
 	if idJoueur in self.joueurs.keys():
 		self.layoutJoueur.remove_child(self.joueurs[idJoueur])
 		self.joueurs.erase(idJoueur)
@@ -85,7 +88,6 @@ func majPeutLancer():
 	self.peutLancer = true
 	for usId in Network.utilisateurs:
 		self.peutLancer = self.peutLancer and Network.utilisateurs[usId].estPret
-#		print("majPeutLancer - ", usId, " - ", Network.utilisateurs[usId].estPret)
 	
 	if self.peutLancer:
 		self.buttonLancer.modulate = Color(1.0, 1.0, 1.0)
@@ -158,3 +160,7 @@ func _on_ButtonPointSuiv_pressed():
 		nbPoints+=5
 		NbPoint.set_text(String(nbPoints))
 	Network.changeObjectif(int(NbPoint.text))
+
+
+func _on_ButtonOptions_pressed():
+	self.uiOptions.affiche()

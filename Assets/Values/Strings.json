@@ -10,12 +10,13 @@
 
   "btnJouer": "Jouer",
   "btnOptions": "Options",
+  "btnCredits": "Crédits",
   "btnQuitter": "Quitter",
 
   "optionsTitre":"Options",
   "optionsMusique":"Musique",
   "optionsSfx":"SFX",
-  "optionTailleEcrand": "Taille de l'ecrand :",
+  "optionTailleEcrand": "Taille de l'écran :",
   "optionTailleEcrandPetit": "Petit",
   "optionTailleEcrandGrand": "Grand",
 
@@ -37,8 +38,8 @@
   "lobbyCouleur": "Couleur Joueur :",
   "lobbylancer": "Lancer",
   "lobbyAttendre": "En Attente",
-  
-  "labelPoints": "%s points",
+
+  "labelPoints": "%s / %s",
   "labelConteur": "Le conteur choisi le thème...",
 
   "networkErrHoteQuitte": "L'hote à quitter la partie !"

@@ -33,6 +33,7 @@ func initUi():
 	
 	$Ui/LayoutBoutons/HBoxContainer/VBoxContainer/BtnJouer.text = R.getString("btnJouer")
 	$Ui/LayoutBoutons/HBoxContainer/VBoxContainer/BtnOptions.text = R.getString("btnOptions")
+	$Ui/LayoutBoutons/HBoxContainer/VBoxContainer/ButtonCredits.text = R.getString("btnCredits")
 	$Ui/LayoutBoutons/HBoxContainer/VBoxContainer/BtnQuit.text = R.getString("btnQuitter")
 	
 	$Ui/LayoutPanelJouer.visible = false
@@ -55,3 +56,7 @@ func _on_BtnOptions_pressed():
 
 func _on_BtnQuit_pressed():
 	Globals.quitter()
+
+
+func _on_ButtonCredits_pressed():
+	Transition.transitionVers("res://Scenes/Credits/Credits.tscn")

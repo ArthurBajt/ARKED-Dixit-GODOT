@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://Scenes/Lobby/Lobby.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Font/CatChild_base_48.tres" type="DynamicFont" id=2]
@@ -10,6 +10,7 @@
 [ext_resource path="res://Assets/Sfx/Porte.ogg" type="AudioStream" id=8]
 [ext_resource path="res://Scenes/MenuPrincipal/Mesh/dikhololo_night_2k.hdr" type="Texture" id=9]
 [ext_resource path="res://Scenes/Lobby/Mesh/backRoom.jpg" type="Texture" id=10]
+[ext_resource path="res://Assets/Font/CatChild_titre_128.tres" type="DynamicFont" id=11]
 
 [sub_resource type="CubeMesh" id=1]
 
@@ -232,14 +233,14 @@ margin_bottom = 720.0
 alignment = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Control/MainLayout/VBoxContainer"]
-margin_top = 238.0
+margin_top = 87.0
 margin_right = 300.0
-margin_bottom = 520.0
+margin_bottom = 466.0
 alignment = 1
 
 [node name="changePoint" type="VBoxContainer" parent="Control/MainLayout/VBoxContainer/VBoxContainer"]
 margin_right = 300.0
-margin_bottom = 94.0
+margin_bottom = 191.0
 alignment = 1
 
 [node name="LabelPoint" type="Label" parent="Control/MainLayout/VBoxContainer/VBoxContainer/changePoint"]
@@ -255,13 +256,13 @@ __meta__ = {
 [node name="LayoutPoint" type="HBoxContainer" parent="Control/MainLayout/VBoxContainer/VBoxContainer/changePoint"]
 margin_top = 34.0
 margin_right = 300.0
-margin_bottom = 94.0
+margin_bottom = 191.0
 alignment = 1
 
 [node name="ButtonPointPrec" type="Button" parent="Control/MainLayout/VBoxContainer/VBoxContainer/changePoint/LayoutPoint"]
 margin_left = 10.0
 margin_right = 56.0
-margin_bottom = 60.0
+margin_bottom = 157.0
 custom_fonts/font = ExtResource( 3 )
 text = " < "
 __meta__ = {
@@ -271,9 +272,9 @@ __meta__ = {
 [node name="NbPoint" type="Label" parent="Control/MainLayout/VBoxContainer/VBoxContainer/changePoint/LayoutPoint"]
 margin_left = 60.0
 margin_right = 240.0
-margin_bottom = 60.0
+margin_bottom = 157.0
 rect_min_size = Vector2( 180, 34 )
-custom_fonts/font = ExtResource( 2 )
+custom_fonts/font = ExtResource( 11 )
 text = "30"
 align = 1
 valign = 1
@@ -284,7 +285,7 @@ __meta__ = {
 [node name="ButtonPointSuiv" type="Button" parent="Control/MainLayout/VBoxContainer/VBoxContainer/changePoint/LayoutPoint"]
 margin_left = 244.0
 margin_right = 290.0
-margin_bottom = 60.0
+margin_bottom = 157.0
 custom_fonts/font = ExtResource( 3 )
 text = " > "
 __meta__ = {
@@ -292,9 +293,9 @@ __meta__ = {
 }
 
 [node name="LabelCouleur" type="Label" parent="Control/MainLayout/VBoxContainer/VBoxContainer"]
-margin_top = 98.0
+margin_top = 195.0
 margin_right = 300.0
-margin_bottom = 128.0
+margin_bottom = 225.0
 custom_fonts/font = ExtResource( 3 )
 text = "couleur  :"
 align = 1
@@ -303,9 +304,9 @@ __meta__ = {
 }
 
 [node name="LayoutCouleur" type="HBoxContainer" parent="Control/MainLayout/VBoxContainer/VBoxContainer"]
-margin_top = 132.0
+margin_top = 229.0
 margin_right = 300.0
-margin_bottom = 282.0
+margin_bottom = 379.0
 alignment = 1
 
 [node name="ButtonCouleurPrec" type="Button" parent="Control/MainLayout/VBoxContainer/VBoxContainer/LayoutCouleur"]
@@ -339,32 +340,40 @@ __meta__ = {
 
 [node name="HSeparator2" type="HSeparator" parent="Control/MainLayout/VBoxContainer"]
 modulate = Color( 1, 1, 1, 0 )
-margin_top = 524.0
+margin_top = 470.0
 margin_right = 300.0
-margin_bottom = 554.0
+margin_bottom = 500.0
 rect_min_size = Vector2( 0, 30 )
 
 [node name="ButtonPret" type="Button" parent="Control/MainLayout/VBoxContainer"]
-margin_top = 558.0
+margin_top = 504.0
 margin_right = 300.0
-margin_bottom = 608.0
+margin_bottom = 554.0
 rect_min_size = Vector2( 200, 50 )
 custom_fonts/font = ExtResource( 3 )
-text = "Prêt"
+text = "Pas prêt"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="ButtonLancer" type="Button" parent="Control/MainLayout/VBoxContainer"]
-margin_top = 612.0
+margin_top = 558.0
 margin_right = 300.0
-margin_bottom = 712.0
+margin_bottom = 658.0
 rect_min_size = Vector2( 0, 100 )
 custom_fonts/font = ExtResource( 2 )
 text = "Lancer"
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="ButtonOptions" type="Button" parent="Control/MainLayout/VBoxContainer"]
+margin_top = 662.0
+margin_right = 300.0
+margin_bottom = 712.0
+rect_min_size = Vector2( 200, 50 )
+custom_fonts/font = ExtResource( 3 )
+text = "Options"
 
 [node name="HSeparator" type="HSeparator" parent="Control/MainLayout/VBoxContainer"]
 modulate = Color( 1, 1, 1, 0 )
@@ -428,10 +437,10 @@ anims/Entre = SubResource( 8 )
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 8 )
 bus = "Sfx"
-
 [connection signal="pressed" from="Control/MainLayout/VBoxContainer/VBoxContainer/changePoint/LayoutPoint/ButtonPointPrec" to="." method="_on_ButtonPointPrec_pressed"]
 [connection signal="pressed" from="Control/MainLayout/VBoxContainer/VBoxContainer/changePoint/LayoutPoint/ButtonPointSuiv" to="." method="_on_ButtonPointSuiv_pressed"]
 [connection signal="pressed" from="Control/MainLayout/VBoxContainer/VBoxContainer/LayoutCouleur/ButtonCouleurPrec" to="." method="_on_ButtonCouleurPrec_pressed"]
 [connection signal="pressed" from="Control/MainLayout/VBoxContainer/VBoxContainer/LayoutCouleur/ButtonCouleurSuiv" to="." method="_on_ButtonCouleurSuiv_pressed"]
 [connection signal="pressed" from="Control/MainLayout/VBoxContainer/ButtonPret" to="." method="_on_ButtonPret_pressed"]
 [connection signal="pressed" from="Control/MainLayout/VBoxContainer/ButtonLancer" to="." method="_on_ButtonLancer_pressed"]
+[connection signal="pressed" from="Control/MainLayout/VBoxContainer/ButtonOptions" to="." method="_on_ButtonOptions_pressed"]
