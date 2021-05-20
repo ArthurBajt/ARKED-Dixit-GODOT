@@ -1,0 +1,13 @@
+[gd_scene load_steps=2 format=2]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 125.339, 127.721 )
+
+[node name="Node2D" type="Node2D"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( 126.508, 127.399 )
+shape = SubResource( 1 )
+
+[node name="TileMap" type="TileMap" parent="CollisionShape2D"]
+format = 1
