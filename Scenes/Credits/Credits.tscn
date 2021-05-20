@@ -1,7 +1,17 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Assets/Font/CatChild_titre_128.tres" type="DynamicFont" id=1]
 [ext_resource path="res://Scenes/Credits/Credits.gd" type="Script" id=2]
+[ext_resource path="res://Scenes/Camera/Camera.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Scenes/MenuPrincipal/Mesh/MenuPrincipal_Mesh.escn" type="PackedScene" id=4]
+[ext_resource path="res://Assets/Hdri/satara_night_1k.hdr" type="Texture" id=5]
+
+[sub_resource type="PanoramaSky" id=1]
+panorama = ExtResource( 5 )
+
+[sub_resource type="Environment" id=2]
+background_mode = 2
+background_sky = SubResource( 1 )
 
 [node name="Credits" type="Node"]
 script = ExtResource( 2 )
@@ -29,13 +39,25 @@ margin_bottom = 1161.0
 [node name="HSeparator" type="HSeparator" parent="Control/HBoxContainer/MainLayout"]
 modulate = Color( 1, 1, 1, 0 )
 margin_right = 443.0
-margin_bottom = 1000.0
-rect_min_size = Vector2( 0, 1000 )
+margin_bottom = 800.0
+rect_min_size = Vector2( 0, 800 )
 
 [node name="Label" type="Label" parent="Control/HBoxContainer/MainLayout"]
-margin_top = 1004.0
+margin_top = 804.0
 margin_right = 443.0
-margin_bottom = 1161.0
+margin_bottom = 961.0
 custom_fonts/font = ExtResource( 1 )
 text = "Credits"
 align = 1
+
+[node name="Root3d" type="Spatial" parent="."]
+
+[node name="Camera" parent="Root3d" instance=ExtResource( 3 )]
+transform = Transform( 0.990268, -0.0476, -0.13078, 0, 0.939693, -0.34202, 0.139173, 0.338692, 0.930548, 0, 3, 0 )
+
+[node name="Mesh" type="Spatial" parent="Root3d"]
+
+[node name="MenuPrincipal_Mesh" parent="Root3d/Mesh" instance=ExtResource( 4 )]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Root3d"]
+environment = SubResource( 2 )

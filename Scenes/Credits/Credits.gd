@@ -7,6 +7,7 @@ var creditTxt: Array = []
 
 onready var ui = $Control
 onready var layout = $Control/HBoxContainer/MainLayout
+onready var cam = $Root3d/Camera
 
 onready var labelTitre = load("res://Scenes/Credits/CreditTitre.tscn").instance()
 onready var labelSection = load("res://Scenes/Credits/CreditSection.tscn").instance()
@@ -15,6 +16,7 @@ onready var separator = load("res://Scenes/Credits/CreditSeparator.tscn").instan
 var vitesse: float = 0.14
 
 export(float, 1.0, 10.0) var tempsParSection = 1.0
+
 
 func _ready():
 	Music.setMusic(self.musiquePath)
@@ -28,8 +30,11 @@ func _ready():
 	timer.connect("timeout", self, "quitter")
 	timer.start()
 
+
 func _process(delta):
 	self.ui.anchor_top -= self.vitesse * delta
+	self.cam.rotation.y += 0.02 * delta
+
 
 func _input(event):
 	if event is InputEventKey or event is InputEventMouseButton:
