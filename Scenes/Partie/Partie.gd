@@ -136,4 +136,4 @@ func changeConteur():
 	self.plateau.changeConteur()
 
 func finDePartie():
-	Transition.transitionVers("res://Scenes/Scores/Scores.tscn")
+	Transition.transitionVers("res://Scenes/FinDePartie/FinDePartie.tscn")

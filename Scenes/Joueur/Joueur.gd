@@ -7,7 +7,7 @@ var estLocal: bool = false
 var plateau
 var main: Array
 var carteVotee: Carte
-var points: int = 0
+var points: int = 8
 
 onready var mainRoot = $CameraPos/MainRoot
 

@@ -79,3 +79,10 @@ margin_top = 62.0
 margin_right = 500.0
 margin_bottom = 62.0
 alignment = 1
+
+[node name="HSeparator3" type="HSeparator" parent="VBoxContainer"]
+modulate = Color( 1, 1, 1, 0 )
+margin_top = 66.0
+margin_right = 500.0
+margin_bottom = 76.0
+rect_min_size = Vector2( 0, 10 )

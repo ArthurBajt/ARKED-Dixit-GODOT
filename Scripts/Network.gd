@@ -593,3 +593,22 @@ remotesync func joueurPretPourTour(idJoueur):
 	emit_signal("joueurDePlusPret")
 	if(idJoueur == Network.id):
 		Network.verifEtat(Globals.EtatJoueur.ATTENTE_PROCHAINE_MANCHE)
+		
+func rejouer():
+	rpc("rejouer_rpc")
+
+signal versLobby()
+remotesync func rejouer_rpc():
+	self.data.estPret = false
+	self.data.estDansPartie = false
+	self.data.main = []
+	self.data.points = 0
+	
+	for user in self.utilisateurs:
+		self.utilisateurs[user].estPret = false
+		self.utilisateurs[user].estDansPartie = false
+		self.utilisateurs[user].main = []
+		self.utilisateurs[user].points = 0
+	
+	emit_signal("versLobby")
+	
