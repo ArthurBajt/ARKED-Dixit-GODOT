@@ -93,9 +93,10 @@ func _lobby_se_declarer():
 		idOneExisting = true
 		print("sans host")
 	else:
-		if VuPlateau != null and not idOneExisting:
+		if VuPlateau != null and !idOneExisting:
 			id = 1
 			idOneExisting = true
+			print("Nous avons un id=1 avec l'host !")
 		else:
 			id = get_tree().get_network_unique_id()
 	
@@ -106,7 +107,7 @@ func _lobby_se_declarer():
 		utilisateurs[id] = self.dataStruct.duplicate()
 		utilisateurs[id].nom = self.nom
 	
-	if id > 1 :
+	if id > 1 :								# NOTE : Peut être check si withHost et donc faire id > 0
 		rpc_id(1, "_lobby_declareUtilisateur", id, self.data)
 		
 
@@ -226,7 +227,7 @@ func _peutLancerPartie()->bool:
 signal JoueursDansPartie
 
 func partie_setChargee():
-	"""Un est appelée quand un joueur a charger la scenen de dela partie."""
+	"""Un est appelée quand un joueur a charger la scene de de la partie."""
 	if id!=1:
 		rpc_id(1, "_partie_declareChargee", id)
 	else:
@@ -241,9 +242,9 @@ remotesync func _partie_declareChargee(idJoeuur: int):
 
 
 remotesync func _partie_appliqueChargee(idJoueur: int):
-	if idJoueur == id:
+	if idJoueur == id and id!=0:
 		data.estDansPartie = true
-	utilisateurs[idJoueur].estDansPartie = true
+		utilisateurs[idJoueur].estDansPartie = true
 	
 	if estHote() and _sontJoueursDansPartie():
 
