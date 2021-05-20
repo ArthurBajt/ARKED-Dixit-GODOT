@@ -16,14 +16,18 @@ func piocher(joueur: Joueur):
 		_initDeck()
 	
 	var carte = deck.pop_front()
-	var coef = 1
+	var type = Globals.typesCartes.NORMALE
 	var rng = RandomNumberGenerator.new()
 	rng.randomize()
-	var number = rng.randf_range(0,20)
-	if(number<=1):
-		coef = 2 
+	var number
+	number = rng.randf_range(0,40)
+	if(number<1):
+		type = Globals.typesCartes.DOUBLE
+	number = rng.randf_range(0,36)
+	if(number<1):
+		type = Globals.typesCartes.PIQUES
 	
-	Network.joueurPioche(joueur.id, carte,coef)
+	Network.joueurPioche(joueur.id, carte, type)
 
 
 func _initDeck():

@@ -26,6 +26,13 @@ enum couleurs {
 	JAUNE
 }
 
+enum typesCartes {
+	NORMALE,
+	DOUBLE,
+	PIQUES,
+	BOURRE
+}
+
 const couleursValeurs: Dictionary = {
 	couleurs.ROUGE: Color("#ff0000"),
 	couleurs.ORANGE: Color("#ff9900"),

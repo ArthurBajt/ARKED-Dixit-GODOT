@@ -110,7 +110,7 @@ func _process(delta):
 		for carte in self.main:
 			carte.afficheEffets()
 
-func piocheCarte(nomCarte: String, coef: int):
+func piocheCarte(nomCarte: String, type: int):
 	var instanceCarte = NODE_CARTE.instance()
 	mainRoot.add_child(instanceCarte)
 	instanceCarte.init(nomCarte, estLocal(), estLocal())
@@ -121,7 +121,7 @@ func piocheCarte(nomCarte: String, coef: int):
 	if estLocal:
 		instanceCarte.connect("carteCliquee", self, "localPoseCarte")
 	
-	instanceCarte.coef = coef
+	instanceCarte.type = type
 	instanceCarte.estDansMain = true
 	instanceCarte.estSurPlateau =  false
 

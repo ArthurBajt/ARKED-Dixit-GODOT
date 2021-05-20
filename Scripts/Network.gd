@@ -93,9 +93,10 @@ func retour_menu():
 
 signal decoJoueur(id, nomCarte, eraseCarte)
 signal reVote(idJoueur)
+signal changeConteurzer()
 func deconnexion_client(id):
 	var saveEtat = self.utilisateurs[id].etat
-	var saveNomCarte = self.utilisateurs[id].cartesPlateau[id]
+	var saveNomCarte = self.utilisateurs[id].cartesPlateau.get(id)
 	var eraseCarte = false
 	print("c'est l'id : ", id)
 	
@@ -106,15 +107,28 @@ func deconnexion_client(id):
 		
 
 	match saveEtat:
+		Globals.EtatJoueur.SELECTION_CARTE_THEME:
+			emit_signal("decoJoueur", id, saveNomCarte, eraseCarte)
+			emit_signal("changeConteurzer")
+			
+		Globals.EtatJoueur.CHOIX_THEME:
+			for user in self.utilisateurs:
+				self.utilisateurs[user].cartesPlateau.erase(id)
+			eraseCarte = true
+			emit_signal("decoJoueur", id, saveNomCarte, eraseCarte)
+			emit_signal("changeConteurzer")
+			
 		Globals.EtatJoueur.SELECTION_CARTE:
 			self.verifEtat(Globals.EtatJoueur.ATTENTE_SELECTIONS)
 			emit_signal("decoJoueur", id, saveNomCarte, eraseCarte)
+			
 		Globals.EtatJoueur.ATTENTE_SELECTIONS:
 			self.verifEtat(saveEtat)
 			for user in self.utilisateurs:
 				self.utilisateurs[user].cartesPlateau.erase(id)
 			eraseCarte = true
 			emit_signal("decoJoueur", id, saveNomCarte, eraseCarte)
+			
 		Globals.EtatJoueur.VOTE:
 			for user in self.utilisateurs:
 				if self.utilisateurs[user].carteVotee == saveNomCarte:
@@ -122,16 +136,18 @@ func deconnexion_client(id):
 					if user == self.id:
 						self.data.etat=Globals.EtatJoueur.VOTE
 					emit_signal("reVote", user)
-					
 			eraseCarte=true
 			self.verifEtat(Globals.EtatJoueur.ATTENTE_VOTES)
 			emit_signal("decoJoueur", id, saveNomCarte, eraseCarte)
+			
 		Globals.EtatJoueur.ATTENTE_VOTES:
 			self.verifEtat(saveEtat)
 			emit_signal("decoJoueur", id, saveNomCarte, eraseCarte)
+			
 		Globals.EtatJoueur.VOIR_RESULTAT:
 			self.verifEtat(Globals.EtatJoueur.ATTENTE_PROCHAINE_MANCHE)
 			emit_signal("decoJoueur", id, saveNomCarte, eraseCarte)
+			
 		Globals.EtatJoueur.ATTENTE_PROCHAINE_MANCHE:
 			emit_signal("decoJoueur", id, saveNomCarte, eraseCarte)
 			self.verifEtat(saveEtat)
@@ -291,18 +307,18 @@ remotesync func joueurVoteCarte(nomCarte,idJoueur):
 # =================================================
 # Cartes
 
-signal joueurApiocherCarte(id, carte, coef)
+signal joueurApiocherCarte(id, carte, type)
 
-func joueurPioche(idJoueur: int, carte: String, coef: int):
-	rpc("_joueurPiocheCarte", idJoueur, carte,coef)
+func joueurPioche(idJoueur: int, carte: String, type: int):
+	rpc("_joueurPiocheCarte", idJoueur, carte, type)
 
 
 
-remotesync func _joueurPiocheCarte(idJoueur: int, carte: String, coef: int):
+remotesync func _joueurPiocheCarte(idJoueur: int, carte: String, type: int):
 	if idJoueur == id:
 		self.data.main = self.data.main + [carte]
 	utilisateurs[idJoueur].main = utilisateurs[idJoueur].main + [carte]
-	emit_signal("joueurApiocherCarte", idJoueur, carte,coef)
+	emit_signal("joueurApiocherCarte", idJoueur, carte, type)
 
 # =================================================
 # Plateau
@@ -392,6 +408,10 @@ remotesync func verifEtats(etat, idClient):
 	
 	if (compteur == nbJoueur):
 		if(etat==Globals.EtatJoueur.ATTENTE_SELECTIONS):
+			if(self.data.estConteur):
+				self.data.etat = Globals.EtatJoueur.ATTENTE_VOTES
+			else:
+				self.data.etat = Globals.EtatJoueur.VOTE
 			for user in self.utilisateurs:
 				if self.utilisateurs[user].estConteur:
 					self.utilisateurs[user].etat=Globals.EtatJoueur.ATTENTE_VOTES
@@ -403,6 +423,7 @@ remotesync func verifEtats(etat, idClient):
 				print("V1 Etat de %s [%s]: %s" % [utilisateurs[user].nom, user,utilisateurs[user].etat])
 		
 		elif(etat==Globals.EtatJoueur.ATTENTE_VOTES):
+			self.data.etat = Globals.EtatJoueur.VOIR_RESULTAT
 			for user in self.utilisateurs:
 				self.utilisateurs[user].etat = Globals.EtatJoueur.VOIR_RESULTAT
 			emit_signal("voirRes")
@@ -412,6 +433,8 @@ remotesync func verifEtats(etat, idClient):
 		
 		elif(etat==Globals.EtatJoueur.ATTENTE_PROCHAINE_MANCHE):
 			self.data.cartesPlateau = {}
+			self.data.carteVotee = null
+			self.data.etat = Globals.EtatJoueur.ATTENTE_CHOIX_THEME
 			for user in self.utilisateurs:
 				self.utilisateurs[user].cartesPlateau = {}
 				self.utilisateurs[user].carteVotee = null

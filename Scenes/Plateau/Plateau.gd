@@ -56,9 +56,9 @@ func distribuCarte():
 			pioche.piocher(j)
 
 
-func _on_joueurApiocherCarte(idJoueur: int, carte:String, coef):
+func _on_joueurApiocherCarte(idJoueur: int, carte:String, type):
 	var j = getJoueur(idJoueur)
-	j.piocheCarte(carte, coef)
+	j.piocheCarte(carte, type)
 
 
 func JoueurPosecarte(idJoueur: int, nomCarte: String):
