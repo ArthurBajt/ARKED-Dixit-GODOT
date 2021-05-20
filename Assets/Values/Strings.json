@@ -10,6 +10,7 @@
 
   "btnJouer": "Jouer",
   "btnOptions": "Options",
+  "btnCredits": "Crédits",
   "btnQuitter": "Quitter",
 
   "optionsTitre":"Options",
@@ -37,7 +38,7 @@
   "lobbyCouleur": "Couleur Joueur :",
   "lobbylancer": "Lancer",
   "lobbyAttendre": "En Attente",
-  
+
   "labelPoints": "%s / %s",
   "labelConteur": "Le conteur choisi le thème...",
 
