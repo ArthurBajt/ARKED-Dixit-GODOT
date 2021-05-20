@@ -56,9 +56,10 @@ func init(idJoueur: int, plateauDePartie, couleurJoueur):
 	self.etat = Globals.EtatJoueur.ATTENTE_CHOIX_THEME
 	self.myCam = null
 
-	var tete=$MeshRoot/Head
-	var corps=$MeshRoot/Body
-	var chapeau=$MeshRoot/MeshInstance3
+	var tete = $MeshRoot/Head
+	var corps = $MeshRoot/Body
+	var chapeau = $MeshRoot/MeshInstance3
+	var chapeau2 = $MeshRoot/MeshInstance4
 	
 	var material = SpatialMaterial.new()
 	material.set_albedo(couleurJoueur)
@@ -67,6 +68,7 @@ func init(idJoueur: int, plateauDePartie, couleurJoueur):
 		corps.set_material_override(material)
 		tete.set_material_override(material)
 		chapeau.set_material_override(material)
+		chapeau2.set_material_override(material)
 
 	if estLocal():
 		var cam: Camera = NODE_CAM.instance()
@@ -89,6 +91,7 @@ func init(idJoueur: int, plateauDePartie, couleurJoueur):
 		corps.set_material_override(material)
 		tete.set_material_override(material)
 		chapeau.set_material_override(material)
+		chapeau2.set_material_override(material)
 		
 		self.uiTourDePartie.enlever()
 		self.uiConteur.attendreChoixConteur()

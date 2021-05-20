@@ -1,7 +1,7 @@
 extends Node
 
 
-var isDebug: bool = true setget setDebug
+var isDebug: bool = false setget setDebug
 
 enum EtatJoueur {
 				SELECTION_CARTE_THEME, 		# Conteur			0

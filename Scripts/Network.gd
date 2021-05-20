@@ -59,7 +59,17 @@ const dataStruct = {nom = "",
 					etat = Globals.EtatJoueur.ATTENTE_CHOIX_THEME
 					}
 
+var nbTours = 1
 
+var stats = {	
+				sociabilite = {},
+				tmpsReac = 	{
+								poseCarte = {},
+								voteCarte = {},
+								voirResultats = {}
+							},
+				cartesJouees = {}
+			}
 
 signal nvUtilisateur(idUtilisateur)
 signal nvStatuUtilisateur(idUtilisateur, statu)
@@ -223,6 +233,8 @@ func lobby_lancerPartie():
 
 remotesync func _lobby_lancePartie():
 	""" Signal a tt les utilisateurs du lobby que la partie commence."""
+	for user in self.utilisateurs:
+		self.stats.sociabilite[user] = 0
 	emit_signal("partieLancee")
 
 func assigneCouleur():
@@ -369,24 +381,26 @@ remotesync func declareChangementConteur(idJoueur):
 # Chat
 signal updateChat
 func envoieMessage(msg):
-	rpc("messageRecu", self.data.nom , msg)
+	rpc("messageRecu", self.id , msg)
 	
-remotesync func messageRecu(pseudo, msg):
+remotesync func messageRecu(id, msg):
+	stats.sociabilite[id] += 1
+	var pseudo = self.utilisateurs[id].nom
 	emit_signal("updateChat", pseudo, msg)
 
 # =================================================
 # Theme
 signal updateTheme
 func defineTheme(theme):
-	rpc("changeTheme", theme, self.data.nom)
+	rpc("changeTheme", self.id, theme)
 	
-remotesync func changeTheme(theme, nomConteur):
+remotesync func changeTheme(id, theme):
 	for usId in self.utilisateurs:
 		if(self.utilisateurs[usId].estConteur):
 			self.utilisateurs[usId].etat = Globals.EtatJoueur.ATTENTE_SELECTIONS
 		else:
 			self.utilisateurs[usId].etat = Globals.EtatJoueur.SELECTION_CARTE
-		
+	var nomConteur = self.utilisateurs[id].nom
 	emit_signal("updateTheme", theme, nomConteur)
 
 func verifEtat(etat):
@@ -408,6 +422,7 @@ remotesync func verifEtats(etat, idClient):
 	
 	if (compteur == nbJoueur):
 		if(etat==Globals.EtatJoueur.ATTENTE_SELECTIONS):
+			self.stats.cartesJouees[self.nbTours] = self.data.cartesPlateau
 			if(self.data.estConteur):
 				self.data.etat = Globals.EtatJoueur.ATTENTE_VOTES
 			else:
@@ -442,10 +457,11 @@ remotesync func verifEtats(etat, idClient):
 			
 			var aFini = false
 			for user in self.utilisateurs:
-				aFini = aFini or self.utilisateurs[user].points>=30
+				aFini = aFini or self.utilisateurs[user].points>=self.utilisateurs[user].objectif
 			if aFini:
 				emit_signal("finDePartie")
 			else:
+				self.nbTours += 1
 				emit_signal("prochaineManche")
 
 #	for usId in self.utilisateurs:
