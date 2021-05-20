@@ -10,7 +10,7 @@
 [ext_resource path="res://Assets/Sprites/logo_local.png" type="Texture" id=8]
 
 [node name="PanelJouer" type="Panel"]
-margin_right = 900.0
+margin_right = 953.0
 margin_bottom = 540.0
 rect_min_size = Vector2( 900, 540 )
 script = ExtResource( 7 )
@@ -26,7 +26,7 @@ __meta__ = {
 }
 
 [node name="LabelPanel" type="Label" parent="VBoxContainer"]
-margin_right = 900.0
+margin_right = 953.0
 margin_bottom = 60.0
 custom_fonts/font = ExtResource( 1 )
 text = "Jouer"
@@ -34,14 +34,14 @@ align = 1
 
 [node name="HBoxPseudo" type="HBoxContainer" parent="VBoxContainer"]
 margin_top = 64.0
-margin_right = 900.0
+margin_right = 953.0
 margin_bottom = 112.0
 alignment = 1
 
 [node name="Labelpseudo" type="Label" parent="VBoxContainer/HBoxPseudo"]
-margin_left = 247.0
+margin_left = 274.0
 margin_top = 9.0
-margin_right = 327.0
+margin_right = 354.0
 margin_bottom = 39.0
 custom_fonts/font = ExtResource( 2 )
 text = "pseudo :"
@@ -49,29 +49,29 @@ align = 1
 
 [node name="VSeparator" type="VSeparator" parent="VBoxContainer/HBoxPseudo"]
 modulate = Color( 1, 1, 1, 0 )
-margin_left = 331.0
-margin_right = 346.0
+margin_left = 358.0
+margin_right = 373.0
 margin_bottom = 48.0
 rect_min_size = Vector2( 15, 0 )
 
 [node name="EditPseudo" type="TextEdit" parent="VBoxContainer/HBoxPseudo"]
-margin_left = 350.0
-margin_right = 600.0
+margin_left = 377.0
+margin_right = 627.0
 margin_bottom = 48.0
 rect_min_size = Vector2( 250, 45 )
 custom_fonts/font = ExtResource( 2 )
 text = "Un nom"
 
 [node name="ImgPseudoAleatoire" type="TextureRect" parent="VBoxContainer/HBoxPseudo"]
-margin_left = 604.0
-margin_right = 652.0
+margin_left = 631.0
+margin_right = 679.0
 margin_bottom = 48.0
 texture = ExtResource( 5 )
 
 [node name="LabelErrpseudo" type="Label" parent="VBoxContainer"]
 modulate = Color( 1, 0, 0, 1 )
 margin_top = 116.0
-margin_right = 900.0
+margin_right = 953.0
 margin_bottom = 146.0
 custom_fonts/font = ExtResource( 2 )
 text = "Err : ougaBouga"
@@ -79,14 +79,14 @@ align = 1
 
 [node name="HBoxLancer" type="HBoxContainer" parent="VBoxContainer"]
 margin_top = 150.0
-margin_right = 900.0
+margin_right = 953.0
 margin_bottom = 503.0
 rect_min_size = Vector2( 0, 300 )
 alignment = 1
 
 [node name="VBoxCreer" type="VBoxContainer" parent="VBoxContainer/HBoxLancer"]
-margin_left = 29.0
-margin_right = 284.0
+margin_left = 56.0
+margin_right = 311.0
 margin_bottom = 353.0
 alignment = 2
 
@@ -137,14 +137,14 @@ custom_fonts/font = ExtResource( 2 )
 text = "Creer Un Serveur"
 
 [node name="VSeparator" type="VSeparator" parent="VBoxContainer/HBoxLancer"]
-margin_left = 288.0
-margin_right = 318.0
+margin_left = 315.0
+margin_right = 345.0
 margin_bottom = 353.0
 rect_min_size = Vector2( 30, 0 )
 
 [node name="VBoxRejoindre" type="VBoxContainer" parent="VBoxContainer/HBoxLancer"]
-margin_left = 322.0
-margin_right = 577.0
+margin_left = 349.0
+margin_right = 604.0
 margin_bottom = 353.0
 alignment = 2
 
@@ -201,8 +201,8 @@ custom_fonts/font = ExtResource( 2 )
 text = "Rejoidre un serveur"
 
 [node name="VSeparator2" type="VSeparator" parent="VBoxContainer/HBoxLancer"]
-margin_left = 581.0
-margin_right = 611.0
+margin_left = 608.0
+margin_right = 638.0
 margin_bottom = 353.0
 rect_min_size = Vector2( 30, 0 )
 __meta__ = {
@@ -210,8 +210,8 @@ __meta__ = {
 }
 
 [node name="VBoxHost" type="VBoxContainer" parent="VBoxContainer/HBoxLancer"]
-margin_left = 615.0
-margin_right = 870.0
+margin_left = 642.0
+margin_right = 897.0
 margin_bottom = 353.0
 alignment = 2
 

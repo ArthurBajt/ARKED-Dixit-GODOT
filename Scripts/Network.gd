@@ -64,9 +64,9 @@ const dataStruct = {nom = "",
 signal nvUtilisateur(idUtilisateur)
 signal nvStatuUtilisateur(idUtilisateur, statu)
 signal partieLancee
+signal hotePret
 
-
-
+signal godMod
 func _lobby_se_declarer():
 	""" Quand un joueur se connecte au serveur
 	Il recupère son ID propre.
@@ -79,15 +79,27 @@ func _lobby_se_declarer():
 	else:
 		id = get_tree().get_network_unique_id()
 	
-	self.data = dataStruct.duplicate()
-	self.data.nom = self.nom
-	
-	utilisateurs[id] = dataStruct.duplicate()
-	utilisateurs[id].nom = self.nom
-	
-	if id > 1 :
-		rpc_id(1, "_lobby_declareUtilisateur", id, self.data)
+	if self.nom!="Dieu":
+		self.data = dataStruct.duplicate()
+		self.data.nom = self.nom
+		
+		utilisateurs[id] = dataStruct.duplicate()
+		utilisateurs[id].nom = self.nom
+		
+		if id > 1 :
+			rpc_id(1, "_lobby_declareUtilisateur", id, self.data)
+	else:
+		rpc_id(1, "demandeDonnee", id)
+		print("wehs oh ?")
+		
+		yield(Network, "hotePret")
 
+		print(self.utilisateurs)
+		for usId in utilisateurs:
+			print("On est là : ", usId)
+			if usId !=null:
+				emit_signal("nvUtilisateur", usId)
+				
 func retour_menu():
 	Transition.transitionVers("res://Scenes/MenuPrincipal/MenuPrincipal.tscn")
 
@@ -167,6 +179,16 @@ func deconnexion_server():
 	
 	retour_menu()
 
+remote func donneeRecu(donnee):
+	self.utilisateurs=donnee
+	emit_signal("hotePret")
+
+remote func demandeDonnee(idDemande):
+	
+
+	rpc_id(idDemande, "donneeRecu", self.utilisateurs)
+
+	
 
 
 

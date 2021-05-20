@@ -53,7 +53,7 @@ func joueurCo(idJoueur):
 
 func decoJoueur(idJoueur):
 	print(idJoueur)
-	print("pouet")
+
 	if idJoueur in self.joueurs.keys():
 		self.layoutJoueur.remove_child(self.joueurs[idJoueur])
 		self.joueurs.erase(idJoueur)
