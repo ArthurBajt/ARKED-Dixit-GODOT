@@ -107,7 +107,6 @@ func PionJoueur(idJoueur, ScX,ScY,ScZ,PosX, PosY, PosZ, rX, rY, rZ):
 				return pion
 
 func affichePoseurs():
-	print("Devrait afficher les poseurs")
 	for carte in plateau.cartes:
 		var jId
 		for j in Network.data.cartesPlateau:

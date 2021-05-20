@@ -52,8 +52,6 @@ func joueurCo(idJoueur):
 	self.majPeutLancer()
 
 func decoJoueur(idJoueur):
-	print(idJoueur)
-	print("pouet")
 	if idJoueur in self.joueurs.keys():
 		self.layoutJoueur.remove_child(self.joueurs[idJoueur])
 		self.joueurs.erase(idJoueur)
@@ -67,7 +65,6 @@ func majPeutLancer():
 	self.peutLancer = true
 	for usId in Network.utilisateurs:
 		self.peutLancer = self.peutLancer and Network.utilisateurs[usId].estPret
-#		print("majPeutLancer - ", usId, " - ", Network.utilisateurs[usId].estPret)
 	
 	if self.peutLancer:
 		self.buttonLancer.modulate = Color(1.0, 1.0, 1.0)

@@ -3,13 +3,15 @@ extends Control
 
 onready var buttonRejouer = $VBoxContainer/ButtonRejouer
 onready var buttonQuitter = $VBoxContainer/ButtonQuitter
-
+onready var classement = $Control
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	Network.connect("versLobby", self, "retourLobby")
 	if !Network.data.estConteur:
 		buttonRejouer.visible = false
+	classement.estDansFin()
+	classement.afficher()
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

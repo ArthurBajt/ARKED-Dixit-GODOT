@@ -42,9 +42,10 @@ func cache():
 	self.visible = false
 
 
-
+signal fermeOptions
 func _on_ButtonFermer_pressed():
 	self.cache()
+	emit_signal("fermeOptions")
 
 
 #==========================
