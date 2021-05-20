@@ -23,9 +23,17 @@ func _ready():
 	Network.connect("nvStatuUtilisateur", self, "joueurNvStatut")
 	Network.connect("decoJoueur", self, "decoJoueur")
 	Network.connect("joueurChangeCouleur", self, "on_joueurChangeCouleur")
-	buttonLancer.visible = Network.estHote()
-	changePoint.visible = Network.estHote()
 	
+	if !Network.idOneNotHost and Network.id == 1:
+		buttonLancer.visible = true
+		changePoint.visible = true
+	elif Network.id == 0 and Network.withHost == true:
+		buttonLancer.visible = true
+		changePoint.visible = true
+	else:
+		buttonLancer.visible = false
+		changePoint.visible = false
+		
 	$Control/LayoutListe/VBoxContainer/LabelListe.text = R.getString("lobbyListe")
 	$Control/MainLayout/VBoxContainer/VBoxContainer/LabelCouleur.text = R.getString("lobbyCouleur")
 	

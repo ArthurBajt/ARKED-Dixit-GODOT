@@ -5,13 +5,15 @@ const DEFAUT_PORT: int = 31400
 const MAX_UTILISATEURS: int = 99
 
 
+var peerServ
+var peerClient
 var id: int = -1
 var nom = ""
 var erreur_connexion
 var tabCouleur=[Color.rebeccapurple,Color.orange,Color.maroon,Color.cadetblue,Color.red,Color.green]
 
 var withHost = false
-
+var idOneNotHost = false
 func _ready():
 # warning-ignore:return_value_discarded
 	get_tree().connect("connected_to_server", self, "_lobby_se_declarer")
@@ -25,28 +27,29 @@ func creerServeur(player_name, ip):
 #	dataStruct.nom = player_name
 	withHost = false
 	self.nom = player_name
-	var peer = NetworkedMultiplayerENet.new()
-	peer.set_bind_ip(ip)
-	peer.create_server(DEFAUT_PORT, MAX_UTILISATEURS)
-	get_tree().set_network_peer(peer)
+	peerServ = NetworkedMultiplayerENet.new()
+	peerServ.set_bind_ip(ip)
+	peerServ.create_server(DEFAUT_PORT, MAX_UTILISATEURS)
+	get_tree().set_network_peer(peerServ)
 	_lobby_se_declarer()
 
 func hostServeur(ip):
 	""" Host un serveur """
-	var peer = NetworkedMultiplayerENet.new()
+	peerServ = NetworkedMultiplayerENet.new()
 	withHost = true
-	peer.set_bind_ip(ip)   # Ip défini à 127.0.0.1 pour le moment
-	peer.create_server(DEFAUT_PORT, MAX_UTILISATEURS)
-	get_tree().set_network_peer(peer)
+	peerServ.set_bind_ip(ip)   # Ip défini à 127.0.0.1 pour le moment
+	peerServ.create_server(DEFAUT_PORT, MAX_UTILISATEURS)
+	get_tree().set_network_peer(peerServ)
+	print("ici eho", peerServ.get_unique_id())
 	_lobby_se_declarer()
 	
 func rejoindreServeur(player_name, ipHote):
 	""" Fait rejoindre un serveur à un utilisateur"""
 #	dataStruct.nom = player_name
 	self.nom = player_name
-	var peer = NetworkedMultiplayerENet.new()
-	peer.create_client(ipHote, DEFAUT_PORT)
-	get_tree().set_network_peer(peer)
+	peerClient = NetworkedMultiplayerENet.new()
+	peerClient.create_client(ipHote, DEFAUT_PORT)
+	get_tree().set_network_peer(peerClient)
 
 
 # =================================================
@@ -66,7 +69,7 @@ const dataStruct = {nom = "",
 					couleur = Globals.COULEUR_DEFAUT,
 					objectif = 30
 					}
-var VuPlateau = null
+
 var idOneExisting = false
 
 signal nvUtilisateur(idUtilisateur)
@@ -76,7 +79,15 @@ signal partieLancee
 func estHote():
 	return (id == 1 and !withHost) or (id == 0 and withHost)
 
+signal hoteTablette
+
 func _lobby_se_declarer():
+	
+	if peerClient!=null:
+		rpc_id(1, "demandeHote", peerClient.get_unique_id())
+	
+		yield(Network, "hoteTablette")
+	
 	""" Quand un joueur se connecte au serveur
 	Il recupère son ID propre.
 	Et déclare sa présence au serveur. """
@@ -86,31 +97,50 @@ func _lobby_se_declarer():
 		id = 0
 		dataStruct.estPlateau = true
 		dataStruct.estPret = true
-		VuPlateau = dataStruct
 		print("with host")
 	elif get_tree().is_network_server() and !withHost:
 		id = 1
 		idOneExisting = true
+
 		print("sans host")
 	else:
-		if VuPlateau != null and !idOneExisting:
+		print("topsdss")
+		if !idOneExisting :
 			id = 1
-			idOneExisting = true
-			print("Nous avons un id=1 avec l'host !")
+			idOneNotHost=true
 		else:
 			id = get_tree().get_network_unique_id()
 	
+	self.data = dataStruct.duplicate()
+	self.data.nom = self.nom
+		
 	if id != 0:
-		self.data = dataStruct.duplicate()
-		self.data.nom = self.nom
+		
 		
 		utilisateurs[id] = self.dataStruct.duplicate()
 		utilisateurs[id].nom = self.nom
-	
-	if id > 1 :								# NOTE : Peut être check si withHost et donc faire id > 0
-		rpc_id(1, "_lobby_declareUtilisateur", id, self.data)
 		
+		
+	
+	if id > 1 and !withHost:								# NOTE : Peut être check si withHost et donc faire id > 0
+		rpc_id(1, "_lobby_declareUtilisateur", id, self.data)
+	elif id > 0:
+		rpc_id(1, "_lobby_declareUtilisateur", id, self.data)
 
+
+remote func demandeHote(idJoueur):
+	print("machin m'a parlé : ", idJoueur)
+	print("mes données c'est : ", self.utilisateurs, "\n")
+	rpc_id(idJoueur, "HoteRecu", self.utilisateurs)
+	
+
+remote func HoteRecu(donnee):
+	if donnee.empty():
+		idOneExisting=false
+	else:
+		idOneExisting = donnee[1]!=null
+		
+	emit_signal("hoteTablette")
 
 func retour_menu():
 	Transition.transitionVers("res://Scenes/MenuPrincipal/MenuPrincipal.tscn")
@@ -124,16 +154,17 @@ remotesync func deconnexion_client(id):
 
 
 remotesync func deconnexion_server():
-	if self.id!=1:
+	if (self.id!=1 and idOneNotHost) or (!withHost and self.id!=0):
 		erreur_connexion = R.getString("networkErrHoteQuitte")
 
-
-	
 	get_tree().set_network_peer(null)
 
 	self.data={}
 	self.data=self.dataStruct.duplicate()
 	self.utilisateurs={}
+	
+	withHost = false
+	idOneNotHost = false
 	
 	retour_menu()
 
@@ -242,8 +273,9 @@ remotesync func _partie_declareChargee(idJoeuur: int):
 
 
 remotesync func _partie_appliqueChargee(idJoueur: int):
-	if idJoueur == id and id!=0:
+	if idJoueur == id:
 		data.estDansPartie = true
+	if id!=0:
 		utilisateurs[idJoueur].estDansPartie = true
 	
 	if estHote() and _sontJoueursDansPartie():
@@ -300,6 +332,7 @@ func posercarte(idJoueur: int, carte: String):
 	rpc("appliquePoseCarte", idJoueur, carte)
 	
 remotesync func appliquePoseCarte(idJoueur: int, carte: String):
+
 	self.data.cartesPlateau[idJoueur] = carte
 	if idJoueur == self.id:
 		self.data.main.erase(carte)
@@ -317,7 +350,7 @@ remotesync func appliquePoseCarte(idJoueur: int, carte: String):
 	
 	emit_signal("JoueurPoseCarte", idJoueur, carte)
 	emit_signal("APoseCarte", idJoueur)
-	
+		
 signal ChangementConteur
 
 func changeConteur(idJoueur):

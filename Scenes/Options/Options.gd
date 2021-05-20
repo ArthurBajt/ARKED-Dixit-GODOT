@@ -90,7 +90,9 @@ func _on_ResetTailleEcrand_gui_input(event):
 
 
 func _on_retourMenu_pressed():
-	if Network.id == 1:
+	if Network.id == 1 and !Network.idOneNotHost:
+		Network.rpc("deconnexion_server")
+	elif Network.id == 0 and Network.withHost == true:
 		Network.rpc("deconnexion_server")
 	else:
 		Network.rpc("deconnexion_client",Network.id)
