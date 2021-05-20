@@ -3,17 +3,16 @@
 importer="texture"
 type="StreamTexture"
 path.s3tc="res://.import/Bricks043_1K_Roughness.jpg-8dae124672d5cd17623f242e53ed6156.s3tc.stex"
-path.etc2="res://.import/Bricks043_1K_Roughness.jpg-8dae124672d5cd17623f242e53ed6156.etc2.stex"
 path.etc="res://.import/Bricks043_1K_Roughness.jpg-8dae124672d5cd17623f242e53ed6156.etc.stex"
 metadata={
-"imported_formats": [ "s3tc", "etc2", "etc" ],
+"imported_formats": [ "s3tc", "etc" ],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://Scenes/Partie/Mesh/Bricks043_1K_Roughness.jpg"
-dest_files=[ "res://.import/Bricks043_1K_Roughness.jpg-8dae124672d5cd17623f242e53ed6156.s3tc.stex", "res://.import/Bricks043_1K_Roughness.jpg-8dae124672d5cd17623f242e53ed6156.etc2.stex", "res://.import/Bricks043_1K_Roughness.jpg-8dae124672d5cd17623f242e53ed6156.etc.stex" ]
+dest_files=[ "res://.import/Bricks043_1K_Roughness.jpg-8dae124672d5cd17623f242e53ed6156.s3tc.stex", "res://.import/Bricks043_1K_Roughness.jpg-8dae124672d5cd17623f242e53ed6156.etc.stex" ]
 
 [params]
 

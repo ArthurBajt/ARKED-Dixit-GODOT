@@ -3,17 +3,16 @@
 importer="texture"
 type="StreamTexture"
 path.s3tc="res://.import/castle.jpg-ec67aa709f8e569bc317ff09b81151fa.s3tc.stex"
-path.etc2="res://.import/castle.jpg-ec67aa709f8e569bc317ff09b81151fa.etc2.stex"
 path.etc="res://.import/castle.jpg-ec67aa709f8e569bc317ff09b81151fa.etc.stex"
 metadata={
-"imported_formats": [ "s3tc", "etc2", "etc" ],
+"imported_formats": [ "s3tc", "etc" ],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://Scenes/Partie/Mesh/castle.jpg"
-dest_files=[ "res://.import/castle.jpg-ec67aa709f8e569bc317ff09b81151fa.s3tc.stex", "res://.import/castle.jpg-ec67aa709f8e569bc317ff09b81151fa.etc2.stex", "res://.import/castle.jpg-ec67aa709f8e569bc317ff09b81151fa.etc.stex" ]
+dest_files=[ "res://.import/castle.jpg-ec67aa709f8e569bc317ff09b81151fa.s3tc.stex", "res://.import/castle.jpg-ec67aa709f8e569bc317ff09b81151fa.etc.stex" ]
 
 [params]
 

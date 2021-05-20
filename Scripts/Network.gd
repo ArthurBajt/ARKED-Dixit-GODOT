@@ -90,13 +90,9 @@ func _lobby_se_declarer():
 			rpc_id(1, "_lobby_declareUtilisateur", id, self.data)
 	else:
 		rpc_id(1, "demandeDonnee", id)
-		print("wehs oh ?")
 		
 		yield(Network, "hotePret")
-
-		print(self.utilisateurs)
 		for usId in utilisateurs:
-			print("On est là : ", usId)
 			if usId !=null:
 				emit_signal("nvUtilisateur", usId)
 				
