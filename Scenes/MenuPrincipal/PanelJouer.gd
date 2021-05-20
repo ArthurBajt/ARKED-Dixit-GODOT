@@ -6,6 +6,8 @@ onready var errPseudo = $VBoxContainer/LabelErrpseudo
 onready var editIp = $VBoxContainer/HBoxLancer/VBoxRejoindre/HBoxContainer/EditIp
 onready var IpHost = $VBoxContainer/HBoxLancer/VBoxCreer/HBoxContainer/IpHost
 
+onready var editHost = $VBoxContainer/HBoxLancer/VBoxHost/HBoxContainer/EditHost
+
 onready var errIp = $VBoxContainer/HBoxLancer/VBoxRejoindre/LabelErrIp
 
 
@@ -120,9 +122,9 @@ func _on_IpHost_text_changed():
 
 func _on_ButtonHost_pressed():
 #	TODO : call à la fonction qui creer un serveur, puis transition vers le Lobby
-	Network.hostServeur()
+	Network.hostServeur(self.editHost.text)
 	Transition.transitionVers("res://Scenes/Lobby/Lobby.tscn")
-	pass # Replace with function body.
+
 
 
 func _on_ButtonFermer_pressed():
@@ -130,8 +132,7 @@ func _on_ButtonFermer_pressed():
 
 
 
-
-
-
-
-
+func _on_EditHost_text_changed():
+	if "\n" in self.IpHost.text:
+		self.IpHost.text = self.IpHost.text.replace("\n", "")
+		

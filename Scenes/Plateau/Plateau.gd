@@ -37,11 +37,9 @@ func init(joueursDeLaPartie: Array, cartesMax: int = 6):
 
 func _initPioche():
 	var nodePioche
-	if Network.id == 1 and Network.withHost == false:
+	if Network.id == 1:
 		nodePioche = NODE_PIOCHE_HOTE.instance()
-	elif Network.id == 1 and Network.withHost == true:
-		if Network.id == Network.utilisateurs[0].id :
-			nodePioche = NODE_PIOCHE_HOTE.instance()
+	
 	else:
 		nodePioche = NODE_PIOCHE_CLIENT.instance()
 	

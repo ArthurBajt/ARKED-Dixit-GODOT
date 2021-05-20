@@ -23,7 +23,7 @@ func _ready():
 func creerServeur(player_name, ip):
 	""" Creer un serveur """
 #	dataStruct.nom = player_name
-
+	withHost = false
 	self.nom = player_name
 	var peer = NetworkedMultiplayerENet.new()
 	peer.set_bind_ip(ip)
@@ -31,11 +31,11 @@ func creerServeur(player_name, ip):
 	get_tree().set_network_peer(peer)
 	_lobby_se_declarer()
 
-func hostServeur():
+func hostServeur(ip):
 	""" Host un serveur """
 	var peer = NetworkedMultiplayerENet.new()
 	withHost = true
-	peer.set_bind_ip("127.0.0.1")   # Ip défini à 127.0.0.1 pour le moment
+	peer.set_bind_ip(ip)   # Ip défini à 127.0.0.1 pour le moment
 	peer.create_server(DEFAUT_PORT, MAX_UTILISATEURS)
 	get_tree().set_network_peer(peer)
 	_lobby_se_declarer()
@@ -44,7 +44,6 @@ func rejoindreServeur(player_name, ipHote):
 	""" Fait rejoindre un serveur à un utilisateur"""
 #	dataStruct.nom = player_name
 	self.nom = player_name
-	withHost = false
 	var peer = NetworkedMultiplayerENet.new()
 	peer.create_client(ipHote, DEFAUT_PORT)
 	get_tree().set_network_peer(peer)
@@ -74,7 +73,8 @@ signal nvUtilisateur(idUtilisateur)
 signal nvStatuUtilisateur(idUtilisateur, statu)
 signal partieLancee
 
-
+func estHote():
+	return (id == 1 and !withHost) or (id == 0 and withHost)
 
 func _lobby_se_declarer():
 	""" Quand un joueur se connecte au serveur
@@ -83,7 +83,7 @@ func _lobby_se_declarer():
 	
 	
 	if get_tree().is_network_server() and withHost:
-		id = 1
+		id = 0
 		dataStruct.estPlateau = true
 		dataStruct.estPret = true
 		VuPlateau = dataStruct
@@ -92,9 +92,12 @@ func _lobby_se_declarer():
 		id = 1
 		print("sans host")
 	else:
-		id = get_tree().get_network_unique_id()
+		if utilisateurs.get(1) == null:
+			id = 1
+		else:
+			id = get_tree().get_network_unique_id()
 	
-	if dataStruct.estPlateau == false:
+	if id != 0:
 		self.data = dataStruct.duplicate()
 		self.data.nom = self.nom
 		
@@ -141,6 +144,8 @@ remote func _lobby_declareUtilisateur(idUtilisateur: int, curentData:Dictionary 
 	rpc("_lobby_ajouteUtilisateur", idUtilisateur, curentData.duplicate() )
 	for usId in utilisateurs:
 		rpc_id(idUtilisateur,"_lobby_ajouteUtilisateur", usId, utilisateurs[usId])
+		#if withHost :
+			#rpc_id(0,"_lobby_ajouteUtilisateur", usId, utilisateurs[usId])
 
 
 remotesync func _lobby_ajouteUtilisateur(idUtilisateur: int, curentData: Dictionary = {}):
@@ -179,7 +184,7 @@ remotesync func _lobby_appliquerStatu(idUtilisateur: int, statu: bool):
 
 func lobby_lancerPartie():
 	""" Permet a l'hote de la partie de démarer le jeu pour tt les utilisateurs"""
-	if id == 1 and _peutLancerPartie():
+	if estHote() and _peutLancerPartie():
 		rpc("_lobby_lancePartie")
 
 
@@ -238,7 +243,7 @@ remotesync func _partie_appliqueChargee(idJoueur: int):
 		data.estDansPartie = true
 	utilisateurs[idJoueur].estDansPartie = true
 	
-	if id == 1 and _sontJoueursDansPartie():
+	if estHote() and _sontJoueursDansPartie():
 
 		
 		emit_signal("JoueursDansPartie")
@@ -425,11 +430,12 @@ func setCouleurJoueur(idJoueur: int, coul: Color):
 
 
 remotesync func couleurDeclare(idJoueur: int, coul: Color):
-	if self.id == idJoueur and self.id == 1 and !withHost:
-		self.data.couleur = coul
-	if !(self.id == 1 and withHost == true):
+	if idJoueur != 0:
+		if self.id == idJoueur :
+			self.data.couleur = coul
+		print(utilisateurs)
 		self.utilisateurs[idJoueur].couleur = coul
-	emit_signal("joueurChangeCouleur", idJoueur, coul)
+		emit_signal("joueurChangeCouleur", idJoueur, coul)
 
 
 func getCouleurUtilisee():

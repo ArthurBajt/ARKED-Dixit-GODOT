@@ -91,9 +91,9 @@ margin_bottom = 353.0
 alignment = 2
 
 [node name="TextureRect" type="TextureRect" parent="VBoxContainer/HBoxLancer/VBoxCreer"]
-margin_top = 19.0
+margin_top = 11.0
 margin_right = 255.0
-margin_bottom = 245.0
+margin_bottom = 231.0
 texture = ExtResource( 3 )
 
 [node name="LabelCreer" type="Label" parent="VBoxContainer/HBoxLancer/VBoxCreer"]
@@ -105,9 +105,9 @@ text = "Bla bla bla"
 align = 1
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HBoxLancer/VBoxCreer"]
-margin_top = 268.0
+margin_top = 250.0
 margin_right = 255.0
-margin_bottom = 313.0
+margin_bottom = 290.0
 alignment = 1
 __meta__ = {
 "_edit_use_anchors_": false
@@ -149,6 +149,7 @@ margin_bottom = 353.0
 alignment = 2
 
 [node name="TextureRect" type="TextureRect" parent="VBoxContainer/HBoxLancer/VBoxRejoindre"]
+margin_top = -3.0
 margin_right = 255.0
 margin_bottom = 226.0
 texture = ExtResource( 4 )
@@ -216,18 +217,37 @@ margin_bottom = 353.0
 alignment = 2
 
 [node name="TextureRect" type="TextureRect" parent="VBoxContainer/HBoxLancer/VBoxHost"]
-margin_top = 68.0
+margin_top = 20.0
 margin_right = 255.0
-margin_bottom = 294.0
+margin_bottom = 246.0
 texture = ExtResource( 8 )
 
 [node name="LabelHost" type="Label" parent="VBoxContainer/HBoxLancer/VBoxHost"]
-margin_top = 298.0
+margin_top = 250.0
+margin_right = 255.0
+margin_bottom = 264.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HBoxLancer/VBoxHost"]
+margin_top = 268.0
 margin_right = 255.0
 margin_bottom = 313.0
-custom_fonts/font = ExtResource( 6 )
-text = "efzezef feduzefdftgygq"
-align = 1
+
+[node name="LabelHost2" type="Label" parent="VBoxContainer/HBoxLancer/VBoxHost/HBoxContainer"]
+margin_top = 7.0
+margin_right = 38.0
+margin_bottom = 37.0
+custom_fonts/font = ExtResource( 2 )
+text = "IP : "
+
+[node name="EditHost" type="TextEdit" parent="VBoxContainer/HBoxLancer/VBoxHost/HBoxContainer"]
+margin_left = 42.0
+margin_right = 242.0
+margin_bottom = 45.0
+rect_min_size = Vector2( 200, 45 )
+custom_fonts/font = ExtResource( 2 )
 
 [node name="ButtonHost" type="Button" parent="VBoxContainer/HBoxLancer/VBoxHost"]
 margin_top = 317.0
@@ -248,5 +268,6 @@ text = "X"
 [connection signal="pressed" from="VBoxContainer/HBoxLancer/VBoxCreer/ButtonCreer" to="." method="_on_ButtonCreer_pressed"]
 [connection signal="text_changed" from="VBoxContainer/HBoxLancer/VBoxRejoindre/HBoxContainer/EditIp" to="." method="_on_EditIp_text_changed"]
 [connection signal="pressed" from="VBoxContainer/HBoxLancer/VBoxRejoindre/ButtonRejoindre" to="." method="_on_ButtonRejoindre_pressed"]
+[connection signal="text_changed" from="VBoxContainer/HBoxLancer/VBoxHost/HBoxContainer/EditHost" to="." method="_on_EditHost_text_changed"]
 [connection signal="pressed" from="VBoxContainer/HBoxLancer/VBoxHost/ButtonHost" to="." method="_on_ButtonHost_pressed"]
 [connection signal="pressed" from="ButtonFermer" to="." method="_on_ButtonFermer_pressed"]
