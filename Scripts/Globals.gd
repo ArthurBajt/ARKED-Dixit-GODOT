@@ -110,3 +110,7 @@ func afficheErreur(erreur: String):
 	yield(get_tree(), "idle_frame")
 	errNode.setMessage(erreur)
 	get_parent().move_child( errNode, get_parent().get_child_count() )
+
+signal getDrunked()
+func plateauDrunked():
+	emit_signal("getDrunked")

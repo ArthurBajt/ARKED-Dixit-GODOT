@@ -132,9 +132,15 @@ func AjoutePion(pion):
 	pion.transform.origin.x = self.global_transform.origin.x
 	pion.transform.origin.y = self.global_transform.origin.y
 	pion.transform.origin.z = self.global_transform.origin.z + (0.05 * -(self.pionsDessus.size() - 1))
-	
+
+signal getDrunk(nomCarte)
 func afficheEffets():
 	if(type == Globals.typesCartes.DOUBLE):
 		$ParticulesRoot/Double.emitting = true
 	if(type == Globals.typesCartes.PIQUES):
 		$ParticulesRoot/Piques.emitting = true
+	if(type == Globals.typesCartes.BOURRE and self.estDansMain):
+		$ParticulesRoot/Bourree.emitting = true
+
+func afficheEffetBrouillard(value):
+	$Mesh/EffetBrouillard.visible = value

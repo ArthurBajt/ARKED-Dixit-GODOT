@@ -274,7 +274,6 @@ text = "X"
 __meta__ = {
 "_edit_use_anchors_": false
 }
-
 [connection signal="value_changed" from="HBoxContainer/Panel/VBoxContainer/HBoxVolume/SliderVolume" to="." method="_on_SliderVolume_value_changed"]
 [connection signal="value_changed" from="HBoxContainer/Panel/VBoxContainer/HBoxMusique/SliderMusique" to="." method="_on_SliderMusique_value_changed"]
 [connection signal="value_changed" from="HBoxContainer/Panel/VBoxContainer/HBoxSfx/SliderSfx" to="." method="_on_SliderSfx_value_changed"]

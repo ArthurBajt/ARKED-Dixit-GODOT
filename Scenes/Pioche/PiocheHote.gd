@@ -27,6 +27,10 @@ func piocher(joueur: Joueur):
 		number = rng.randf_range(0,36) # 36
 		if(number<1):
 			type = Globals.typesCartes.PIQUES
+		else:
+			number = rng.randf_range(0,60) # 60
+			if(number < 1):
+				type = Globals.typesCartes.BOURRE
 	
 	Network.joueurPioche(joueur.id, carte, type)
 

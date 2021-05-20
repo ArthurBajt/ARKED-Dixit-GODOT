@@ -10,7 +10,6 @@ onready var plateau = $Scene/Plateau
 
 export(String, FILE, "*.ogg") var musiquePath
 
-
 func _ready():
 	
 	Music.setMusic(self.musiquePath)
@@ -137,4 +136,4 @@ func changeConteur():
 	self.plateau.changeConteur()
 
 func finDePartie():
-	Transition.transitionVers("res://Scenes/Scores/Scores.tscn")
+	Transition.transitionVers("res://Scenes/FinDePartie/FinDePartie.tscn")

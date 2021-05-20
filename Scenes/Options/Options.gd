@@ -102,5 +102,3 @@ func _on_retourMenu_pressed():
 	
 	Network.retour_menu()
 	cache()
-
-
