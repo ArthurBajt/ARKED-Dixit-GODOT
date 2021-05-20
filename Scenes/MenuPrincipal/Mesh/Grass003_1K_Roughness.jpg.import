@@ -3,17 +3,16 @@
 importer="texture"
 type="StreamTexture"
 path.s3tc="res://.import/Grass003_1K_Roughness.jpg-da6463da1038e1684bee56731ca1df15.s3tc.stex"
-path.etc2="res://.import/Grass003_1K_Roughness.jpg-da6463da1038e1684bee56731ca1df15.etc2.stex"
 path.etc="res://.import/Grass003_1K_Roughness.jpg-da6463da1038e1684bee56731ca1df15.etc.stex"
 metadata={
-"imported_formats": [ "s3tc", "etc2", "etc" ],
+"imported_formats": [ "s3tc", "etc" ],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://Scenes/MenuPrincipal/Mesh/Grass003_1K_Roughness.jpg"
-dest_files=[ "res://.import/Grass003_1K_Roughness.jpg-da6463da1038e1684bee56731ca1df15.s3tc.stex", "res://.import/Grass003_1K_Roughness.jpg-da6463da1038e1684bee56731ca1df15.etc2.stex", "res://.import/Grass003_1K_Roughness.jpg-da6463da1038e1684bee56731ca1df15.etc.stex" ]
+dest_files=[ "res://.import/Grass003_1K_Roughness.jpg-da6463da1038e1684bee56731ca1df15.s3tc.stex", "res://.import/Grass003_1K_Roughness.jpg-da6463da1038e1684bee56731ca1df15.etc.stex" ]
 
 [params]
 

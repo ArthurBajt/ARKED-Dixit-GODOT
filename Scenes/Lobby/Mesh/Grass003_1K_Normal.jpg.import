@@ -3,17 +3,16 @@
 importer="texture"
 type="StreamTexture"
 path.s3tc="res://.import/Grass003_1K_Normal.jpg-c1a0d26b0972afec7d2fd681bc171657.s3tc.stex"
-path.etc2="res://.import/Grass003_1K_Normal.jpg-c1a0d26b0972afec7d2fd681bc171657.etc2.stex"
 path.etc="res://.import/Grass003_1K_Normal.jpg-c1a0d26b0972afec7d2fd681bc171657.etc.stex"
 metadata={
-"imported_formats": [ "s3tc", "etc2", "etc" ],
+"imported_formats": [ "s3tc", "etc" ],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://Scenes/Lobby/Mesh/Grass003_1K_Normal.jpg"
-dest_files=[ "res://.import/Grass003_1K_Normal.jpg-c1a0d26b0972afec7d2fd681bc171657.s3tc.stex", "res://.import/Grass003_1K_Normal.jpg-c1a0d26b0972afec7d2fd681bc171657.etc2.stex", "res://.import/Grass003_1K_Normal.jpg-c1a0d26b0972afec7d2fd681bc171657.etc.stex" ]
+dest_files=[ "res://.import/Grass003_1K_Normal.jpg-c1a0d26b0972afec7d2fd681bc171657.s3tc.stex", "res://.import/Grass003_1K_Normal.jpg-c1a0d26b0972afec7d2fd681bc171657.etc.stex" ]
 
 [params]
 
