@@ -10,7 +10,6 @@ onready var plateau = $Scene/Plateau
 
 export(String, FILE, "*.ogg") var musiquePath
 
-
 func _ready():
 	
 	Music.setMusic(self.musiquePath)
