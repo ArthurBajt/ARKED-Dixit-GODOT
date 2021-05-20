@@ -26,6 +26,8 @@ func _ready():
 	Network.connect("giveVoteurs",self, "afficheVoteurs")
 	Network.connect("prochaineManche", self, "nouvelleManche")
 	Network.connect("changeConteurzer", self, "changeConteur")
+	
+	Network.connect("finDePartie", self, "finDePartie")
 
 class TrieJoueurs:
 	# c'est comme les fonctions discrettes en js.
@@ -133,3 +135,6 @@ func nouvelleManche():
 	
 func changeConteur():
 	self.plateau.changeConteur()
+
+func finDePartie():
+	Transition.transitionVers("res://Scenes/Scores/Scores.tscn")
