@@ -7,10 +7,15 @@ var points
 func _ready():
 	pseudo = "N/A"
 	points = 0
+#	var color_circle = load("res://Assets/Sprites/white_circle.png").duplicate()
+#	$VBoxContainer/HBoxContainer/ColorCircle.set_texture(load("res://Assets/Sprites/white_circle.png"))
+#	$VBoxContainer/HBoxContainer/ColorCircle.rect_size = Vector2(60,60)
 
 func _process(delta):
 	var pseudo = Network.utilisateurs[id].nom
+	var couleur = Network.utilisateurs[id].couleur
 	points = Network.utilisateurs[id].points
-	$HBoxContainer/Label.text = pseudo
-	$HBoxContainer/Label2.text = str(points)
+	$VBoxContainer/HBoxContainer/ColorCircle.modulate = couleur
+	$VBoxContainer/HBoxContainer/Label.text = pseudo
+	$VBoxContainer/HBoxContainer/Label2.text = str(points)
 
