@@ -1178,19 +1178,17 @@ script = ExtResource( 4 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.05 )
 
 [node name="Double" type="CPUParticles" parent="ParticulesRoot"]
-transform = Transform( 0.999552, 0, -0.0299454, 0, 1, 0, 0.0299454, 0, 0.999552, 0, 0, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 emitting = false
 mesh = SubResource( 40 )
 emission_shape = 2
 emission_box_extents = Vector3( 0.3, 0.49, 0 )
-gravity = Vector3( 0, 0.2, 0 )
+gravity = Vector3( 0, 0, 0 )
 scale_amount = 0.1
 scale_amount_random = 0.33
 scale_amount_curve = SubResource( 41 )
 
 [node name="Piques" type="CPUParticles" parent="ParticulesRoot"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
-emitting = false
 speed_scale = 0.3
 mesh = SubResource( 43 )
 emission_shape = 2
