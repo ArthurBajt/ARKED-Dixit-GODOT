@@ -5,7 +5,7 @@ const DEFAUT_PORT: int = 31400
 const MAX_UTILISATEURS: int = 99
 
 
-var id: int = 0
+var id: int = -1
 var nom = ""
 var erreur_connexion
 var tabCouleur=[Color.rebeccapurple,Color.orange,Color.maroon,Color.cadetblue,Color.red,Color.green]
@@ -66,8 +66,8 @@ const dataStruct = {nom = "",
 					couleur = Globals.COULEUR_DEFAUT,
 					objectif = 30
 					}
-var VuPlateau
-
+var VuPlateau = null
+var idOneExisting = false
 
 signal nvUtilisateur(idUtilisateur)
 signal nvStatuUtilisateur(idUtilisateur, statu)
@@ -90,10 +90,12 @@ func _lobby_se_declarer():
 		print("with host")
 	elif get_tree().is_network_server() and !withHost:
 		id = 1
+		idOneExisting = true
 		print("sans host")
 	else:
-		if utilisateurs.get(1) == null:
+		if VuPlateau != null and not idOneExisting:
 			id = 1
+			idOneExisting = true
 		else:
 			id = get_tree().get_network_unique_id()
 	
@@ -101,7 +103,7 @@ func _lobby_se_declarer():
 		self.data = dataStruct.duplicate()
 		self.data.nom = self.nom
 		
-		utilisateurs[id] = dataStruct.duplicate()
+		utilisateurs[id] = self.dataStruct.duplicate()
 		utilisateurs[id].nom = self.nom
 	
 	if id > 1 :

@@ -91,9 +91,9 @@ margin_bottom = 353.0
 alignment = 2
 
 [node name="TextureRect" type="TextureRect" parent="VBoxContainer/HBoxLancer/VBoxCreer"]
-margin_top = 11.0
+margin_top = 19.0
 margin_right = 255.0
-margin_bottom = 231.0
+margin_bottom = 245.0
 texture = ExtResource( 3 )
 
 [node name="LabelCreer" type="Label" parent="VBoxContainer/HBoxLancer/VBoxCreer"]
@@ -105,9 +105,9 @@ text = "Bla bla bla"
 align = 1
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HBoxLancer/VBoxCreer"]
-margin_top = 250.0
+margin_top = 268.0
 margin_right = 255.0
-margin_bottom = 290.0
+margin_bottom = 313.0
 alignment = 1
 __meta__ = {
 "_edit_use_anchors_": false
@@ -149,7 +149,6 @@ margin_bottom = 353.0
 alignment = 2
 
 [node name="TextureRect" type="TextureRect" parent="VBoxContainer/HBoxLancer/VBoxRejoindre"]
-margin_top = -3.0
 margin_right = 255.0
 margin_bottom = 226.0
 texture = ExtResource( 4 )

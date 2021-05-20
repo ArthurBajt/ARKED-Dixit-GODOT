@@ -94,7 +94,7 @@ func _on_ButtonPret_pressed():
 
 
 func _on_ButtonLancer_pressed():
-	if Network.estHost() and self.peutLancer:
+	if Network.estHote() and self.peutLancer:
 		Network.lobby_lancerPartie()
 
 
