@@ -1,7 +1,7 @@
 extends Node
 
 onready var camRoot = $"3dRoot/CamRoot"
-onready var panelJouer = $Ui/PanelJouer
+onready var panelJouer = $Ui/LayoutPanelJouer/HBoxContainer/PanelJouer
 var vitesseRotation = 0.02
 
 export(String, FILE, "*.ogg") var musiquePath
@@ -20,22 +20,26 @@ func _physics_process(delta):
 
 
 func initUi():
-	$Ui/Titre.text = R.getString("titreJeu")
-	$Ui/Copyright.text = R.getString("copyright")
+	$Ui/LayoutTitre/HBoxContainer/Titre.text = R.getString("titreJeu")
+	$Ui/LayoutCopyright/HBoxContainer/Copyright.text = R.getString("copyright")
 	
-	$Ui/BtnJouer.text = R.getString("btnJouer")
-	$Ui/BtnOptions.text = R.getString("btnOptions")
-	$Ui/BtnQuit.text = R.getString("btnQuitter")
+	$Ui/LayoutBoutons/HBoxContainer/VBoxContainer/BtnJouer.text = R.getString("btnJouer")
+	$Ui/LayoutBoutons/HBoxContainer/VBoxContainer/BtnOptions.text = R.getString("btnOptions")
+	$Ui/LayoutBoutons/HBoxContainer/VBoxContainer/ButtonCredits.text = R.getString("btnCredits")
+	$Ui/LayoutBoutons/HBoxContainer/VBoxContainer/BtnQuit.text = R.getString("btnQuitter")
+	
+	$Ui/LayoutPanelJouer.visible = false
 
 #==================
 #	Sigaux
 
 func _on_BtnJouer_pressed():
-#	Transition.transitionVers("res://Scenes/Menu/Menu.tscn")
+	$Ui/LayoutPanelJouer.visible = true
 	self.panelJouer.visible = true
-	$Ui/BtnJouer.disabled = true
+	$Ui/LayoutBoutons/HBoxContainer/VBoxContainer/BtnJouer.disabled = true
 	yield(self.panelJouer, "visibility_changed")
-	$Ui/BtnJouer.disabled = false
+	$Ui/LayoutBoutons/HBoxContainer/VBoxContainer/BtnJouer.disabled = false
+	$Ui/LayoutPanelJouer.visible = false
 
 
 func _on_BtnOptions_pressed():
@@ -44,3 +48,7 @@ func _on_BtnOptions_pressed():
 
 func _on_BtnQuit_pressed():
 	Globals.quitter()
+
+
+func _on_ButtonCredits_pressed():
+	Transition.transitionVers("res://Scenes/Credits/Credits.tscn")

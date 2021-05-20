@@ -1,0 +1,13 @@
+[remap]
+
+importer="image"
+type="Image"
+path="res://.import/chevalier_leo.jpg-d7dc73e3c6e4c93a5c0fb935cbccbbd8.image"
+
+[deps]
+
+source_file="res://Assets/Sprites/BGs/chevalier_leo.jpg"
+dest_files=[ "res://.import/chevalier_leo.jpg-d7dc73e3c6e4c93a5c0fb935cbccbbd8.image" ]
+
+[params]
+

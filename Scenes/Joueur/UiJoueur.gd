@@ -1,17 +1,15 @@
 extends Control
 
-onready var labelNom = $VBoxContainer/LabelNom
-onready var labelPoints = $VBoxContainer/LabelPoints
-onready var labelConteur = $VBoxContainer/LabelConteur
+onready var labelPoints = $LabelPoints
+onready var labelConteur = $LabelConteur
 
 func _ready():
 	self.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	labelNom.text = R.getString("labelNom") % str(Network.id)
-	labelPoints.text = R.getString("labelPoints") % str( Network.data.points )
+	labelPoints.text = R.getString("labelPoints") % [str(Network.data.points), str(Network.data.objectif)]
 	labelConteur.text = R.getString("labelConteur")
 
 func _process(delta):
-	labelPoints.text = R.getString("labelPoints") % str( Network.data.points )
+	labelPoints.text = R.getString("labelPoints") % [str(Network.data.points), str(Network.data.objectif)]
 
 func changeTheme(theme, estConteur=true, nomConteur=""):
 	if(estConteur):
@@ -20,4 +18,4 @@ func changeTheme(theme, estConteur=true, nomConteur=""):
 		labelConteur.text = "%s a choisi : %s" % [nomConteur,theme]
 
 func resetTheme():
-	labelConteur.text = "Le choix du thème n'a pas encore été fait"
+	labelConteur.text = R.getString("labelConteur")

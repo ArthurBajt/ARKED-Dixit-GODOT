@@ -15,6 +15,8 @@ var theme: String = ""
 onready var mesh = $Mesh
 onready var rootCartes = $RootCartes
 
+var drunked: bool = false
+
 var cartes: Array = []
 
 func _ready():
@@ -56,9 +58,9 @@ func distribuCarte():
 			pioche.piocher(j)
 
 
-func _on_joueurApiocherCarte(idJoueur: int, carte:String):
+func _on_joueurApiocherCarte(idJoueur: int, carte:String, type):
 	var j = getJoueur(idJoueur)
-	j.piocheCarte(carte)
+	j.piocheCarte(carte, type)
 
 
 func JoueurPosecarte(idJoueur: int, nomCarte: String):
@@ -92,31 +94,42 @@ func ajouteCartePlateau(carte: Carte, transform = null):
 	carte.estDansMain = false
 	carte.estSurPlateau =  true
 	carte.cache = true
-
+		
 func voteMoment():
 	
 	#Mélange des cartes
-#	self.cartes.shuffle()
-#	for carte in self.cartes:
-#		carte.positionCible = Vector3(0,0,1)
-#		yield(get_tree().create_timer(0.5), "timeout")
-#
-#	var i = 0
-#	var cartePosees = []
-#	for carte in self.cartes:
-#		for cartezer in cartePosees:
-#			cartezer.positionCible.x += 0.28
-#		carte.positionCible = Vector3(0.28, 0, 0) * -(i)
-#		cartePosees.append(carte)
-#		i+=1
-#		yield(get_tree().create_timer(0.8), "timeout")
+	self.cartes.shuffle()
+	for carte in self.cartes:
+		if carte.type == Globals.typesCartes.BOURRE:
+			drunked = true
+		carte.positionCible = Vector3(0,0,1)
 	
+	yield(get_tree().create_timer(0.5), "timeout")
+
+	var cartePosees = []
+	for carte in self.cartes:
+		carte.afficheEffetBrouillard(drunked)
+		for cartezer in cartePosees:
+			cartezer.positionCible.x += 0.14
+		cartePosees.append(carte)
+		
+		carte.positionCible = Vector3(0.14, 0, 0) * -(cartePosees.size() - 1)
+		
+		yield(get_tree().create_timer(0.2), "timeout")
+
+	for cartezer in cartePosees:
+		cartezer.positionCible.x -= 0.14
+
 	#retourner les cartes
 	for child in self.cartes:
 		yield(get_tree(), "idle_frame")
 		child.setVisible(true)
 
 func voirRes():
+	if(drunked):
+		drunked = false
+		for carte in self.cartes:
+			carte.afficheEffetBrouillard(false)
 	for j in self.joueurs:
 		j.voirRes()
 	

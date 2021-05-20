@@ -2,6 +2,7 @@ extends Spatial
 class_name Carte
 
 var nom: String
+var type = Globals.typesCartes.NORMALE
 var coef = 1
 var bonus = 0
 var malus = 0
@@ -49,6 +50,24 @@ func _process(delta):
 			self.animation.setAnimationCible( "Cachee" )
 		else:
 			self.animation.setAnimationCible( "Decouverte" )
+	
+	match type:
+		Globals.typesCartes.NORMALE:
+			coef = 1
+			bonus = 0
+			malus = 0
+		Globals.typesCartes.DOUBLE:
+			coef = 2
+			bonus = 0
+			malus = 0
+		Globals.typesCartes.PIQUES:
+			coef = 1
+			bonus = 0
+			malus = 1
+		Globals.typesCartes.BOURRE:
+			coef = 1
+			bonus = 0
+			malus = 0
 
 func init(nom, visible: bool = true, estHover: bool= true, positionDepart: Vector3 = Vector3.ZERO, positionCible: Vector3 = Vector3.ZERO):
 	self.nom = nom
@@ -97,7 +116,7 @@ func _on_Area_input_event(camera, event, click_position, click_normal, shape_idx
 			if(self.estDansMain):
 				self.joueurQuiAPose = Network.id
 				emit_signal("carteCliquee", self)
-			if(self.estSurPlateau && self.joueurQuiAPose != Network.id):
+			if(self.estSurPlateau && self.joueurQuiAPose != Network.id && Network.data.etat == Globals.EtatJoueur.VOTE):
 				emit_signal("carteVotee", self, Network.id)
 				
 func AjoutePion(pion):
@@ -113,3 +132,15 @@ func AjoutePion(pion):
 	pion.transform.origin.x = self.global_transform.origin.x
 	pion.transform.origin.y = self.global_transform.origin.y
 	pion.transform.origin.z = self.global_transform.origin.z + (0.05 * -(self.pionsDessus.size() - 1))
+
+signal getDrunk(nomCarte)
+func afficheEffets():
+	if(type == Globals.typesCartes.DOUBLE):
+		$ParticulesRoot/Double.emitting = true
+	if(type == Globals.typesCartes.PIQUES):
+		$ParticulesRoot/Piques.emitting = true
+	if(type == Globals.typesCartes.BOURRE and self.estDansMain):
+		$ParticulesRoot/Bourree.emitting = true
+
+func afficheEffetBrouillard(value):
+	$Mesh/EffetBrouillard.visible = value

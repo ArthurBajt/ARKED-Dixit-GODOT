@@ -5,6 +5,8 @@ const DEFAUT_PORT: int = 31400
 const MAX_UTILISATEURS: int = 99
 
 
+var peerServ
+var peerClient
 var id: int = 0
 var nom = ""
 var erreur_connexion
@@ -14,9 +16,9 @@ var tabCouleur=[Color.rebeccapurple,Color.orange,Color.maroon,Color.cadetblue,Co
 func _ready():
 # warning-ignore:return_value_discarded
 	get_tree().connect("connected_to_server", self, "_lobby_se_declarer")
-	get_tree().connect("connection_failed", self, "_retour_menu")
-	get_tree().connect("server_disconnected", self, "_deconnexion_server")
-	get_tree().connect("network_peer_disconnected", self, "_deconnexion_client")
+	get_tree().connect("connection_failed", self, "retour_menu")
+	get_tree().connect("server_disconnected", self, "deconnexion_server")
+	get_tree().connect("network_peer_disconnected", self, "deconnexion_client")
 
 
 func creerServeur(player_name, ip):
@@ -24,19 +26,19 @@ func creerServeur(player_name, ip):
 #	dataStruct.nom = player_name
 
 	self.nom = player_name
-	var peer = NetworkedMultiplayerENet.new()
-	peer.set_bind_ip(ip)
-	peer.create_server(DEFAUT_PORT, MAX_UTILISATEURS)
-	get_tree().set_network_peer(peer)
+	peerServ = NetworkedMultiplayerENet.new()
+	peerServ.set_bind_ip(ip)
+	peerServ.create_server(DEFAUT_PORT, MAX_UTILISATEURS)
+	get_tree().set_network_peer(peerServ)
 	_lobby_se_declarer()
 	
 func rejoindreServeur(player_name, ipHote):
 	""" Fait rejoindre un serveur à un utilisateur"""
 #	dataStruct.nom = player_name
 	self.nom = player_name
-	var peer = NetworkedMultiplayerENet.new()
-	peer.create_client(ipHote, DEFAUT_PORT)
-	get_tree().set_network_peer(peer)
+	peerClient = NetworkedMultiplayerENet.new()
+	peerClient.create_client(ipHote, DEFAUT_PORT)
+	get_tree().set_network_peer(peerClient)
 
 
 # =================================================
@@ -52,10 +54,22 @@ const dataStruct = {nom = "",
 					carteVotee = null,
 					points = 0,
 					estConteur = false,
-					couleur = Globals.couleursValeurs[ Globals.couleurs.ROUGE ]
+					couleur = Globals.COULEUR_DEFAUT,
+					objectif = 30,
+					etat = Globals.EtatJoueur.ATTENTE_CHOIX_THEME
 					}
 
+var nbTours = 1
 
+var stats = {	
+				sociabilite = {},
+				tmpsReac = 	{
+								poseCarte = {},
+								voteCarte = {},
+								voirResultats = {}
+							},
+				cartesJouees = {}
+			}
 
 signal nvUtilisateur(idUtilisateur)
 signal nvStatuUtilisateur(idUtilisateur, statu)
@@ -84,26 +98,87 @@ func _lobby_se_declarer():
 	if id > 1 :
 		rpc_id(1, "_lobby_declareUtilisateur", id, self.data)
 
-func _retour_menu():
+func retour_menu():
 	Transition.transitionVers("res://Scenes/MenuPrincipal/MenuPrincipal.tscn")
 
-signal decoJoueur(id)
-func _deconnexion_client(id):
+signal decoJoueur(id, nomCarte, eraseCarte)
+signal reVote(idJoueur)
+signal changeConteurzer()
+func deconnexion_client(id):
+	var saveEtat = self.utilisateurs[id].etat
+	var saveNomCarte = self.utilisateurs[id].cartesPlateau.get(id)
+	var eraseCarte = false
+	print("c'est l'id : ", id)
 	
 	utilisateurs.erase(id)
-	emit_signal("decoJoueur", id)
-	
-func _deconnexion_server():
-	erreur_connexion = R.getString("networkErrHoteQuitte")
-	print(erreur_connexion)
+
+	for usId in utilisateurs: 
+		print(usId)
+		
+
+	match saveEtat:
+		Globals.EtatJoueur.SELECTION_CARTE_THEME:
+			emit_signal("decoJoueur", id, saveNomCarte, eraseCarte)
+			emit_signal("changeConteurzer")
+			
+		Globals.EtatJoueur.CHOIX_THEME:
+			for user in self.utilisateurs:
+				self.utilisateurs[user].cartesPlateau.erase(id)
+			eraseCarte = true
+			emit_signal("decoJoueur", id, saveNomCarte, eraseCarte)
+			emit_signal("changeConteurzer")
+			
+		Globals.EtatJoueur.SELECTION_CARTE:
+			self.verifEtat(Globals.EtatJoueur.ATTENTE_SELECTIONS)
+			emit_signal("decoJoueur", id, saveNomCarte, eraseCarte)
+			
+		Globals.EtatJoueur.ATTENTE_SELECTIONS:
+			self.verifEtat(saveEtat)
+			for user in self.utilisateurs:
+				self.utilisateurs[user].cartesPlateau.erase(id)
+			eraseCarte = true
+			emit_signal("decoJoueur", id, saveNomCarte, eraseCarte)
+			
+		Globals.EtatJoueur.VOTE:
+			for user in self.utilisateurs:
+				if self.utilisateurs[user].carteVotee == saveNomCarte:
+					self.utilisateurs[user].etat=Globals.EtatJoueur.VOTE
+					if user == self.id:
+						self.data.etat=Globals.EtatJoueur.VOTE
+					emit_signal("reVote", user)
+			eraseCarte=true
+			self.verifEtat(Globals.EtatJoueur.ATTENTE_VOTES)
+			emit_signal("decoJoueur", id, saveNomCarte, eraseCarte)
+			
+		Globals.EtatJoueur.ATTENTE_VOTES:
+			self.verifEtat(saveEtat)
+			emit_signal("decoJoueur", id, saveNomCarte, eraseCarte)
+			
+		Globals.EtatJoueur.VOIR_RESULTAT:
+			self.verifEtat(Globals.EtatJoueur.ATTENTE_PROCHAINE_MANCHE)
+			emit_signal("decoJoueur", id, saveNomCarte, eraseCarte)
+			
+		Globals.EtatJoueur.ATTENTE_PROCHAINE_MANCHE:
+			emit_signal("decoJoueur", id, saveNomCarte, eraseCarte)
+			self.verifEtat(saveEtat)
+
+
+func deconnexion_server():
+	if self.id!=1:
+		erreur_connexion = R.getString("networkErrHoteQuitte")
+
 
 	
 	get_tree().set_network_peer(null)
 
+	self.data={}
 	self.data=self.dataStruct.duplicate()
 	self.utilisateurs={}
 	
-	_retour_menu()
+	retour_menu()
+
+
+
 
 remote func _lobby_declareUtilisateur(idUtilisateur: int, curentData:Dictionary ):
 	""" Quand un utilisateur se déclare,
@@ -158,13 +233,13 @@ func lobby_lancerPartie():
 
 remotesync func _lobby_lancePartie():
 	""" Signal a tt les utilisateurs du lobby que la partie commence."""
+	for user in self.utilisateurs:
+		self.stats.sociabilite[user] = 0
 	emit_signal("partieLancee")
 
 func assigneCouleur():
 
 
-# warning-ignore:unused_variable
-	var i=0
 	var tabTemp=[]
 	for usId in utilisateurs:
 		tabTemp.append(usId)
@@ -244,18 +319,18 @@ remotesync func joueurVoteCarte(nomCarte,idJoueur):
 # =================================================
 # Cartes
 
-signal joueurApiocherCarte(id, carte)
+signal joueurApiocherCarte(id, carte, type)
 
-func joueurPioche(idJoueur: int, carte: String):
-	rpc("_joueurPiocheCarte", idJoueur, carte)
+func joueurPioche(idJoueur: int, carte: String, type: int):
+	rpc("_joueurPiocheCarte", idJoueur, carte, type)
 
 
 
-remotesync func _joueurPiocheCarte(idJoueur: int, carte: String):
+remotesync func _joueurPiocheCarte(idJoueur: int, carte: String, type: int):
 	if idJoueur == id:
 		self.data.main = self.data.main + [carte]
 	utilisateurs[idJoueur].main = utilisateurs[idJoueur].main + [carte]
-	emit_signal("joueurApiocherCarte", idJoueur, carte)
+	emit_signal("joueurApiocherCarte", idJoueur, carte, type)
 
 # =================================================
 # Plateau
@@ -267,8 +342,8 @@ func posercarte(idJoueur: int, carte: String):
 	rpc("appliquePoseCarte", idJoueur, carte)
 	
 remotesync func appliquePoseCarte(idJoueur: int, carte: String):
+	self.data.cartesPlateau[idJoueur] = carte
 	if idJoueur == self.id:
-		self.data.cartesPlateau[idJoueur] = carte
 		self.data.main.erase(carte)
 	
 	for jId in self.utilisateurs:
@@ -306,24 +381,26 @@ remotesync func declareChangementConteur(idJoueur):
 # Chat
 signal updateChat
 func envoieMessage(msg):
-	rpc("messageRecu", self.data.nom , msg)
+	rpc("messageRecu", self.id , msg)
 	
-remotesync func messageRecu(pseudo, msg):
+remotesync func messageRecu(id, msg):
+	stats.sociabilite[id] += 1
+	var pseudo = self.utilisateurs[id].nom
 	emit_signal("updateChat", pseudo, msg)
 
 # =================================================
 # Theme
 signal updateTheme
 func defineTheme(theme):
-	rpc("changeTheme", theme, self.data.nom)
+	rpc("changeTheme", self.id, theme)
 	
-remotesync func changeTheme(theme, nomConteur):
+remotesync func changeTheme(id, theme):
 	for usId in self.utilisateurs:
 		if(self.utilisateurs[usId].estConteur):
 			self.utilisateurs[usId].etat = Globals.EtatJoueur.ATTENTE_SELECTIONS
 		else:
 			self.utilisateurs[usId].etat = Globals.EtatJoueur.SELECTION_CARTE
-		
+	var nomConteur = self.utilisateurs[id].nom
 	emit_signal("updateTheme", theme, nomConteur)
 
 func verifEtat(etat):
@@ -332,6 +409,7 @@ func verifEtat(etat):
 signal vote
 signal voirRes
 signal prochaineManche
+signal finDePartie
 remotesync func verifEtats(etat, idClient):
 		
 	var nbJoueur = utilisateurs.size()
@@ -344,6 +422,11 @@ remotesync func verifEtats(etat, idClient):
 	
 	if (compteur == nbJoueur):
 		if(etat==Globals.EtatJoueur.ATTENTE_SELECTIONS):
+			self.stats.cartesJouees[self.nbTours] = self.data.cartesPlateau
+			if(self.data.estConteur):
+				self.data.etat = Globals.EtatJoueur.ATTENTE_VOTES
+			else:
+				self.data.etat = Globals.EtatJoueur.VOTE
 			for user in self.utilisateurs:
 				if self.utilisateurs[user].estConteur:
 					self.utilisateurs[user].etat=Globals.EtatJoueur.ATTENTE_VOTES
@@ -355,6 +438,7 @@ remotesync func verifEtats(etat, idClient):
 				print("V1 Etat de %s [%s]: %s" % [utilisateurs[user].nom, user,utilisateurs[user].etat])
 		
 		elif(etat==Globals.EtatJoueur.ATTENTE_VOTES):
+			self.data.etat = Globals.EtatJoueur.VOIR_RESULTAT
 			for user in self.utilisateurs:
 				self.utilisateurs[user].etat = Globals.EtatJoueur.VOIR_RESULTAT
 			emit_signal("voirRes")
@@ -364,11 +448,21 @@ remotesync func verifEtats(etat, idClient):
 		
 		elif(etat==Globals.EtatJoueur.ATTENTE_PROCHAINE_MANCHE):
 			self.data.cartesPlateau = {}
+			self.data.carteVotee = null
+			self.data.etat = Globals.EtatJoueur.ATTENTE_CHOIX_THEME
 			for user in self.utilisateurs:
 				self.utilisateurs[user].cartesPlateau = {}
 				self.utilisateurs[user].carteVotee = null
 				self.utilisateurs[user].etat = Globals.EtatJoueur.ATTENTE_CHOIX_THEME
-			emit_signal("prochaineManche")
+			
+			var aFini = false
+			for user in self.utilisateurs:
+				aFini = aFini or self.utilisateurs[user].points>=self.utilisateurs[user].objectif
+			if aFini:
+				emit_signal("finDePartie")
+			else:
+				self.nbTours += 1
+				emit_signal("prochaineManche")
 
 #	for usId in self.utilisateurs:
 #		print("V2 Etat de %s [%s]: %s" % [utilisateurs[usId].nom, usId,utilisateurs[usId].etat])
@@ -376,6 +470,16 @@ remotesync func verifEtats(etat, idClient):
 
 # =================================================
 # Couleur Joueur
+
+func changeObjectif(nbPoint):
+	rpc("objectifDeclare",nbPoint)
+
+remotesync func objectifDeclare(nbPoint):
+	self.data.objectif = nbPoint
+	for idJoueur in utilisateurs:
+		self.utilisateurs[idJoueur].objectif = nbPoint
+
+
 signal joueurChangeCouleur(id, coul)
 func setCouleurJoueur(idJoueur: int, coul: Color):
 	rpc("couleurDeclare", id, coul)
@@ -489,3 +593,22 @@ remotesync func joueurPretPourTour(idJoueur):
 	emit_signal("joueurDePlusPret")
 	if(idJoueur == Network.id):
 		Network.verifEtat(Globals.EtatJoueur.ATTENTE_PROCHAINE_MANCHE)
+		
+func rejouer():
+	rpc("rejouer_rpc")
+
+signal versLobby()
+remotesync func rejouer_rpc():
+	self.data.estPret = false
+	self.data.estDansPartie = false
+	self.data.main = []
+	self.data.points = 0
+	
+	for user in self.utilisateurs:
+		self.utilisateurs[user].estPret = false
+		self.utilisateurs[user].estDansPartie = false
+		self.utilisateurs[user].main = []
+		self.utilisateurs[user].points = 0
+	
+	emit_signal("versLobby")
+	

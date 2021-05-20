@@ -1,7 +1,7 @@
 extends Node
 
 
-var isDebug: bool = true setget setDebug
+var isDebug: bool = false setget setDebug
 
 enum EtatJoueur {
 				SELECTION_CARTE_THEME, 		# Conteur			0
@@ -26,6 +26,13 @@ enum couleurs {
 	JAUNE
 }
 
+enum typesCartes {
+	NORMALE,
+	DOUBLE,
+	PIQUES,
+	BOURRE
+}
+
 const couleursValeurs: Dictionary = {
 	couleurs.ROUGE: Color("#ff0000"),
 	couleurs.ORANGE: Color("#ff9900"),
@@ -37,6 +44,7 @@ const couleursValeurs: Dictionary = {
 	couleurs.JAUNE: Color("#ffff00"),
 }
 
+const COULEUR_DEFAUT: Color = Color("#ff0000")
 
 func _ready():
 	self.options = self.NODE_OPTIONS.instance()
@@ -58,17 +66,23 @@ func quitter():
 const NODE_OPTIONS = preload("res://Scenes/Options/Options.tscn")
 var options: Options
 
+func _input(event):
+	# Pour afficher les options
+	if event is InputEventKey:
+		if event.pressed and event.scancode == KEY_ESCAPE:
+			if self.options.visible==true:
+				self.options.cache()
+			else:
+				self.options.affiche()
+				
 func optionAffiche():
 	""" Si on fait une Ui pour des options """
 	self.options.affiche()
-	pass
 
 
 func optionCache():
 	""" Si on fait une Ui pour des options, on la cache. """
 	self.options.cache()
-	pass
-
 #======================
 #	Fov dynamique pour diff ecrand
 
@@ -96,3 +110,7 @@ func afficheErreur(erreur: String):
 	yield(get_tree(), "idle_frame")
 	errNode.setMessage(erreur)
 	get_parent().move_child( errNode, get_parent().get_child_count() )
+
+signal getDrunked()
+func plateauDrunked():
+	emit_signal("getDrunked")

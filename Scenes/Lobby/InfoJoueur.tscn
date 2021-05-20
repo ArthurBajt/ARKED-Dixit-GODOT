@@ -9,7 +9,7 @@
 [node name="InfoJoueur" type="Panel"]
 margin_right = 720.0
 margin_bottom = 70.0
-rect_min_size = Vector2( 0, 70 )
+rect_min_size = Vector2( 720, 70 )
 script = ExtResource( 3 )
 __meta__ = {
 "_edit_use_anchors_": false

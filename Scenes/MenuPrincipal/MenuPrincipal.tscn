@@ -70,17 +70,75 @@ omni_attenuation = 1.62451
 transform = Transform( 0.850453, 0.070802, 0.521264, 0, 0.990901, -0.134592, -0.526051, 0.114464, 0.842715, 4.912, 0.922, 6.588 )
 
 [node name="Ui" type="Control" parent="."]
-margin_right = 40.0
-margin_bottom = 40.0
+anchor_right = 1.0
+anchor_bottom = 1.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Titre" type="Label" parent="Ui"]
-margin_left = 39.2212
-margin_top = 23.7802
-margin_right = 352.221
-margin_bottom = 180.78
+[node name="LayoutCopyright" type="VBoxContainer" parent="Ui"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+alignment = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Ui/LayoutCopyright"]
+margin_top = 686.0
+margin_right = 1280.0
+margin_bottom = 701.0
+alignment = 2
+
+[node name="Copyright" type="Label" parent="Ui/LayoutCopyright/HBoxContainer"]
+margin_left = 631.0
+margin_right = 1256.0
+margin_bottom = 15.0
+custom_fonts/font = ExtResource( 5 )
+text = "Illustrations tirées du jeu Dixit Origins. Un jeu de Jean-Louis Roubira, illustré par Clément Lefèvre et édité par Libellud.©"
+
+[node name="VSeparator" type="VSeparator" parent="Ui/LayoutCopyright/HBoxContainer"]
+modulate = Color( 1, 1, 1, 0 )
+margin_left = 1260.0
+margin_right = 1280.0
+margin_bottom = 15.0
+rect_min_size = Vector2( 20, 0 )
+
+[node name="HSeparator4" type="HSeparator" parent="Ui/LayoutCopyright"]
+modulate = Color( 1, 1, 1, 0 )
+margin_top = 705.0
+margin_right = 1280.0
+margin_bottom = 720.0
+rect_min_size = Vector2( 0, 15 )
+
+[node name="LayoutTitre" type="VBoxContainer" parent="Ui"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HSeparator" type="HSeparator" parent="Ui/LayoutTitre"]
+modulate = Color( 1, 1, 1, 0 )
+margin_right = 1280.0
+margin_bottom = 15.0
+rect_min_size = Vector2( 0, 15 )
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Ui/LayoutTitre"]
+margin_top = 19.0
+margin_right = 1280.0
+margin_bottom = 176.0
+
+[node name="VSeparator" type="VSeparator" parent="Ui/LayoutTitre/HBoxContainer"]
+modulate = Color( 1, 1, 1, 0 )
+margin_right = 50.0
+margin_bottom = 157.0
+rect_min_size = Vector2( 50, 0 )
+
+[node name="Titre" type="Label" parent="Ui/LayoutTitre/HBoxContainer"]
+margin_left = 54.0
+margin_right = 367.0
+margin_bottom = 157.0
 custom_fonts/font = ExtResource( 3 )
 text = "Dixit"
 align = 1
@@ -89,53 +147,118 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Copyright" type="Label" parent="Ui"]
-margin_left = 639.041
-margin_top = 686.055
-margin_right = 1264.04
-margin_bottom = 701.055
-custom_fonts/font = ExtResource( 5 )
-text = "Illustrations tirées du jeu Dixit Origins. Un jeu de Jean-Louis Roubira, illustré par Clément Lefèvre et édité par Libellud.©"
+[node name="LayoutBoutons" type="VBoxContainer" parent="Ui"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+alignment = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
-[node name="BtnJouer" type="Button" parent="Ui"]
-margin_left = 87.6813
-margin_top = 316.784
-margin_right = 205.681
-margin_bottom = 382.784
+[node name="HBoxContainer" type="HBoxContainer" parent="Ui/LayoutBoutons"]
+margin_top = 99.0
+margin_right = 1280.0
+margin_bottom = 621.0
+
+[node name="VSeparator2" type="VSeparator" parent="Ui/LayoutBoutons/HBoxContainer"]
+modulate = Color( 1, 1, 1, 0 )
+margin_right = 75.0
+margin_bottom = 522.0
+rect_min_size = Vector2( 75, 0 )
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Ui/LayoutBoutons/HBoxContainer"]
+margin_left = 79.0
+margin_right = 225.0
+margin_bottom = 522.0
+alignment = 1
+
+[node name="HSeparator4" type="HSeparator" parent="Ui/LayoutBoutons/HBoxContainer/VBoxContainer"]
+modulate = Color( 1, 1, 1, 0 )
+margin_right = 146.0
+margin_bottom = 120.0
+rect_min_size = Vector2( 0, 120 )
+
+[node name="BtnJouer" type="Button" parent="Ui/LayoutBoutons/HBoxContainer/VBoxContainer"]
+margin_top = 124.0
+margin_right = 146.0
+margin_bottom = 190.0
 custom_fonts/font = ExtResource( 6 )
 text = "Jouer"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="BtnOptions" type="Button" parent="Ui"]
-margin_left = 87.6812
-margin_top = 400.222
-margin_right = 229.681
-margin_bottom = 466.222
+[node name="HSeparator2" type="HSeparator" parent="Ui/LayoutBoutons/HBoxContainer/VBoxContainer"]
+modulate = Color( 1, 1, 1, 0 )
+margin_top = 194.0
+margin_right = 146.0
+margin_bottom = 209.0
+rect_min_size = Vector2( 0, 15 )
+
+[node name="BtnOptions" type="Button" parent="Ui/LayoutBoutons/HBoxContainer/VBoxContainer"]
+margin_top = 213.0
+margin_right = 146.0
+margin_bottom = 279.0
 custom_fonts/font = ExtResource( 6 )
 text = "Option"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="BtnQuit" type="Button" parent="Ui"]
-margin_left = 15.5563
-margin_top = 642.053
-margin_right = 161.556
-margin_bottom = 708.053
+[node name="HSeparator5" type="HSeparator" parent="Ui/LayoutBoutons/HBoxContainer/VBoxContainer"]
+modulate = Color( 1, 1, 1, 0 )
+margin_top = 283.0
+margin_right = 146.0
+margin_bottom = 298.0
+rect_min_size = Vector2( 0, 15 )
+
+[node name="ButtonCredits" type="Button" parent="Ui/LayoutBoutons/HBoxContainer/VBoxContainer"]
+margin_top = 302.0
+margin_right = 146.0
+margin_bottom = 368.0
+custom_fonts/font = ExtResource( 6 )
+text = "Credits"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HSeparator3" type="HSeparator" parent="Ui/LayoutBoutons/HBoxContainer/VBoxContainer"]
+modulate = Color( 1, 1, 1, 0 )
+margin_top = 372.0
+margin_right = 146.0
+margin_bottom = 452.0
+rect_min_size = Vector2( 0, 80 )
+
+[node name="BtnQuit" type="Button" parent="Ui/LayoutBoutons/HBoxContainer/VBoxContainer"]
+margin_top = 456.0
+margin_right = 146.0
+margin_bottom = 522.0
 custom_fonts/font = ExtResource( 6 )
 text = "Quitter"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="PanelJouer" parent="Ui" instance=ExtResource( 8 )]
-margin_left = 377.595
-margin_top = 130.108
-margin_right = 1254.59
-margin_bottom = 670.108
+[node name="LayoutPanelJouer" type="VBoxContainer" parent="Ui"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+alignment = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
-[connection signal="pressed" from="Ui/BtnJouer" to="." method="_on_BtnJouer_pressed"]
-[connection signal="pressed" from="Ui/BtnOptions" to="." method="_on_BtnOptions_pressed"]
-[connection signal="pressed" from="Ui/BtnQuit" to="." method="_on_BtnQuit_pressed"]
+[node name="HBoxContainer" type="HBoxContainer" parent="Ui/LayoutPanelJouer"]
+margin_top = 90.0
+margin_right = 1280.0
+margin_bottom = 630.0
+alignment = 1
+
+[node name="PanelJouer" parent="Ui/LayoutPanelJouer/HBoxContainer" instance=ExtResource( 8 )]
+margin_left = 190.0
+margin_right = 1090.0
+
+[connection signal="pressed" from="Ui/LayoutBoutons/HBoxContainer/VBoxContainer/BtnJouer" to="." method="_on_BtnJouer_pressed"]
+[connection signal="pressed" from="Ui/LayoutBoutons/HBoxContainer/VBoxContainer/BtnOptions" to="." method="_on_BtnOptions_pressed"]
+[connection signal="pressed" from="Ui/LayoutBoutons/HBoxContainer/VBoxContainer/ButtonCredits" to="." method="_on_ButtonCredits_pressed"]
+[connection signal="pressed" from="Ui/LayoutBoutons/HBoxContainer/VBoxContainer/BtnQuit" to="." method="_on_BtnQuit_pressed"]

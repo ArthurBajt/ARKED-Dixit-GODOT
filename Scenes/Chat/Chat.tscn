@@ -1,12 +1,16 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Scenes/Chat/Chat.gd" type="Script" id=1]
+[ext_resource path="res://Assets/Font/CatChild_base_18.tres" type="DynamicFont" id=2]
+[ext_resource path="res://Scenes/Chat/Style.tres" type="StyleBox" id=3]
 
 [sub_resource type="StyleBoxEmpty" id=1]
 
 [node name="Control" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+margin_top = -1.68179
+margin_bottom = -1.68176
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -20,6 +24,7 @@ margin_top = -57.0
 margin_right = 73.0
 margin_bottom = -5.0
 rect_min_size = Vector2( 68, 52 )
+custom_fonts/font = ExtResource( 2 )
 text = "Chat"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -40,6 +45,7 @@ __meta__ = {
 margin_right = 156.0
 margin_bottom = 30.0
 rect_min_size = Vector2( 150, 30 )
+custom_fonts/font = ExtResource( 2 )
 text = "Bien Joué !"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -50,6 +56,7 @@ margin_top = 34.0
 margin_right = 156.0
 margin_bottom = 64.0
 rect_min_size = Vector2( 150, 30 )
+custom_fonts/font = ExtResource( 2 )
 text = "Waouh"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -60,6 +67,7 @@ margin_top = 68.0
 margin_right = 156.0
 margin_bottom = 98.0
 rect_min_size = Vector2( 150, 30 )
+custom_fonts/font = ExtResource( 2 )
 text = "Nooooon"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -70,6 +78,7 @@ margin_top = 102.0
 margin_right = 156.0
 margin_bottom = 132.0
 rect_min_size = Vector2( 150, 30 )
+custom_fonts/font = ExtResource( 2 )
 text = "Presque !"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -83,8 +92,13 @@ margin_top = 40.0
 margin_right = -40.0
 margin_bottom = 240.0
 rect_min_size = Vector2( 200, 200 )
-custom_styles/normal = SubResource( 1 )
+custom_styles/read_only = SubResource( 1 )
+custom_styles/normal = ExtResource( 3 )
+custom_fonts/font = ExtResource( 2 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_colors/font_color_readonly = Color( 1, 1, 1, 1 )
+readonly = true
+selecting_enabled = false
 __meta__ = {
 "_edit_use_anchors_": false
 }

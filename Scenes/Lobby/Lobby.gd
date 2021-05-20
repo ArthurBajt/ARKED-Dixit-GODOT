@@ -1,15 +1,19 @@
 extends Node
 
 const NODE_INFOJOUEUR = preload("res://Scenes/Lobby/InfoJoueur.tscn")
+const NODE_OPTIONS = preload("res://Scenes/Options/Options.tscn")
 
-onready var layoutJoueur = $Control/HBoxContainer/LayoutJoueur
+onready var layoutJoueur = $Control/LayoutListe/VBoxContainer/LayoutJoueurs
 
-onready var buttonPret = $Control/HBoxContainer/LayoutBtn/ButtonPret
-onready var buttonLancer = $Control/HBoxContainer/LayoutBtn/ButtonLancer
+onready var buttonPret = $Control/MainLayout/VBoxContainer/ButtonPret
+onready var buttonLancer = $Control/MainLayout/VBoxContainer/ButtonLancer
 
-onready var selectionCouleur = $Control/HBoxContainer/LayoutBtn/HBoxContainer/CouleurSelection
-
+onready var selectionCouleur = $Control/MainLayout/VBoxContainer/VBoxContainer/LayoutCouleur/CouleurSelection
+onready var NbPoint = $Control/MainLayout/VBoxContainer/VBoxContainer/changePoint/LayoutPoint/NbPoint
+onready var changePoint = $Control/MainLayout/VBoxContainer/VBoxContainer/changePoint
 var peutLancer: bool = false
+
+var uiOptions
 
 var joueurs: Dictionary = {}
 
@@ -20,10 +24,15 @@ func _ready():
 	Network.connect("decoJoueur", self, "decoJoueur")
 	Network.connect("joueurChangeCouleur", self, "on_joueurChangeCouleur")
 	buttonLancer.visible = Network.id == 1
+	changePoint.visible = Network.id == 1
 	
-	$Control/HBoxContainer/LayoutJoueur/LabelListe.text = R.getString("lobbyListe")
+	$Control/LayoutListe/VBoxContainer/LabelListe.text = R.getString("lobbyListe")
+	$Control/MainLayout/VBoxContainer/VBoxContainer/LabelCouleur.text = R.getString("lobbyCouleur")
 	
 	Network.setCouleurJoueur(Network.id, Network.getCouleursPossibles()[0])
+	
+	self.uiOptions = NODE_OPTIONS.instance()
+	self.add_child(uiOptions)
 	
 	self.recupereJoueurs()
 
@@ -62,7 +71,6 @@ func majPeutLancer():
 	self.peutLancer = true
 	for usId in Network.utilisateurs:
 		self.peutLancer = self.peutLancer and Network.utilisateurs[usId].estPret
-#		print("majPeutLancer - ", usId, " - ", Network.utilisateurs[usId].estPret)
 	
 	if self.peutLancer:
 		self.buttonLancer.modulate = Color(1.0, 1.0, 1.0)
@@ -115,3 +123,27 @@ func _on_ButtonCouleurSuiv_pressed():
 		var index: int = arr.find(self.selectionCouleur.color)
 		index = (index + 1) % arr.size()
 		Network.setCouleurJoueur(Network.id, arr[index])
+
+
+func _on_ButtonPointPrec_pressed():
+	var nbPoints = int(NbPoint.text)
+	if nbPoints <=10:
+		NbPoint.set_text("100")
+	else:
+		nbPoints-=5
+		NbPoint.set_text(String(nbPoints))
+		
+	Network.changeObjectif(int(NbPoint.text))
+	
+func _on_ButtonPointSuiv_pressed():
+	var nbPoints = int(NbPoint.text)
+	if nbPoints >=100:
+		NbPoint.set_text("10")
+	else:
+		nbPoints+=5
+		NbPoint.set_text(String(nbPoints))
+	Network.changeObjectif(int(NbPoint.text))
+
+
+func _on_ButtonOptions_pressed():
+	self.uiOptions.affiche()

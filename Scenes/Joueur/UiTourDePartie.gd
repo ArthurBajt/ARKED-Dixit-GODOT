@@ -14,6 +14,12 @@ func _ready():
 	Network.connect("joueurDePlusPret", self, "joueurDePlusPret")
 
 func _process(delta):
+	var compteur=0
+	for user in Network.utilisateurs:
+		if Network.utilisateurs[user].etat==Globals.EtatJoueur.ATTENTE_PROCHAINE_MANCHE:
+			compteur+=1
+	joueursPrets=compteur
+	self.nbJoueurs=Network.utilisateurs.size()
 	self.labelJoueursPrets.text = str(self.joueursPrets) + "/" + str(self.nbJoueurs)
 
 signal pretNextRound()
