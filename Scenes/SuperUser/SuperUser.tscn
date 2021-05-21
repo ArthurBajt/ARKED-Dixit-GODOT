@@ -1,7 +1,9 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Scenes/SuperUser/SuperUser.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Font/CatChild_base_64.tres" type="DynamicFont" id=2]
+[ext_resource path="res://Assets/Font/CatChild_base_24.tres" type="DynamicFont" id=3]
+[ext_resource path="res://Assets/Font/CatChild_titre_128.tres" type="DynamicFont" id=4]
 
 [node name="UiSuperUser" type="Control"]
 anchor_right = 1.0
@@ -40,3 +42,66 @@ rect_min_size = Vector2( 0, 10 )
 margin_top = 97.0
 margin_right = 445.0
 margin_bottom = 97.0
+
+[node name="changePoint" type="VBoxContainer" parent="."]
+margin_left = 865.339
+margin_top = 212.941
+margin_right = 1212.34
+margin_bottom = 486.941
+alignment = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="LabelPoint" type="Label" parent="changePoint"]
+margin_top = 41.0
+margin_right = 347.0
+margin_bottom = 71.0
+custom_fonts/font = ExtResource( 3 )
+text = "Points pour gagner la partie :"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="LayoutPoint" type="HBoxContainer" parent="changePoint"]
+margin_top = 75.0
+margin_right = 347.0
+margin_bottom = 232.0
+alignment = 1
+
+[node name="ButtonPointPrec" type="Button" parent="changePoint/LayoutPoint"]
+margin_left = 33.0
+margin_right = 79.0
+margin_bottom = 157.0
+custom_fonts/font = ExtResource( 3 )
+text = " < "
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="NbPoint" type="Label" parent="changePoint/LayoutPoint"]
+margin_left = 83.0
+margin_right = 263.0
+margin_bottom = 157.0
+rect_min_size = Vector2( 180, 34 )
+custom_fonts/font = ExtResource( 4 )
+text = "30"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ButtonPointSuiv" type="Button" parent="changePoint/LayoutPoint"]
+margin_left = 267.0
+margin_right = 313.0
+margin_bottom = 157.0
+custom_fonts/font = ExtResource( 3 )
+text = " > "
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[connection signal="pressed" from="changePoint/LayoutPoint/ButtonPointPrec" to="." method="_on_ButtonPointPrec_pressed"]
+[connection signal="pressed" from="changePoint/LayoutPoint/ButtonPointSuiv" to="." method="_on_ButtonPointSuiv_pressed"]

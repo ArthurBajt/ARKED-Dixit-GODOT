@@ -103,7 +103,7 @@ signal hoteTablette
 
 func _lobby_se_declarer():
 	
-	if peerClient!=null:
+	if peerClient!=null and self.nom!="Dieu":
 		rpc_id(1, "demandeHote", peerClient.get_unique_id())
 	
 		yield(Network, "hoteTablette")
@@ -125,49 +125,52 @@ func _lobby_se_declarer():
 		print("sans host")
 	else:
 		print("topsdss")
-		if !idOneExisting :
+		if !idOneExisting and self.nom!="Dieu":
 			id = 1
 			idOneNotHost=true
 		else:
 			id = get_tree().get_network_unique_id()
+
 	
 	if self.nom!="Dieu":
 		self.data = dataStruct.duplicate()
 		self.data.nom = self.nom
-		
-		utilisateurs[id] = dataStruct.duplicate()
-		utilisateurs[id].nom = self.nom
-		
-		if id > 1 :
-			rpc_id(1, "_lobby_declareUtilisateur", id, self.data)
+			
+		if id != 0:
+
+			utilisateurs[id] = self.dataStruct.duplicate()
+			utilisateurs[id].nom = self.nom
+
+			if id > 1 and !withHost:								# NOTE : Peut être check si withHost et donc faire id > 0
+				rpc_id(1, "_lobby_declareUtilisateur", id, self.data)
+			elif id > 0:
+				rpc_id(1, "_lobby_declareUtilisateur", id, self.data)
 	else:
 		rpc_id(1, "demandeDonnee", id)
-		
+		print("là zer")
 		yield(Network, "hotePret")
 		for usId in utilisateurs:
 			if usId !=null:
 				emit_signal("nvUtilisateur", usId)
 				
-	self.data = dataStruct.duplicate()
-	self.data.nom = self.nom
-		
-	if id != 0:
-		
-		
-		utilisateurs[id] = self.dataStruct.duplicate()
-		utilisateurs[id].nom = self.nom
-		
-		
+				
+#	if self.nom!="Dieu":
+#		self.data = dataStruct.duplicate()
+#		self.data.nom = self.nom
+#
+#		utilisateurs[id] = dataStruct.duplicate()
+#		utilisateurs[id].nom = self.nom
+#
+#		if id > 1 :
+#			rpc_id(1, "_lobby_declareUtilisateur", id, self.data)
+#	else:
+#		
 	
-	if id > 1 and !withHost:								# NOTE : Peut être check si withHost et donc faire id > 0
-		rpc_id(1, "_lobby_declareUtilisateur", id, self.data)
-	elif id > 0:
-		rpc_id(1, "_lobby_declareUtilisateur", id, self.data)
+	
 
 
 remote func demandeHote(idJoueur):
-	print("machin m'a parlé : ", idJoueur)
-	print("mes données c'est : ", self.utilisateurs, "\n")
+
 	rpc_id(idJoueur, "HoteRecu", self.utilisateurs)
 	
 
@@ -189,15 +192,15 @@ func deconnexion_client(id):
 	var saveEtat = self.utilisateurs[id].etat
 	var saveNomCarte = self.utilisateurs[id].cartesPlateau.get(id)
 	var eraseCarte = false
-	print("c'est l'id : ", id)
+
 	
 	utilisateurs.erase(id)
 
-	for usId in utilisateurs: 
-		print(usId)
-		
+	
 
 	match saveEtat:
+		Globals.EtatJoueur.ATTENTE_CHOIX_THEME:
+			emit_signal("decoJoueur", id, saveNomCarte, eraseCarte)
 		Globals.EtatJoueur.SELECTION_CARTE_THEME:
 			emit_signal("decoJoueur", id, saveNomCarte, eraseCarte)
 			emit_signal("changeConteurzer")
@@ -263,14 +266,15 @@ func deconnexion_server():
 
 remote func donneeRecu(donnee):
 	self.utilisateurs=donnee
+	print("j'ai reçu : ", donnee)
 	emit_signal("hotePret")
-
-remote func demandeDonnee(idDemande):
 	
-
+remote func demandeDonnee(idDemande):
+	print(idDemande)
+	print("J'envoie : ", self.utilisateurs)
 	rpc_id(idDemande, "donneeRecu", self.utilisateurs)
 
-	
+
 
 
 

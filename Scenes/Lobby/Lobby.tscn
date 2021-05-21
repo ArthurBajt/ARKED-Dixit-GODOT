@@ -436,6 +436,7 @@ anims/Entre = SubResource( 8 )
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 8 )
 bus = "Sfx"
+
 [connection signal="pressed" from="Control/MainLayout/VBoxContainer/VBoxContainer/changePoint/LayoutPoint/ButtonPointPrec" to="." method="_on_ButtonPointPrec_pressed"]
 [connection signal="pressed" from="Control/MainLayout/VBoxContainer/VBoxContainer/changePoint/LayoutPoint/ButtonPointSuiv" to="." method="_on_ButtonPointSuiv_pressed"]
 [connection signal="pressed" from="Control/MainLayout/VBoxContainer/VBoxContainer/LayoutCouleur/ButtonCouleurPrec" to="." method="_on_ButtonCouleurPrec_pressed"]
