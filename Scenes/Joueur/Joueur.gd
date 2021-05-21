@@ -97,14 +97,15 @@ func init(idJoueur: int, plateauDePartie, couleurJoueur):
 func _input(event):
 	# Pour changer de cam lorsque l'on utilise les fleches
 	if event is InputEventKey:
-		if event.pressed and event.scancode == KEY_UP:
-			if(self.myCam.current == true):
-				self.myCam.current = false
-				CAM_MID.current = true
-		if event.pressed and event.scancode == KEY_DOWN:
-			if(self.CAM_MID.current == true):
-				CAM_MID.current = false
-				self.myCam.current = true
+		if self.estLocal():
+			if event.pressed and event.scancode == KEY_UP:
+				if(self.myCam.current == true):
+					self.myCam.current = false
+					CAM_MID.current = true
+			if event.pressed and event.scancode == KEY_DOWN:
+				if(self.CAM_MID.current == true):
+					CAM_MID.current = false
+					self.myCam.current = true
 
 func _process(delta):
 	if(self.id == Network.id):
