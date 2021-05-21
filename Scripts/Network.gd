@@ -78,6 +78,7 @@ const dataStruct = {nom = "",
 var idOneExisting = false
 var nbTours = 1
 var stats = {	
+				pseudos = {},
 				sociabilite = {},
 				tmpsReac = 	{},
 				cartesJouees = {},
@@ -296,6 +297,7 @@ remotesync func _lobby_lancePartie():
 	isTimerRunning = true
 	self.stats.tmpsReac[nbTours] = tmpsReacTour.duplicate()
 	for user in self.utilisateurs:
+		self.stats.pseudos[user] = self.utilisateurs[user].nom
 		self.stats.sociabilite[user] = 0
 	emit_signal("partieLancee")
 
