@@ -44,6 +44,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Scenes/Pioche/Pioche.gd"
 }, {
+"base": "Node",
+"class": "Regles",
+"language": "GDScript",
+"path": "res://Scenes/Regles/Regles.gd"
+}, {
 "base": "Control",
 "class": "TransitionScene",
 "language": "GDScript",
@@ -57,6 +62,7 @@ _global_script_class_icons={
 "MusicPlayer": "",
 "Options": "",
 "Pioche": "",
+"Regles": "",
 "TransitionScene": ""
 }
 

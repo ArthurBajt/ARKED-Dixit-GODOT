@@ -32,7 +32,8 @@ enum typesCartes {
 	NORMALE,
 	DOUBLE,
 	PIQUES,
-	BOURRE
+	BOURRE,
+	MYSTERE
 }
 
 const couleursValeurs: Dictionary = {
@@ -52,6 +53,9 @@ func _ready():
 	self.options = self.NODE_OPTIONS.instance()
 	get_parent().call_deferred("add_child", self.options)
 	
+	self.regles = self.NODE_REGLES.instance()
+	get_parent().call_deferred("add_child", self.regles)
+	
 	self.fov = self.FOV_DEFAUT
 
 
@@ -68,6 +72,9 @@ func quitter():
 const NODE_OPTIONS = preload("res://Scenes/Options/Options.tscn")
 var options: Options
 
+const NODE_REGLES = preload("res://Scenes/Regles/Regles.tscn")
+var regles: Regles
+
 func _input(event):
 	# Pour afficher les options
 	if event is InputEventKey:
@@ -77,6 +84,7 @@ func _input(event):
 			else:
 				self.options.affiche()
 				
+				
 func optionAffiche():
 	""" Si on fait une Ui pour des options """
 	self.options.affiche()
@@ -85,6 +93,21 @@ func optionAffiche():
 func optionCache():
 	""" Si on fait une Ui pour des options, on la cache. """
 	self.options.cache()
+
+# ==================
+#	Règles
+
+
+func reglesAffiche():
+	""" Si on fait une Ui pour des regles """
+	self.regles.afficheR()
+
+
+func reglesCache():
+	""" Si on fait une Ui pour des regles, on la cache. """
+	self.regles.cache()
+
+
 #======================
 #	Fov dynamique pour diff ecrand
 
