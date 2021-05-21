@@ -20,17 +20,15 @@ func piocher(joueur: Joueur):
 	var rng = RandomNumberGenerator.new()
 	rng.randomize()
 	var number
-	number = rng.randf_range(0,40) # 40
-	if(number<1):
+	number = rng.randf_range(0,99) # 1/100 -> 2% D | 1.5% -> P | 1% -> B | 0.7% -> M
+	if(number<2):
 		type = Globals.typesCartes.DOUBLE
-	else:
-		number = rng.randf_range(0,36) # 36
-		if(number<1):
-			type = Globals.typesCartes.PIQUES
-		else:
-			number = rng.randf_range(0,60) # 60
-			if(number < 1):
-				type = Globals.typesCartes.BOURRE
+	elif(number<3.5):
+		type = Globals.typesCartes.PIQUES
+	elif(number<4.5):
+		type = Globals.typesCartes.BOURRE
+	elif(number<5.2):
+		type = Globals.typesCartes.MYSTERE
 	
 	Network.joueurPioche(joueur.id, carte, type)
 

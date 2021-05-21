@@ -2,6 +2,7 @@ extends Node
 
 const NODE_INFOJOUEUR = preload("res://Scenes/Lobby/InfoJoueur.tscn")
 const NODE_OPTIONS = preload("res://Scenes/Options/Options.tscn")
+const NODE_REGLES = preload("res://Scenes/Regles/Regles.tscn")
 
 onready var layoutJoueur = $Control/LayoutListe/VBoxContainer/LayoutJoueurs
 
@@ -17,6 +18,7 @@ onready var changePoint = $Control/MainLayout/VBoxContainer/VBoxContainer/change
 var peutLancer: bool = false
 
 var uiOptions
+var uiRegles
 
 var joueurs: Dictionary = {}
 
@@ -50,6 +52,9 @@ func _ready():
 		buttonPret.visible = false
 	self.uiOptions = NODE_OPTIONS.instance()
 	self.add_child(uiOptions)
+	
+	self.uiRegles = NODE_REGLES.instance()
+	self.add_child(uiRegles)
 	
 	self.recupereJoueurs()
 
@@ -101,6 +106,10 @@ func majPeutLancer():
 #==============================
 func _on_ButtonPret_pressed():
 	Network.lobby_setStatu(!Network.data.estPret)
+	if Network.data.estPret == false:
+		buttonPret.set_text("Prêt")
+	if Network.data.estPret == true:
+		buttonPret.set_text("Pas prêt")
 
 
 func _on_ButtonLancer_pressed():
