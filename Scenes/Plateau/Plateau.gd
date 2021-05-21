@@ -133,7 +133,7 @@ func voirRes():
 			carte.afficheEffetBrouillard(false)
 	for j in self.joueurs:
 		j.voirRes()
-	
+
 #================
 #	getters et trucs utiles toi même tu sais
 func getJoueur(id: int):

@@ -46,6 +46,7 @@ func afficher():
 		var instance = NODE_ITEM.instance()
 		$VBoxContainer/ListItemJoueur.add_child(instance)
 		instance.id = user
+		instance.rank = joueurs.find(user) + 1
 		listeItems.append(instance)
 		
 	for item in listeItems:
