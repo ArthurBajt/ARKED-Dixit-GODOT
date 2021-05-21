@@ -145,7 +145,7 @@ func _lobby_se_declarer():
 				rpc_id(1, "_lobby_declareUtilisateur", id, self.data)
 	else:
 		rpc_id(1, "demandeDonnee", id)
-		print("là zer")
+
 		yield(Network, "hotePret")
 		for usId in utilisateurs:
 			if usId !=null:
@@ -264,12 +264,9 @@ func deconnexion_server():
 
 remote func donneeRecu(donnee):
 	self.utilisateurs=donnee
-	print("j'ai reçu : ", donnee)
 	emit_signal("hotePret")
 	
 remote func demandeDonnee(idDemande):
-	print(idDemande)
-	print("J'envoie : ", self.utilisateurs)
 	rpc_id(idDemande, "donneeRecu", self.utilisateurs)
 
 
