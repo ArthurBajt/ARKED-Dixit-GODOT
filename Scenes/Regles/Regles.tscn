@@ -106,7 +106,7 @@ Les cartes bonus/malus:
 -CARTE COMPTE DOUBLE : Reconnaissable grâce aux petites étoiles, lorsque vous la choisissez et que celle-ci vous rapporte des points, vous en gagnez 2 fois plus.
 -CARTE POISON : Reconnaissable grâce aux petites tête de mort,, lorsque vous la choisissez vous perdez un point.
 -CARTE \"ALCOOLISÉ\" : Reconnaissable grâce aux particules de bière, lorsque vous la choisissez tous les joueurs gagnent un gramme dans le sang et ont du mal à voir les cartes.
--CARTE \"ALCOOLISÉ\" : Reconnaissable grâce aux particules de point d'interrogation, une fois choisie, seul vous pouvez voir les cartes.
+-CARTE \"MYSTÈRE\" : Reconnaissable grâce aux particules de point d'interrogation, une fois choisie, seul vous pouvez voir les cartes.
 "
 align = 1
 autowrap = true
