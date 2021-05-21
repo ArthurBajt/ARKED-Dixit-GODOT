@@ -32,7 +32,7 @@ var uiDisplay
 
 
 var etat: int
-	
+
 func _ready():
 	Network.connect("ChangementConteur", self, "setConteur")
 	Network.connect("updateTheme",self,"changeTheme")
