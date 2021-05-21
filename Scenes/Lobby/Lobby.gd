@@ -71,7 +71,7 @@ func joueurCo(idJoueur):
 		instance.setCouleur( Network.utilisateurs[idJoueur].couleur )
 		
 		if idJoueur == Network.id: # le joueur local
-			self.selectionCouleur.color = Network.utilisateurs[idJoueur].couleur
+			self.selectionCouleur.modulate = Network.utilisateurs[idJoueur].couleur
 	self.majPeutLancer()
 
 func decoJoueur(idJoueur):
@@ -121,13 +121,13 @@ func _versPartie():
 
 func on_joueurChangeCouleur(id: int, coul: Color):
 	if id == Network.id:
-		self.selectionCouleur.color = coul
+		self.selectionCouleur.modulate = coul
 
 
 func _on_ButtonCouleurPrec_pressed():
 	var arr = Network.getCouleursPossibles()
-	if self.selectionCouleur.color in Globals.couleursValeurs.values():
-		var index: int = arr.find(self.selectionCouleur.color)
+	if self.selectionCouleur.modulate in Globals.couleursValeurs.values():
+		var index: int = arr.find(self.selectionCouleur.modulate)
 		index = index-1
 		if index < 0:
 			index = arr.size() -1
@@ -136,8 +136,8 @@ func _on_ButtonCouleurPrec_pressed():
 
 func _on_ButtonCouleurSuiv_pressed():
 	var arr = Network.getCouleursPossibles()
-	if self.selectionCouleur.color in Globals.couleursValeurs.values():
-		var index: int = arr.find(self.selectionCouleur.color)
+	if self.selectionCouleur.modulate in Globals.couleursValeurs.values():
+		var index: int = arr.find(self.selectionCouleur.modulate)
 		index = (index + 1) % arr.size()
 		Network.setCouleurJoueur(Network.id, arr[index])
 
