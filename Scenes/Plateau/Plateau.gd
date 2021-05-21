@@ -98,6 +98,8 @@ func ajouteCartePlateau(carte: Carte, transform = null):
 		
 func voteMoment():
 	
+	yield(get_tree(), "idle_frame")
+	
 	#Mélange des cartes
 	self.cartes.shuffle()
 	for carte in self.cartes:
@@ -105,21 +107,18 @@ func voteMoment():
 			drunked = true
 		carte.positionCible = Vector3(0,0,1)
 	
-	yield(get_tree().create_timer(0.5), "timeout")
+	yield(get_tree().create_timer(1.5), "timeout")
 
 	var cartePosees = []
-	for carte in self.cartes:
+	for i in range(0,self.cartes.size()):
+		var carte = self.cartes[i]
 		carte.afficheEffetBrouillard(drunked)
-		for cartezer in cartePosees:
-			cartezer.positionCible.x += 0.14
-		cartePosees.append(carte)
 		
-		carte.positionCible = Vector3(0.14, 0, 0) * -(cartePosees.size() - 1)
+		carte.positionCible.x = (float(i+0.5)-(float(self.cartes.size())/2))*0.5
+		carte.positionCible.y = 0.0
+		carte.positionCible.z = 0.0
 		
 		yield(get_tree().create_timer(0.2), "timeout")
-
-	for cartezer in cartePosees:
-		cartezer.positionCible.x -= 0.14
 
 	#retourner les cartes
 	for child in self.cartes:
