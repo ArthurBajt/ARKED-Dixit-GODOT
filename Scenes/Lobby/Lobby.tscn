@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=2]
+[gd_scene load_steps=21 format=2]
 
 [ext_resource path="res://Scenes/Lobby/Lobby.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Font/CatChild_base_48.tres" type="DynamicFont" id=2]
@@ -11,6 +11,7 @@
 [ext_resource path="res://Scenes/MenuPrincipal/Mesh/dikhololo_night_2k.hdr" type="Texture" id=9]
 [ext_resource path="res://Scenes/Lobby/Mesh/backRoom.jpg" type="Texture" id=10]
 [ext_resource path="res://Assets/Font/CatChild_titre_128.tres" type="DynamicFont" id=11]
+[ext_resource path="res://Assets/Sprites/lapin-150.png" type="Texture" id=12]
 
 [sub_resource type="CubeMesh" id=1]
 
@@ -319,14 +320,12 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="CouleurSelection" type="ColorRect" parent="Control/MainLayout/VBoxContainer/VBoxContainer/LayoutCouleur"]
+[node name="CouleurSelection" type="TextureRect" parent="Control/MainLayout/VBoxContainer/VBoxContainer/LayoutCouleur"]
 margin_left = 75.0
 margin_right = 225.0
 margin_bottom = 150.0
 rect_min_size = Vector2( 150, 150 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
+texture = ExtResource( 12 )
 
 [node name="ButtonCouleurSuiv" type="Button" parent="Control/MainLayout/VBoxContainer/VBoxContainer/LayoutCouleur"]
 margin_left = 229.0

@@ -16,7 +16,6 @@ var positionCible: Vector3
 
 onready var mesh: Spatial = $Mesh
 onready var verso: MeshInstance = $Mesh/CarteVerso
-
 onready var animation = $AnimationTree
 
 
@@ -101,17 +100,19 @@ func setPeutEtreHover(val: bool):
 
 # Si on survole la carte
 func _on_Area_mouse_entered():
-	self.hover = true
+	if not Globals.isMobile:
+		self.hover = true
 
 func _on_Area_mouse_exited():
-	self.hover = false
+	if not Globals.isMobile:
+		self.hover = false
 
 # si on clique sur la carte
 signal carteCliquee(laCarte)
 signal carteVotee(laCarte, idJoueur)
 
 func _on_Area_input_event(camera, event, click_position, click_normal, shape_idx):
-	if event is InputEventMouseButton:
+	if event is InputEventMouseButton and not Globals.isMobile:
 		if event.button_index == BUTTON_LEFT and event.pressed == true:
 			if(self.estDansMain):
 				self.joueurQuiAPose = Network.id

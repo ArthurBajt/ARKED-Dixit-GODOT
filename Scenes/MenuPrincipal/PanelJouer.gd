@@ -6,6 +6,8 @@ onready var errPseudo = $VBoxContainer/LabelErrpseudo
 onready var editIp = $VBoxContainer/HBoxLancer/VBoxRejoindre/HBoxContainer/EditIp
 onready var IpHost = $VBoxContainer/HBoxLancer/VBoxCreer/HBoxContainer/IpHost
 
+onready var editHost = $VBoxContainer/HBoxLancer/VBoxHost/HBoxContainer/EditHost
+
 onready var errIp = $VBoxContainer/HBoxLancer/VBoxRejoindre/LabelErrIp
 
 
@@ -74,9 +76,16 @@ func verifIp()-> bool:
 
 
 func _on_ImgPseudoAleatoire_gui_input(event):
+	var rng = RandomNumberGenerator.new()
+	var names = ['Le Tigre','Tigre Blanc','El Primo','Gonzales','Jean','Parchemin de feu','Pamplemousse26','Nutella45','Serpentard52','Sacha',
+	'Le Lézard','Adrien 88','El Muchacho','Backflip69','Mickey','Takemichi','Subaru44','Dr Stone','Zoro','Meliodas','Barbara','Chocoléo','Luxem',
+	'HunterVanner','Bbouns','ZozoLaTornade','LegendaryDraft','El Sombrero','Catacombe46','Le Roi du Dixit','Luffy','xXDeathAderXx','Aypierre','LePessi','xXGucci_KawasakiXx']
+	var taille = names.size()
 	if event is InputEventMouseButton:
 		if event.pressed:
-			self.editPseudo.text = "OugaBouuu"
+			rng.randomize()
+			var random_num = rng.randf_range(0,taille-1)
+			self.editPseudo.text = names[random_num]
 			self.verifPseudo()
 
 
@@ -113,8 +122,9 @@ func _on_IpHost_text_changed():
 
 func _on_ButtonHost_pressed():
 #	TODO : call à la fonction qui creer un serveur, puis transition vers le Lobby
-#	Transition.transitionVers("res://Scenes/Lobby/Lobby.tscn")
-	pass # Replace with function body.
+	Network.hostServeur(self.editHost.text)
+	Transition.transitionVers("res://Scenes/Lobby/Lobby.tscn")
+
 
 
 func _on_ButtonFermer_pressed():
@@ -122,8 +132,7 @@ func _on_ButtonFermer_pressed():
 
 
 
-
-
-
-
-
+func _on_EditHost_text_changed():
+	if "\n" in self.IpHost.text:
+		self.IpHost.text = self.IpHost.text.replace("\n", "")
+		

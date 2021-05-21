@@ -91,11 +91,14 @@ func _on_ResetTailleEcrand_gui_input(event):
 
 
 func _on_retourMenu_pressed():
-
-	if Network.id !=1:
-		Network.peerClient.close_connection()
-	else:
+	if Network.id == 1 and !Network.idOneNotHost:
 		Network.peerServ.close_connection()
+	elif Network.id == 0 and Network.withHost == true:
+		Network.peerServ.close_connection()
+	else:
+		Network.peerClient.close_connection()
+	
+		
 		
 	Network.data={}
 	Network.data=Network.dataStruct.duplicate()
