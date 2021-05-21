@@ -1415,6 +1415,7 @@ scale_amount_random = 0.05
 scale_amount_curve = SubResource( 50 )
 
 [node name="Mystere" type="CPUParticles" parent="ParticulesRoot"]
+emitting = false
 lifetime = 1.75
 mesh = SubResource( 52 )
 emission_shape = 2
@@ -1423,7 +1424,6 @@ gravity = Vector3( 0, 0, 0 )
 angular_velocity_curve = SubResource( 53 )
 scale_amount = 0.13
 scale_amount_curve = SubResource( 54 )
-
 [connection signal="input_event" from="Mesh/Area" to="." method="_on_Area_input_event"]
 [connection signal="mouse_entered" from="Mesh/Area" to="." method="_on_Area_mouse_entered"]
 [connection signal="mouse_exited" from="Mesh/Area" to="." method="_on_Area_mouse_exited"]

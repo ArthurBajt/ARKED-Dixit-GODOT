@@ -27,7 +27,7 @@ func piocher(joueur: Joueur):
 		type = Globals.typesCartes.PIQUES
 	elif(number<4.5):
 		type = Globals.typesCartes.BOURRE
-	elif(number<5.2):
+	elif(number<5.2): 
 		type = Globals.typesCartes.MYSTERE
 	
 	Network.joueurPioche(joueur.id, carte, type)
