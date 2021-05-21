@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://Scenes/Joueur/Joueur.gd" type="Script" id=1]
 
@@ -42,6 +42,10 @@ material = SubResource( 8 )
 [sub_resource type="SpatialMaterial" id=10]
 resource_local_to_scene = true
 
+[sub_resource type="CapsuleMesh" id=11]
+resource_local_to_scene = true
+material = SubResource( 8 )
+
 [node name="Joueur" type="Spatial"]
 script = ExtResource( 1 )
 
@@ -76,6 +80,11 @@ mesh = SubResource( 6 )
 material/0 = SubResource( 7 )
 
 [node name="MeshInstance3" type="MeshInstance" parent="MeshRoot"]
-transform = Transform( 0.01, 0, 0, 0, 0.5, 0, 0, 0, 0.1, 0, 2.48389, 0.18893 )
+transform = Transform( 0.01, 0, 0, 0, 0.5, 0, 0, 0, 0.1, 0, 2.484, 0.19 )
 mesh = SubResource( 9 )
 material/0 = SubResource( 10 )
+
+[node name="MeshInstance4" type="MeshInstance" parent="MeshRoot"]
+transform = Transform( 0.01, 0, 0, 0, 0.5, 0, 0, 0, 0.1, 0, 2.484, -0.19 )
+mesh = SubResource( 11 )
+material/0 = null

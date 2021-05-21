@@ -13,18 +13,13 @@ onready var mainRoot = $CameraPos/MainRoot
 
 onready var cameraPos: Spatial = $CameraPos
 
-
-
-
-
-
-
 onready var CAM_MID = get_node("/root/Partie/Scene/Camera")
 const NODE_CAM = preload("res://Scenes/Joueur/CameraJoueur.tscn")
 const NODE_UI = preload("res://Scenes/Joueur/UiJoueur.tscn")
 const NODE_UI_CONTEUR = preload("res://Scenes/Joueur/UiConteur.tscn")
 const NODE_CHAT = preload("res://Scenes/Chat/Chat.tscn")
 const NODE_UI_TOURDEPARTIE = preload("res://Scenes/Joueur/UiTourDePartie.tscn")
+const NODE_UI_DISPLAY = preload("res://Scenes/Joueur/UiBoutonsDisplay.tscn")
 
 const NODE_CARTE = preload("res://Scenes/Carte/Carte.tscn")
 var estConteur: bool = false 
@@ -33,10 +28,11 @@ var uiConteur
 var uiChat: Chat
 var uiTourDePartie
 var myCam
+var uiDisplay
 
 
 var etat: int
-	
+
 func _ready():
 	Network.connect("ChangementConteur", self, "setConteur")
 	Network.connect("updateTheme",self,"changeTheme")
@@ -56,9 +52,10 @@ func init(idJoueur: int, plateauDePartie, couleurJoueur):
 	self.etat = Globals.EtatJoueur.ATTENTE_CHOIX_THEME
 	self.myCam = null
 
-	var tete=$MeshRoot/Head
-	var corps=$MeshRoot/Body
-	var chapeau=$MeshRoot/MeshInstance3
+	var tete = $MeshRoot/Head
+	var corps = $MeshRoot/Body
+	var chapeau = $MeshRoot/MeshInstance3
+	var chapeau2 = $MeshRoot/MeshInstance4
 	
 	var material = SpatialMaterial.new()
 	material.set_albedo(couleurJoueur)
@@ -67,6 +64,7 @@ func init(idJoueur: int, plateauDePartie, couleurJoueur):
 		corps.set_material_override(material)
 		tete.set_material_override(material)
 		chapeau.set_material_override(material)
+		chapeau2.set_material_override(material)
 
 	if estLocal():
 		var cam: Camera = NODE_CAM.instance()
@@ -79,6 +77,8 @@ func init(idJoueur: int, plateauDePartie, couleurJoueur):
 		self.add_child(ui)
 		self.uiChat = NODE_CHAT.instance()
 		self.add_child(uiChat)
+		self.uiDisplay = NODE_UI_DISPLAY.instance()
+		self.add_child(uiDisplay)
 		
 		self.uiTourDePartie = NODE_UI_TOURDEPARTIE.instance() 
 		self.uiTourDePartie.connect("pretNextRound", self, "pretPasserTour")
@@ -89,6 +89,7 @@ func init(idJoueur: int, plateauDePartie, couleurJoueur):
 		corps.set_material_override(material)
 		tete.set_material_override(material)
 		chapeau.set_material_override(material)
+		chapeau2.set_material_override(material)
 		
 		self.uiTourDePartie.enlever()
 		self.uiConteur.attendreChoixConteur()

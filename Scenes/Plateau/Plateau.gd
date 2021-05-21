@@ -15,6 +15,8 @@ var theme: String = ""
 onready var mesh = $Mesh
 onready var rootCartes = $RootCartes
 
+var drunked: bool = false
+
 var cartes: Array = []
 
 func _ready():
@@ -39,6 +41,7 @@ func _initPioche():
 	var nodePioche
 	if Network.id == 1:
 		nodePioche = NODE_PIOCHE_HOTE.instance()
+	
 	else:
 		nodePioche = NODE_PIOCHE_CLIENT.instance()
 	
@@ -92,18 +95,21 @@ func ajouteCartePlateau(carte: Carte, transform = null):
 	carte.estDansMain = false
 	carte.estSurPlateau =  true
 	carte.cache = true
-
+		
 func voteMoment():
 	
 	#Mélange des cartes
 	self.cartes.shuffle()
 	for carte in self.cartes:
+		if carte.type == Globals.typesCartes.BOURRE:
+			drunked = true
 		carte.positionCible = Vector3(0,0,1)
 	
 	yield(get_tree().create_timer(0.5), "timeout")
 
 	var cartePosees = []
 	for carte in self.cartes:
+		carte.afficheEffetBrouillard(drunked)
 		for cartezer in cartePosees:
 			cartezer.positionCible.x += 0.14
 		cartePosees.append(carte)
@@ -121,6 +127,10 @@ func voteMoment():
 		child.setVisible(true)
 
 func voirRes():
+	if(drunked):
+		drunked = false
+		for carte in self.cartes:
+			carte.afficheEffetBrouillard(false)
 	for j in self.joueurs:
 		j.voirRes()
 	
@@ -161,8 +171,11 @@ func attribuerPoints(idJoueur,points,nomCartePosee,nomCarteVotee):
 		var carteVoted = getCarte(nomCarteVotee)
 		j.points -= carteVoted.malus
 		
-	if(Network.id == 1):
+	if(Network.id == 1 and Network.withHost == false):
 		Network.setPointsJoueur(j.id,j.points)
+	elif Network.id == 1 and Network.withHost == true:
+		if Network.id == Network.utilisateurs[0].id :
+			Network.setPointsJoueur(j.id,j.points)
 	
 func nouvelleManche():
 	for carte in self.cartes:
@@ -173,6 +186,9 @@ func nouvelleManche():
 		j.nouvelleManche()
 		self.pioche.piocher(j)
 	
-	if(Network.id == 1):
+	if(Network.id == 1 and Network.withHost == false):
 		self.changeConteur()
+	elif Network.id == 1 and Network.withHost == true:
+		if Network.id == Network.utilisateurs[0].id :
+			self.changeConteur()
 	

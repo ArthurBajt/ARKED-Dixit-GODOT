@@ -1,0 +1,83 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Assets/Font/CatChild_base_24.tres" type="DynamicFont" id=1]
+[ext_resource path="res://Assets/Font/CatChild_base_48.tres" type="DynamicFont" id=2]
+[ext_resource path="res://Scenes/Scores/ItemJoueurScore.gd" type="Script" id=3]
+[ext_resource path="res://Assets/Sprites/lapin.png" type="Texture" id=4]
+
+[node name="Control" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_bottom = -660.0
+rect_min_size = Vector2( 0, 60 )
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+anchor_right = 1.0
+margin_bottom = 68.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+margin_right = 1280.0
+margin_bottom = 60.0
+grow_horizontal = 2
+grow_vertical = 2
+rect_min_size = Vector2( 0, 60 )
+alignment = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VSeparator" type="VSeparator" parent="VBoxContainer/HBoxContainer"]
+modulate = Color( 1, 1, 1, 0 )
+margin_right = 20.0
+margin_bottom = 60.0
+rect_min_size = Vector2( 20, 0 )
+
+[node name="ColorCircle" type="TextureRect" parent="VBoxContainer/HBoxContainer"]
+modulate = Color( 1, 0, 0, 1 )
+margin_left = 24.0
+margin_right = 84.0
+margin_bottom = 60.0
+rect_min_size = Vector2( 60, 60 )
+texture = ExtResource( 4 )
+
+[node name="VSeparator2" type="VSeparator" parent="VBoxContainer/HBoxContainer"]
+modulate = Color( 1, 1, 1, 0 )
+margin_left = 88.0
+margin_right = 98.0
+margin_bottom = 60.0
+rect_min_size = Vector2( 10, 0 )
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer"]
+margin_left = 102.0
+margin_top = 15.0
+margin_right = 212.0
+margin_bottom = 45.0
+size_flags_horizontal = 2
+custom_fonts/font = ExtResource( 1 )
+text = "qsccqscqsc"
+
+[node name="Label2" type="Label" parent="VBoxContainer/HBoxContainer"]
+margin_left = 1180.0
+margin_right = 1280.0
+margin_bottom = 60.0
+rect_min_size = Vector2( 100, 0 )
+custom_fonts/font = ExtResource( 2 )
+text = "30"
+align = 1
+valign = 1
+
+[node name="HSeparator" type="HSeparator" parent="VBoxContainer"]
+modulate = Color( 1, 1, 1, 0 )
+margin_top = 64.0
+margin_right = 1280.0
+margin_bottom = 68.0
+__meta__ = {
+"_edit_use_anchors_": false
+}

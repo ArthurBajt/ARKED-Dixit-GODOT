@@ -8,7 +8,6 @@ func _ready():
 	Globals.connect("fovChanged", self, "changeFov")
 	self.targetFov = Globals.fov
 	self.fov = Globals.fov
-	print(Globals.fov)
 
 
 func _process(delta):

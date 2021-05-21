@@ -27,7 +27,7 @@ func setNom(nom: String):
 
 
 func setCouleur(coul):
-	self.couleur.color = coul
+	self.couleur.modulate = coul
 
 
 func setPret(etat: bool):

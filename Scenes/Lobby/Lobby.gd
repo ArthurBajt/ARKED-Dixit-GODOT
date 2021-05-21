@@ -1,16 +1,22 @@
 extends Node
 
 const NODE_INFOJOUEUR = preload("res://Scenes/Lobby/InfoJoueur.tscn")
+const NODE_OPTIONS = preload("res://Scenes/Options/Options.tscn")
 
 onready var layoutJoueur = $Control/LayoutListe/VBoxContainer/LayoutJoueurs
 
 onready var buttonPret = $Control/MainLayout/VBoxContainer/ButtonPret
 onready var buttonLancer = $Control/MainLayout/VBoxContainer/ButtonLancer
+onready var labelCouleur = $Control/MainLayout/VBoxContainer/VBoxContainer/LabelCouleur
+onready var buttonGaucheCoul = $Control/MainLayout/VBoxContainer/VBoxContainer/LayoutCouleur/ButtonCouleurPrec
+onready var buttonDroitCoul = $Control/MainLayout/VBoxContainer/VBoxContainer/LayoutCouleur/ButtonCouleurSuiv
 
 onready var selectionCouleur = $Control/MainLayout/VBoxContainer/VBoxContainer/LayoutCouleur/CouleurSelection
 onready var NbPoint = $Control/MainLayout/VBoxContainer/VBoxContainer/changePoint/LayoutPoint/NbPoint
 onready var changePoint = $Control/MainLayout/VBoxContainer/VBoxContainer/changePoint
 var peutLancer: bool = false
+
+var uiOptions
 
 var joueurs: Dictionary = {}
 
@@ -20,13 +26,30 @@ func _ready():
 	Network.connect("nvStatuUtilisateur", self, "joueurNvStatut")
 	Network.connect("decoJoueur", self, "decoJoueur")
 	Network.connect("joueurChangeCouleur", self, "on_joueurChangeCouleur")
-	buttonLancer.visible = Network.id == 1
-	changePoint.visible = Network.id == 1
 	
+	if !Network.idOneNotHost and Network.id == 1:
+		buttonLancer.visible = true
+		changePoint.visible = true
+	elif Network.id == 0 and Network.withHost == true:
+		buttonLancer.visible = true
+		changePoint.visible = true
+	else:
+		buttonLancer.visible = false
+		changePoint.visible = false
+		
 	$Control/LayoutListe/VBoxContainer/LabelListe.text = R.getString("lobbyListe")
 	$Control/MainLayout/VBoxContainer/VBoxContainer/LabelCouleur.text = R.getString("lobbyCouleur")
 	
 	Network.setCouleurJoueur(Network.id, Network.getCouleursPossibles()[0])
+	
+	if Network.id == 0 and Network.withHost == true:
+		buttonDroitCoul.visible = false
+		buttonGaucheCoul.visible = false
+		selectionCouleur.visible = false
+		labelCouleur.visible = false
+		buttonPret.visible = false
+	self.uiOptions = NODE_OPTIONS.instance()
+	self.add_child(uiOptions)
 	
 	self.recupereJoueurs()
 
@@ -48,12 +71,10 @@ func joueurCo(idJoueur):
 		instance.setCouleur( Network.utilisateurs[idJoueur].couleur )
 		
 		if idJoueur == Network.id: # le joueur local
-			self.selectionCouleur.color = Network.utilisateurs[idJoueur].couleur
+			self.selectionCouleur.modulate = Network.utilisateurs[idJoueur].couleur
 	self.majPeutLancer()
 
 func decoJoueur(idJoueur):
-	print(idJoueur)
-
 	if idJoueur in self.joueurs.keys():
 		self.layoutJoueur.remove_child(self.joueurs[idJoueur])
 		self.joueurs.erase(idJoueur)
@@ -67,7 +88,6 @@ func majPeutLancer():
 	self.peutLancer = true
 	for usId in Network.utilisateurs:
 		self.peutLancer = self.peutLancer and Network.utilisateurs[usId].estPret
-#		print("majPeutLancer - ", usId, " - ", Network.utilisateurs[usId].estPret)
 	
 	if self.peutLancer:
 		self.buttonLancer.modulate = Color(1.0, 1.0, 1.0)
@@ -84,7 +104,7 @@ func _on_ButtonPret_pressed():
 
 
 func _on_ButtonLancer_pressed():
-	if Network.id == 1 and self.peutLancer:
+	if Network.estHote() and self.peutLancer:
 		Network.lobby_lancerPartie()
 
 
@@ -101,13 +121,13 @@ func _versPartie():
 
 func on_joueurChangeCouleur(id: int, coul: Color):
 	if id == Network.id:
-		self.selectionCouleur.color = coul
+		self.selectionCouleur.modulate = coul
 
 
 func _on_ButtonCouleurPrec_pressed():
 	var arr = Network.getCouleursPossibles()
-	if self.selectionCouleur.color in Globals.couleursValeurs.values():
-		var index: int = arr.find(self.selectionCouleur.color)
+	if self.selectionCouleur.modulate in Globals.couleursValeurs.values():
+		var index: int = arr.find(self.selectionCouleur.modulate)
 		index = index-1
 		if index < 0:
 			index = arr.size() -1
@@ -116,8 +136,8 @@ func _on_ButtonCouleurPrec_pressed():
 
 func _on_ButtonCouleurSuiv_pressed():
 	var arr = Network.getCouleursPossibles()
-	if self.selectionCouleur.color in Globals.couleursValeurs.values():
-		var index: int = arr.find(self.selectionCouleur.color)
+	if self.selectionCouleur.modulate in Globals.couleursValeurs.values():
+		var index: int = arr.find(self.selectionCouleur.modulate)
 		index = (index + 1) % arr.size()
 		Network.setCouleurJoueur(Network.id, arr[index])
 
@@ -140,3 +160,7 @@ func _on_ButtonPointSuiv_pressed():
 		nbPoints+=5
 		NbPoint.set_text(String(nbPoints))
 	Network.changeObjectif(int(NbPoint.text))
+
+
+func _on_ButtonOptions_pressed():
+	self.uiOptions.affiche()

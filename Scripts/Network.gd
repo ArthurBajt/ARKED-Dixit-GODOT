@@ -7,12 +7,13 @@ const MAX_UTILISATEURS: int = 99
 
 var peerServ
 var peerClient
-var id: int = 0
+var id: int = -1
 var nom = ""
 var erreur_connexion
 var tabCouleur=[Color.rebeccapurple,Color.orange,Color.maroon,Color.cadetblue,Color.red,Color.green]
 
-
+var withHost = false
+var idOneNotHost = false
 func _ready():
 # warning-ignore:return_value_discarded
 	get_tree().connect("connected_to_server", self, "_lobby_se_declarer")
@@ -20,16 +21,31 @@ func _ready():
 	get_tree().connect("server_disconnected", self, "deconnexion_server")
 	get_tree().connect("network_peer_disconnected", self, "deconnexion_client")
 
+var timer: float
+var isTimerRunning: bool = false
+func _process(delta):
+	if isTimerRunning:
+		timer+=delta
 
 func creerServeur(player_name, ip):
 	""" Creer un serveur """
 #	dataStruct.nom = player_name
-
+	withHost = false
 	self.nom = player_name
 	peerServ = NetworkedMultiplayerENet.new()
 	peerServ.set_bind_ip(ip)
 	peerServ.create_server(DEFAUT_PORT, MAX_UTILISATEURS)
 	get_tree().set_network_peer(peerServ)
+	_lobby_se_declarer()
+
+func hostServeur(ip):
+	""" Host un serveur """
+	peerServ = NetworkedMultiplayerENet.new()
+	withHost = true
+	peerServ.set_bind_ip(ip)   # Ip défini à 127.0.0.1 pour le moment
+	peerServ.create_server(DEFAUT_PORT, MAX_UTILISATEURS)
+	get_tree().set_network_peer(peerServ)
+	print("ici eho", peerServ.get_unique_id())
 	_lobby_se_declarer()
 	
 func rejoindreServeur(player_name, ipHote):
@@ -47,6 +63,7 @@ func rejoindreServeur(player_name, ipHote):
 var utilisateurs: Dictionary
 var data: Dictionary
 const dataStruct = {nom = "",
+					estPlateau = false,
 					estPret = false,
 					estDansPartie = false,
 					main = [],
@@ -59,6 +76,19 @@ const dataStruct = {nom = "",
 					etat = Globals.EtatJoueur.ATTENTE_CHOIX_THEME
 					}
 
+var idOneExisting = false
+var nbTours = 1
+var stats = {	
+				sociabilite = {},
+				tmpsReac = 	{},
+				cartesJouees = {},
+				themes = {}
+			}
+const tmpsReacTour = 	{
+						poseCarte = {},
+						voteCarte = {},
+						voirResultats = {}
+						}
 
 
 signal nvUtilisateur(idUtilisateur)
@@ -66,18 +96,40 @@ signal nvStatuUtilisateur(idUtilisateur, statu)
 signal partieLancee
 signal hotePret
 
-signal godMod
+func estHote():
+	return (id == 1 and !withHost) or (id == 0 and withHost)
+
+signal hoteTablette
+
 func _lobby_se_declarer():
+	
+	if peerClient!=null:
+		rpc_id(1, "demandeHote", peerClient.get_unique_id())
+	
+		yield(Network, "hoteTablette")
+	
 	""" Quand un joueur se connecte au serveur
 	Il recupère son ID propre.
 	Et déclare sa présence au serveur. """
 	
 	
-	if get_tree().is_network_server():
+	if get_tree().is_network_server() and withHost:
+		id = 0
+		dataStruct.estPlateau = true
+		dataStruct.estPret = true
+		print("with host")
+	elif get_tree().is_network_server() and !withHost:
 		id = 1
-	
+		idOneExisting = true
+
+		print("sans host")
 	else:
-		id = get_tree().get_network_unique_id()
+		print("topsdss")
+		if !idOneExisting :
+			id = 1
+			idOneNotHost=true
+		else:
+			id = get_tree().get_network_unique_id()
 	
 	if self.nom!="Dieu":
 		self.data = dataStruct.duplicate()
@@ -96,6 +148,37 @@ func _lobby_se_declarer():
 			if usId !=null:
 				emit_signal("nvUtilisateur", usId)
 				
+	self.data = dataStruct.duplicate()
+	self.data.nom = self.nom
+		
+	if id != 0:
+		
+		
+		utilisateurs[id] = self.dataStruct.duplicate()
+		utilisateurs[id].nom = self.nom
+		
+		
+	
+	if id > 1 and !withHost:								# NOTE : Peut être check si withHost et donc faire id > 0
+		rpc_id(1, "_lobby_declareUtilisateur", id, self.data)
+	elif id > 0:
+		rpc_id(1, "_lobby_declareUtilisateur", id, self.data)
+
+
+remote func demandeHote(idJoueur):
+	print("machin m'a parlé : ", idJoueur)
+	print("mes données c'est : ", self.utilisateurs, "\n")
+	rpc_id(idJoueur, "HoteRecu", self.utilisateurs)
+	
+
+remote func HoteRecu(donnee):
+	if donnee.empty():
+		idOneExisting=false
+	else:
+		idOneExisting = donnee[1]!=null
+		
+	emit_signal("hoteTablette")
+
 func retour_menu():
 	Transition.transitionVers("res://Scenes/MenuPrincipal/MenuPrincipal.tscn")
 
@@ -161,17 +244,20 @@ func deconnexion_client(id):
 			self.verifEtat(saveEtat)
 
 
+
 func deconnexion_server():
-	if self.id!=1:
+	self.saveJson(self.stats)
+	if (self.id!=1 and idOneNotHost) or (!withHost and self.id!=0):
 		erreur_connexion = R.getString("networkErrHoteQuitte")
 
-
-	
 	get_tree().set_network_peer(null)
 
 	self.data={}
 	self.data=self.dataStruct.duplicate()
 	self.utilisateurs={}
+	
+	withHost = false
+	idOneNotHost = false
 	
 	retour_menu()
 
@@ -197,6 +283,8 @@ remote func _lobby_declareUtilisateur(idUtilisateur: int, curentData:Dictionary 
 	rpc("_lobby_ajouteUtilisateur", idUtilisateur, curentData.duplicate() )
 	for usId in utilisateurs:
 		rpc_id(idUtilisateur,"_lobby_ajouteUtilisateur", usId, utilisateurs[usId])
+		#if withHost :
+			#rpc_id(0,"_lobby_ajouteUtilisateur", usId, utilisateurs[usId])
 
 
 remotesync func _lobby_ajouteUtilisateur(idUtilisateur: int, curentData: Dictionary = {}):
@@ -235,12 +323,17 @@ remotesync func _lobby_appliquerStatu(idUtilisateur: int, statu: bool):
 
 func lobby_lancerPartie():
 	""" Permet a l'hote de la partie de démarer le jeu pour tt les utilisateurs"""
-	if id == 1 and _peutLancerPartie():
+	if estHote() and _peutLancerPartie():
 		rpc("_lobby_lancePartie")
 
 
 remotesync func _lobby_lancePartie():
 	""" Signal a tt les utilisateurs du lobby que la partie commence."""
+	timer = 0
+	isTimerRunning = true
+	self.stats.tmpsReac[nbTours] = tmpsReacTour.duplicate()
+	for user in self.utilisateurs:
+		self.stats.sociabilite[user] = 0
 	emit_signal("partieLancee")
 
 func assigneCouleur():
@@ -275,7 +368,7 @@ func _peutLancerPartie()->bool:
 signal JoueursDansPartie
 
 func partie_setChargee():
-	"""Un est appelée quand un joueur a charger la scenen de dela partie."""
+	"""Un est appelée quand un joueur a charger la scene de de la partie."""
 	if id!=1:
 		rpc_id(1, "_partie_declareChargee", id)
 	else:
@@ -292,9 +385,10 @@ remotesync func _partie_declareChargee(idJoeuur: int):
 remotesync func _partie_appliqueChargee(idJoueur: int):
 	if idJoueur == id:
 		data.estDansPartie = true
-	utilisateurs[idJoueur].estDansPartie = true
+	if id!=0:
+		utilisateurs[idJoueur].estDansPartie = true
 	
-	if id == 1 and _sontJoueursDansPartie():
+	if estHote() and _sontJoueursDansPartie():
 
 		
 		emit_signal("JoueursDansPartie")
@@ -315,9 +409,10 @@ func voteCarte(carte, idJoueur):
 signal carteVotee(nomCarte, idJoueur)
 
 remotesync func joueurVoteCarte(nomCarte,idJoueur):
+	var timerAtThisMoment = timer
 	if(idJoueur == self.id):
 		self.data.carteVotee = nomCarte
-	
+	self.stats.tmpsReac[nbTours].voteCarte[idJoueur] = timerAtThisMoment
 	self.utilisateurs[idJoueur].carteVotee = nomCarte
 
 	self.utilisateurs[idJoueur].etat = Globals.EtatJoueur.ATTENTE_VOTES
@@ -348,6 +443,7 @@ func posercarte(idJoueur: int, carte: String):
 	rpc("appliquePoseCarte", idJoueur, carte)
 	
 remotesync func appliquePoseCarte(idJoueur: int, carte: String):
+	var timerAtThisMoment = timer
 	self.data.cartesPlateau[idJoueur] = carte
 	if idJoueur == self.id:
 		self.data.main.erase(carte)
@@ -357,6 +453,7 @@ remotesync func appliquePoseCarte(idJoueur: int, carte: String):
 	self.utilisateurs[idJoueur].main.erase(carte)
 	
 	if(!self.utilisateurs[idJoueur].estConteur):
+		self.stats.tmpsReac[nbTours].poseCarte[idJoueur] = timerAtThisMoment
 		self.utilisateurs[idJoueur].etat = Globals.EtatJoueur.ATTENTE_SELECTIONS
 	else:
 		self.utilisateurs[idJoueur].etat = Globals.EtatJoueur.CHOIX_THEME
@@ -365,7 +462,7 @@ remotesync func appliquePoseCarte(idJoueur: int, carte: String):
 	
 	emit_signal("JoueurPoseCarte", idJoueur, carte)
 	emit_signal("APoseCarte", idJoueur)
-	
+		
 signal ChangementConteur
 
 func changeConteur(idJoueur):
@@ -387,24 +484,32 @@ remotesync func declareChangementConteur(idJoueur):
 # Chat
 signal updateChat
 func envoieMessage(msg):
-	rpc("messageRecu", self.data.nom , msg)
+	rpc("messageRecu", self.id , msg)
 	
-remotesync func messageRecu(pseudo, msg):
+remotesync func messageRecu(id, msg):
+	stats.sociabilite[id] += 1
+	var pseudo = self.utilisateurs[id].nom
 	emit_signal("updateChat", pseudo, msg)
 
 # =================================================
 # Theme
 signal updateTheme
 func defineTheme(theme):
-	rpc("changeTheme", theme, self.data.nom)
+	rpc("changeTheme", self.id, theme)
 	
-remotesync func changeTheme(theme, nomConteur):
+remotesync func changeTheme(id, theme):
+	self.isTimerRunning = false
+	var timerAtThisMoment = self.timer
+	self.stats.themes[nbTours] = {id: theme}
 	for usId in self.utilisateurs:
 		if(self.utilisateurs[usId].estConteur):
+			self.stats.tmpsReac[nbTours].poseCarte[usId] = timerAtThisMoment
 			self.utilisateurs[usId].etat = Globals.EtatJoueur.ATTENTE_SELECTIONS
 		else:
 			self.utilisateurs[usId].etat = Globals.EtatJoueur.SELECTION_CARTE
-		
+	var nomConteur = self.utilisateurs[id].nom
+	self.timer = 0
+	self.isTimerRunning = true
 	emit_signal("updateTheme", theme, nomConteur)
 
 func verifEtat(etat):
@@ -426,6 +531,8 @@ remotesync func verifEtats(etat, idClient):
 	
 	if (compteur == nbJoueur):
 		if(etat==Globals.EtatJoueur.ATTENTE_SELECTIONS):
+			timer = 0
+			self.stats.cartesJouees[self.nbTours] = self.data.cartesPlateau
 			if(self.data.estConteur):
 				self.data.etat = Globals.EtatJoueur.ATTENTE_VOTES
 			else:
@@ -441,6 +548,7 @@ remotesync func verifEtats(etat, idClient):
 				print("V1 Etat de %s [%s]: %s" % [utilisateurs[user].nom, user,utilisateurs[user].etat])
 		
 		elif(etat==Globals.EtatJoueur.ATTENTE_VOTES):
+			timer = 0
 			self.data.etat = Globals.EtatJoueur.VOIR_RESULTAT
 			for user in self.utilisateurs:
 				self.utilisateurs[user].etat = Globals.EtatJoueur.VOIR_RESULTAT
@@ -450,6 +558,7 @@ remotesync func verifEtats(etat, idClient):
 				self.calculPoints()
 		
 		elif(etat==Globals.EtatJoueur.ATTENTE_PROCHAINE_MANCHE):
+			timer = 0
 			self.data.cartesPlateau = {}
 			self.data.carteVotee = null
 			self.data.etat = Globals.EtatJoueur.ATTENTE_CHOIX_THEME
@@ -460,11 +569,18 @@ remotesync func verifEtats(etat, idClient):
 			
 			var aFini = false
 			for user in self.utilisateurs:
-				aFini = aFini or self.utilisateurs[user].points>=30
+				aFini = aFini or self.utilisateurs[user].points>=self.utilisateurs[user].objectif
 			if aFini:
+				self.saveJson(self.stats)
 				emit_signal("finDePartie")
 			else:
+				self.nbTours += 1
+				self.stats.tmpsReac[nbTours] = tmpsReacTour.duplicate()
 				emit_signal("prochaineManche")
+		
+		print("")
+		print("stats: ",self.stats)
+		print("")
 
 #	for usId in self.utilisateurs:
 #		print("V2 Etat de %s [%s]: %s" % [utilisateurs[usId].nom, usId,utilisateurs[usId].etat])
@@ -488,10 +604,12 @@ func setCouleurJoueur(idJoueur: int, coul: Color):
 
 
 remotesync func couleurDeclare(idJoueur: int, coul: Color):
-	if self.id == idJoueur:
-		self.data.couleur = coul
-	self.utilisateurs[idJoueur].couleur = coul
-	emit_signal("joueurChangeCouleur", idJoueur, coul)
+	if idJoueur != 0:
+		if self.id == idJoueur :
+			self.data.couleur = coul
+		print(utilisateurs)
+		self.utilisateurs[idJoueur].couleur = coul
+		emit_signal("joueurChangeCouleur", idJoueur, coul)
 
 
 func getCouleurUtilisee():
@@ -589,9 +707,35 @@ func pretPourTour():
 
 signal joueurDePlusPret()
 remotesync func joueurPretPourTour(idJoueur):
+	var timerAtThisMoment = timer
 	if(idJoueur == Network.id):
 		self.data.etat = Globals.EtatJoueur.ATTENTE_PROCHAINE_MANCHE
+	self.stats.tmpsReac[nbTours].voirResultats[idJoueur] = timerAtThisMoment
 	self.utilisateurs[idJoueur].etat = Globals.EtatJoueur.ATTENTE_PROCHAINE_MANCHE
 	emit_signal("joueurDePlusPret")
 	if(idJoueur == Network.id):
 		Network.verifEtat(Globals.EtatJoueur.ATTENTE_PROCHAINE_MANCHE)
+		
+func rejouer():
+	rpc("rejouer_rpc")
+
+signal versLobby()
+remotesync func rejouer_rpc():
+	self.data.estPret = false
+	self.data.estDansPartie = false
+	self.data.main = []
+	self.data.points = 0
+	
+	for user in self.utilisateurs:
+		self.utilisateurs[user].estPret = false
+		self.utilisateurs[user].estDansPartie = false
+		self.utilisateurs[user].main = []
+		self.utilisateurs[user].points = 0
+	
+	emit_signal("versLobby")
+	
+func saveJson(dict):
+  var file = File.new()
+  file.open("user://stat.json", File.WRITE)
+  file.store_string(to_json(dict))
+  file.close()

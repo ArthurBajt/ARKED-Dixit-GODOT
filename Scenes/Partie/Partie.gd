@@ -4,12 +4,12 @@ extends Node
 onready var nodeJoueurs = $Scene/Joueurs
 var joueurs: Array = []
 const JOUEUR_INSTANCE = preload("res://Scenes/Joueur/Joueur.tscn")
+const VU_PLATEAU = preload("res://Scenes/VuPlateauCentrale/VuPlateau.tscn")
 const JOUEUR_POSITION: Vector3 = Vector3(0, 0, -4)
 
 onready var plateau = $Scene/Plateau
 
 export(String, FILE, "*.ogg") var musiquePath
-
 
 func _ready():
 	
@@ -26,6 +26,8 @@ func _ready():
 	Network.connect("giveVoteurs",self, "afficheVoteurs")
 	Network.connect("prochaineManche", self, "nouvelleManche")
 	Network.connect("changeConteurzer", self, "changeConteur")
+	
+	Network.connect("finDePartie", self, "finDePartie")
 
 class TrieJoueurs:
 	# c'est comme les fonctions discrettes en js.
@@ -47,6 +49,11 @@ func _instancierJoueurs():
 		joueurs.append(j)
 	
 	joueurs.sort_custom(TrieJoueurs, "sort")
+	
+	if Network.withHost == true and Network.id == 0:
+		var vuPlat = VU_PLATEAU.instance()
+		$Scene.add_child(vuPlat)
+		vuPlat.init(Network.id,plateau)
 	
 
 func _placerJoueurs():
@@ -106,7 +113,6 @@ func PionJoueur(idJoueur, ScX,ScY,ScZ,PosX, PosY, PosZ, rX, rY, rZ):
 				return pion
 
 func affichePoseurs():
-	print("Devrait afficher les poseurs")
 	for carte in plateau.cartes:
 		var jId
 		for j in Network.data.cartesPlateau:
@@ -133,3 +139,6 @@ func nouvelleManche():
 	
 func changeConteur():
 	self.plateau.changeConteur()
+
+func finDePartie():
+	Transition.transitionVers("res://Scenes/FinDePartie/FinDePartie.tscn")

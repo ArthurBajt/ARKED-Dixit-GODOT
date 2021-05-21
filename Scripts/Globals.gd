@@ -1,7 +1,9 @@
 extends Node
 
 
-var isDebug: bool = true setget setDebug
+var isDebug: bool = false setget setDebug
+
+var isMobile:bool = false
 
 enum EtatJoueur {
 				SELECTION_CARTE_THEME, 		# Conteur			0
@@ -110,3 +112,7 @@ func afficheErreur(erreur: String):
 	yield(get_tree(), "idle_frame")
 	errNode.setMessage(erreur)
 	get_parent().move_child( errNode, get_parent().get_child_count() )
+
+signal getDrunked()
+func plateauDrunked():
+	emit_signal("getDrunked")
