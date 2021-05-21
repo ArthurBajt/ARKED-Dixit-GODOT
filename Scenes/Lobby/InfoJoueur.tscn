@@ -66,6 +66,7 @@ margin_left = 619.0
 margin_right = 669.0
 margin_bottom = 60.0
 rect_min_size = Vector2( 50, 0 )
+size_flags_horizontal = 2
 texture = ExtResource( 4 )
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="HBoxContainer"]

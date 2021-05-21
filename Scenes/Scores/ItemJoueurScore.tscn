@@ -59,9 +59,21 @@ margin_left = 102.0
 margin_top = 15.0
 margin_right = 212.0
 margin_bottom = 45.0
-size_flags_horizontal = 2
 custom_fonts/font = ExtResource( 1 )
 text = "qsccqscqsc"
+
+[node name="VSeparator3" type="VSeparator" parent="VBoxContainer/HBoxContainer"]
+modulate = Color( 1, 1, 1, 0 )
+margin_left = 216.0
+margin_right = 226.0
+margin_bottom = 60.0
+rect_min_size = Vector2( 10, 0 )
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/HBoxContainer"]
+margin_left = 230.0
+margin_right = 230.0
+margin_bottom = 60.0
+size_flags_horizontal = 2
 
 [node name="Label2" type="Label" parent="VBoxContainer/HBoxContainer"]
 margin_left = 1180.0

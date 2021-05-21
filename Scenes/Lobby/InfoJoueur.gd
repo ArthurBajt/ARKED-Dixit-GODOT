@@ -19,7 +19,7 @@ func _ready():
 
 func setId(id: int):
 	self.id = id
-	$HBoxContainer/SymboleHote.visible = id == 1
+	$HBoxContainer/SymboleHote.visible = (id == 1 and !Network.withHost)
 
 
 func setNom(nom: String):

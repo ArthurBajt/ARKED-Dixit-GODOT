@@ -45,7 +45,6 @@ func hostServeur(ip):
 	peerServ.set_bind_ip(ip)   # Ip défini à 127.0.0.1 pour le moment
 	peerServ.create_server(DEFAUT_PORT, MAX_UTILISATEURS)
 	get_tree().set_network_peer(peerServ)
-	print("ici eho", peerServ.get_unique_id())
 	_lobby_se_declarer()
 	
 func rejoindreServeur(player_name, ipHote):
@@ -82,7 +81,8 @@ var stats = {
 				sociabilite = {},
 				tmpsReac = 	{},
 				cartesJouees = {},
-				themes = {}
+				themes = {},
+				points = {}
 			}
 const tmpsReacTour = 	{
 						poseCarte = {},
@@ -116,14 +116,11 @@ func _lobby_se_declarer():
 		id = 0
 		dataStruct.estPlateau = true
 		dataStruct.estPret = true
-		print("with host")
 	elif get_tree().is_network_server() and !withHost:
 		id = 1
 		idOneExisting = true
 
-		print("sans host")
 	else:
-		print("topsdss")
 		if !idOneExisting :
 			id = 1
 			idOneNotHost=true
@@ -148,8 +145,6 @@ func _lobby_se_declarer():
 
 
 remote func demandeHote(idJoueur):
-	print("machin m'a parlé : ", idJoueur)
-	print("mes données c'est : ", self.utilisateurs, "\n")
 	rpc_id(idJoueur, "HoteRecu", self.utilisateurs)
 	
 
@@ -171,12 +166,8 @@ func deconnexion_client(id):
 	var saveEtat = self.utilisateurs[id].etat
 	var saveNomCarte = self.utilisateurs[id].cartesPlateau.get(id)
 	var eraseCarte = false
-	print("c'est l'id : ", id)
 	
 	utilisateurs.erase(id)
-
-	for usId in utilisateurs: 
-		print(usId)
 		
 
 	match saveEtat:
@@ -517,7 +508,6 @@ remotesync func verifEtats(etat, idClient):
 				emit_signal("vote")
 
 					
-				print("V1 Etat de %s [%s]: %s" % [utilisateurs[user].nom, user,utilisateurs[user].etat])
 		
 		elif(etat==Globals.EtatJoueur.ATTENTE_VOTES):
 			timer = 0
@@ -534,7 +524,9 @@ remotesync func verifEtats(etat, idClient):
 			self.data.cartesPlateau = {}
 			self.data.carteVotee = null
 			self.data.etat = Globals.EtatJoueur.ATTENTE_CHOIX_THEME
+			self.stats.points[nbTours] = {}
 			for user in self.utilisateurs:
+				self.stats.points[nbTours][user] = self.utilisateurs[user].points
 				self.utilisateurs[user].cartesPlateau = {}
 				self.utilisateurs[user].carteVotee = null
 				self.utilisateurs[user].etat = Globals.EtatJoueur.ATTENTE_CHOIX_THEME
@@ -549,13 +541,6 @@ remotesync func verifEtats(etat, idClient):
 				self.nbTours += 1
 				self.stats.tmpsReac[nbTours] = tmpsReacTour.duplicate()
 				emit_signal("prochaineManche")
-		
-		print("")
-		print("stats: ",self.stats)
-		print("")
-
-#	for usId in self.utilisateurs:
-#		print("V2 Etat de %s [%s]: %s" % [utilisateurs[usId].nom, usId,utilisateurs[usId].etat])
 
 
 # =================================================
@@ -579,7 +564,6 @@ remotesync func couleurDeclare(idJoueur: int, coul: Color):
 	if idJoueur != 0:
 		if self.id == idJoueur :
 			self.data.couleur = coul
-		print(utilisateurs)
 		self.utilisateurs[idJoueur].couleur = coul
 		emit_signal("joueurChangeCouleur", idJoueur, coul)
 
@@ -661,7 +645,6 @@ func afficheVoteurs():
 		if(!self.utilisateurs[user].estConteur):
 			if(not(self.utilisateurs[user].carteVotee in nomCartes)):
 				nomCartes.append(self.utilisateurs[user].carteVotee)
-	print(nomCartes)
 	for c in nomCartes:
 		rpc("getVoteurs",c)
 

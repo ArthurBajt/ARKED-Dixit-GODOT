@@ -17,5 +17,7 @@ func _process(delta):
 	points = Network.utilisateurs[id].points
 	$VBoxContainer/HBoxContainer/ColorCircle.modulate = couleur
 	$VBoxContainer/HBoxContainer/Label.text = pseudo
+	if(id == 1 and !Network.withHost):
+		$VBoxContainer/HBoxContainer/TextureRect.texture = load("res://Assets/Sprites/crown.png")
 	$VBoxContainer/HBoxContainer/Label2.text = str(points)
 

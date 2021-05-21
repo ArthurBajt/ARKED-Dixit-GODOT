@@ -24,8 +24,6 @@ func _ready():
 
 
 func init(idJoueur: int, plateauDePartie):
-	print('appelé par: ')
-	print(idJoueur)
 	self.id = idJoueur
 	self.plateau = plateauDePartie
 	#self.etat = Globals.EtatJoueur.ATTENTE_CHOIX_THEME

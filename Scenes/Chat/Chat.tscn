@@ -35,15 +35,19 @@ margin_left = 78.0
 margin_top = -78.0
 margin_right = 234.0
 margin_bottom = 54.0
+grow_horizontal = 0
+grow_vertical = 0
 rect_min_size = Vector2( 156, 132 )
+custom_constants/separation = 5
 alignment = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Message1" type="Button" parent="Chat/Layout"]
+margin_top = 7.0
 margin_right = 156.0
-margin_bottom = 30.0
+margin_bottom = 37.0
 rect_min_size = Vector2( 150, 30 )
 custom_fonts/font = ExtResource( 2 )
 text = "Bien Joué !"
@@ -52,9 +56,9 @@ __meta__ = {
 }
 
 [node name="Message2" type="Button" parent="Chat/Layout"]
-margin_top = 34.0
+margin_top = 42.0
 margin_right = 156.0
-margin_bottom = 64.0
+margin_bottom = 72.0
 rect_min_size = Vector2( 150, 30 )
 custom_fonts/font = ExtResource( 2 )
 text = "Waouh"
@@ -63,9 +67,9 @@ __meta__ = {
 }
 
 [node name="Message3" type="Button" parent="Chat/Layout"]
-margin_top = 68.0
+margin_top = 77.0
 margin_right = 156.0
-margin_bottom = 98.0
+margin_bottom = 107.0
 rect_min_size = Vector2( 150, 30 )
 custom_fonts/font = ExtResource( 2 )
 text = "Nooooon"
@@ -74,9 +78,9 @@ __meta__ = {
 }
 
 [node name="Message4" type="Button" parent="Chat/Layout"]
-margin_top = 102.0
+margin_top = 112.0
 margin_right = 156.0
-margin_bottom = 132.0
+margin_bottom = 142.0
 rect_min_size = Vector2( 150, 30 )
 custom_fonts/font = ExtResource( 2 )
 text = "Presque !"
