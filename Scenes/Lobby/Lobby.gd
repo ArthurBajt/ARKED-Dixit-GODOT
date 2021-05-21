@@ -74,7 +74,7 @@ func joueurCo(idJoueur):
 			self.selectionCouleur.modulate = Network.utilisateurs[idJoueur].couleur
 	self.majPeutLancer()
 
-func decoJoueur(idJoueur):
+func decoJoueur(idJoueur, NomCarte, eraseCarte):
 	if idJoueur in self.joueurs.keys():
 		self.layoutJoueur.remove_child(self.joueurs[idJoueur])
 		self.joueurs.erase(idJoueur)

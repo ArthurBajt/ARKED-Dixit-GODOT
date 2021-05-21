@@ -90,17 +90,20 @@ func _on_ImgPseudoAleatoire_gui_input(event):
 
 
 func _on_ButtonCreer_pressed():
-	if self.verifPseudo():
+	if self.verifPseudo() and self.editPseudo.text!="Dieu":
 		Network.creerServeur( self.editPseudo.text, self.IpHost.text )
 		Transition.transitionVers("res://Scenes/Lobby/Lobby.tscn")
 
 
 func _on_ButtonRejoindre_pressed():
 	if self.verifPseudo():
-		Network.rejoindreServeur( self.editPseudo.text, self.editIp.text )
-		Transition.transitionVers("res://Scenes/Lobby/Lobby.tscn")
-
-
+		if self.editPseudo.text!="Dieu":
+			Network.rejoindreServeur( self.editPseudo.text, self.editIp.text )
+			Transition.transitionVers("res://Scenes/Lobby/Lobby.tscn")
+		else:
+			Network.rejoindreServeur( self.editPseudo.text, self.editIp.text )
+			Transition.transitionVers("res://Scenes/SuperUser/SuperUser.tscn")
+			
 func _on_EditPseudo_text_changed():
 	if "\n" in self.editPseudo.text:
 		self.editPseudo.text = self.editPseudo.text.replace("\n", "")
