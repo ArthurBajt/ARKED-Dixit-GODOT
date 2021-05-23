@@ -3,6 +3,7 @@ extends Control
 var id
 var pseudo
 var points
+var rank = 0
 
 func _ready():
 	pseudo = "N/A"
@@ -15,7 +16,10 @@ func _process(delta):
 	var pseudo = Network.utilisateurs[id].nom
 	var couleur = Network.utilisateurs[id].couleur
 	points = Network.utilisateurs[id].points
-	$VBoxContainer/HBoxContainer/ColorCircle.modulate = couleur
+	$VBoxContainer/HBoxContainer/Label3.text = str(rank) + "."
 	$VBoxContainer/HBoxContainer/Label.text = pseudo
+	$VBoxContainer/HBoxContainer/ColorCircle.modulate = couleur
+	if(id == 1 and !Network.withHost):
+		$VBoxContainer/HBoxContainer/TextureRect.texture = load("res://Assets/Sprites/crown.png")
 	$VBoxContainer/HBoxContainer/Label2.text = str(points)
 

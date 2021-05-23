@@ -1,9 +1,8 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Assets/Font/CatChild_base_48.tres" type="DynamicFont" id=1]
 [ext_resource path="res://Assets/Sprites/Led/led_red.png" type="Texture" id=2]
 [ext_resource path="res://Scenes/Lobby/InfoJoueur.gd" type="Script" id=3]
-[ext_resource path="res://Assets/Sprites/crown.png" type="Texture" id=4]
 [ext_resource path="res://Assets/Sfx/click.ogg" type="AudioStream" id=5]
 [ext_resource path="res://Assets/Sprites/lapin-30.png" type="Texture" id=6]
 
@@ -17,15 +16,16 @@ __meta__ = {
 }
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
-margin_right = 669.0
-margin_bottom = 60.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+alignment = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer"]
 margin_right = 60.0
-margin_bottom = 60.0
+margin_bottom = 70.0
 rect_min_size = Vector2( 60, 0 )
 alignment = 1
 __meta__ = {
@@ -33,22 +33,24 @@ __meta__ = {
 }
 
 [node name="LedPret" type="TextureRect" parent="HBoxContainer/VBoxContainer"]
-margin_top = 6.0
+margin_top = 11.0
 margin_right = 60.0
-margin_bottom = 54.0
+margin_bottom = 59.0
 texture = ExtResource( 2 )
 
 [node name="LabelPret" type="Label" parent="HBoxContainer"]
 margin_left = 64.0
+margin_top = 5.0
 margin_right = 225.0
-margin_bottom = 60.0
+margin_bottom = 65.0
 custom_fonts/font = ExtResource( 1 )
 text = "Pas Prêt"
 
 [node name="tiret" type="Label" parent="HBoxContainer"]
 margin_left = 229.0
+margin_top = 5.0
 margin_right = 274.0
-margin_bottom = 60.0
+margin_bottom = 65.0
 rect_min_size = Vector2( 45, 0 )
 custom_fonts/font = ExtResource( 1 )
 text = "-"
@@ -56,35 +58,36 @@ align = 1
 
 [node name="LabelNom" type="Label" parent="HBoxContainer"]
 margin_left = 278.0
+margin_top = 5.0
 margin_right = 615.0
-margin_bottom = 60.0
+margin_bottom = 65.0
 custom_fonts/font = ExtResource( 1 )
 text = "Le Nom du joueur"
 
 [node name="SymboleHote" type="TextureRect" parent="HBoxContainer"]
 margin_left = 619.0
 margin_right = 669.0
-margin_bottom = 60.0
+margin_bottom = 70.0
 rect_min_size = Vector2( 50, 0 )
-texture = ExtResource( 4 )
+size_flags_horizontal = 2
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="HBoxContainer"]
 margin_left = 673.0
 margin_right = 723.0
-margin_bottom = 60.0
+margin_bottom = 70.0
 rect_min_size = Vector2( 50, 0 )
 alignment = 1
 
 [node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/HBoxContainer2"]
 margin_left = 10.0
 margin_right = 40.0
-margin_bottom = 60.0
+margin_bottom = 70.0
 alignment = 1
 
 [node name="Couleur" type="TextureRect" parent="HBoxContainer/HBoxContainer2/VBoxContainer"]
-margin_top = 15.0
+margin_top = 20.0
 margin_right = 30.0
-margin_bottom = 45.0
+margin_bottom = 50.0
 rect_min_size = Vector2( 30, 30 )
 texture = ExtResource( 6 )
 

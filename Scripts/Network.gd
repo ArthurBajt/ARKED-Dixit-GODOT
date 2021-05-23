@@ -45,7 +45,6 @@ func hostServeur(ip):
 	peerServ.set_bind_ip(ip)   # Ip défini à 127.0.0.1 pour le moment
 	peerServ.create_server(DEFAUT_PORT, MAX_UTILISATEURS)
 	get_tree().set_network_peer(peerServ)
-	print("ici eho", peerServ.get_unique_id())
 	_lobby_se_declarer()
 	
 func rejoindreServeur(player_name, ipHote):
@@ -79,10 +78,12 @@ const dataStruct = {nom = "",
 var idOneExisting = false
 var nbTours = 1
 var stats = {	
+				pseudos = {},
 				sociabilite = {},
 				tmpsReac = 	{},
 				cartesJouees = {},
-				themes = {}
+				themes = {},
+				points = {}
 			}
 const tmpsReacTour = 	{
 						poseCarte = {},
@@ -94,6 +95,7 @@ const tmpsReacTour = 	{
 signal nvUtilisateur(idUtilisateur)
 signal nvStatuUtilisateur(idUtilisateur, statu)
 signal partieLancee
+signal hotePret
 
 func estHote():
 	return (id == 1 and !withHost) or (id == 0 and withHost)
@@ -102,7 +104,7 @@ signal hoteTablette
 
 func _lobby_se_declarer():
 	
-	if peerClient!=null:
+	if peerClient!=null and self.nom!="Dieu":
 		rpc_id(1, "demandeHote", peerClient.get_unique_id())
 	
 		yield(Network, "hoteTablette")
@@ -116,40 +118,56 @@ func _lobby_se_declarer():
 		id = 0
 		dataStruct.estPlateau = true
 		dataStruct.estPret = true
-		print("with host")
 	elif get_tree().is_network_server() and !withHost:
 		id = 1
 		idOneExisting = true
 
-		print("sans host")
 	else:
-		print("topsdss")
-		if !idOneExisting :
+		if !idOneExisting and self.nom!="Dieu":
 			id = 1
 			idOneNotHost=true
 		else:
 			id = get_tree().get_network_unique_id()
+
 	
-	self.data = dataStruct.duplicate()
-	self.data.nom = self.nom
-		
-	if id != 0:
-		
-		
-		utilisateurs[id] = self.dataStruct.duplicate()
-		utilisateurs[id].nom = self.nom
-		
-		
+	if self.nom!="Dieu":
+		self.data = dataStruct.duplicate()
+		self.data.nom = self.nom
+			
+		if id != 0:
+
+			utilisateurs[id] = self.dataStruct.duplicate()
+			utilisateurs[id].nom = self.nom
+
+			if id > 1 and !withHost:								# NOTE : Peut être check si withHost et donc faire id > 0
+				rpc_id(1, "_lobby_declareUtilisateur", id, self.data)
+			elif id > 0:
+				rpc_id(1, "_lobby_declareUtilisateur", id, self.data)
+	else:
+		rpc_id(1, "demandeDonnee", id)
+		yield(Network, "hotePret")
+		for usId in utilisateurs:
+			if usId !=null:
+				emit_signal("nvUtilisateur", usId)
+				
+				
+#	if self.nom!="Dieu":
+#		self.data = dataStruct.duplicate()
+#		self.data.nom = self.nom
+#
+#		utilisateurs[id] = dataStruct.duplicate()
+#		utilisateurs[id].nom = self.nom
+#
+#		if id > 1 :
+#			rpc_id(1, "_lobby_declareUtilisateur", id, self.data)
+#	else:
+#		
 	
-	if id > 1 and !withHost:								# NOTE : Peut être check si withHost et donc faire id > 0
-		rpc_id(1, "_lobby_declareUtilisateur", id, self.data)
-	elif id > 0:
-		rpc_id(1, "_lobby_declareUtilisateur", id, self.data)
+	
 
 
 remote func demandeHote(idJoueur):
-	print("machin m'a parlé : ", idJoueur)
-	print("mes données c'est : ", self.utilisateurs, "\n")
+
 	rpc_id(idJoueur, "HoteRecu", self.utilisateurs)
 	
 
@@ -171,15 +189,15 @@ func deconnexion_client(id):
 	var saveEtat = self.utilisateurs[id].etat
 	var saveNomCarte = self.utilisateurs[id].cartesPlateau.get(id)
 	var eraseCarte = false
-	print("c'est l'id : ", id)
+
 	
 	utilisateurs.erase(id)
 
-	for usId in utilisateurs: 
-		print(usId)
-		
+	
 
 	match saveEtat:
+		Globals.EtatJoueur.ATTENTE_CHOIX_THEME:
+			emit_signal("decoJoueur", id, saveNomCarte, eraseCarte)
 		Globals.EtatJoueur.SELECTION_CARTE_THEME:
 			emit_signal("decoJoueur", id, saveNomCarte, eraseCarte)
 			emit_signal("changeConteurzer")
@@ -243,6 +261,14 @@ func deconnexion_server():
 	
 	retour_menu()
 
+remote func donneeRecu(donnee):
+	self.utilisateurs=donnee
+	emit_signal("hotePret")
+	
+remote func demandeDonnee(idDemande):
+	rpc_id(idDemande, "donneeRecu", self.utilisateurs)
+
+
 
 
 
@@ -305,6 +331,7 @@ remotesync func _lobby_lancePartie():
 	isTimerRunning = true
 	self.stats.tmpsReac[nbTours] = tmpsReacTour.duplicate()
 	for user in self.utilisateurs:
+		self.stats.pseudos[user] = self.utilisateurs[user].nom
 		self.stats.sociabilite[user] = 0
 	emit_signal("partieLancee")
 
@@ -517,7 +544,6 @@ remotesync func verifEtats(etat, idClient):
 				emit_signal("vote")
 
 					
-				print("V1 Etat de %s [%s]: %s" % [utilisateurs[user].nom, user,utilisateurs[user].etat])
 		
 		elif(etat==Globals.EtatJoueur.ATTENTE_VOTES):
 			timer = 0
@@ -534,7 +560,9 @@ remotesync func verifEtats(etat, idClient):
 			self.data.cartesPlateau = {}
 			self.data.carteVotee = null
 			self.data.etat = Globals.EtatJoueur.ATTENTE_CHOIX_THEME
+			self.stats.points[nbTours] = {}
 			for user in self.utilisateurs:
+				self.stats.points[nbTours][user] = self.utilisateurs[user].points
 				self.utilisateurs[user].cartesPlateau = {}
 				self.utilisateurs[user].carteVotee = null
 				self.utilisateurs[user].etat = Globals.EtatJoueur.ATTENTE_CHOIX_THEME
@@ -549,13 +577,6 @@ remotesync func verifEtats(etat, idClient):
 				self.nbTours += 1
 				self.stats.tmpsReac[nbTours] = tmpsReacTour.duplicate()
 				emit_signal("prochaineManche")
-		
-		print("")
-		print("stats: ",self.stats)
-		print("")
-
-#	for usId in self.utilisateurs:
-#		print("V2 Etat de %s [%s]: %s" % [utilisateurs[usId].nom, usId,utilisateurs[usId].etat])
 
 
 # =================================================
@@ -579,7 +600,6 @@ remotesync func couleurDeclare(idJoueur: int, coul: Color):
 	if idJoueur != 0:
 		if self.id == idJoueur :
 			self.data.couleur = coul
-		print(utilisateurs)
 		self.utilisateurs[idJoueur].couleur = coul
 		emit_signal("joueurChangeCouleur", idJoueur, coul)
 
@@ -661,7 +681,6 @@ func afficheVoteurs():
 		if(!self.utilisateurs[user].estConteur):
 			if(not(self.utilisateurs[user].carteVotee in nomCartes)):
 				nomCartes.append(self.utilisateurs[user].carteVotee)
-	print(nomCartes)
 	for c in nomCartes:
 		rpc("getVoteurs",c)
 

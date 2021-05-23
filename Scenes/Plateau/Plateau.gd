@@ -16,6 +16,8 @@ onready var mesh = $Mesh
 onready var rootCartes = $RootCartes
 
 var drunked: bool = false
+var mystery: bool = false
+var joueursMysterieux = []
 
 var cartes: Array = []
 
@@ -98,42 +100,48 @@ func ajouteCartePlateau(carte: Carte, transform = null):
 		
 func voteMoment():
 	
+	yield(get_tree(), "idle_frame")
+	
 	#Mélange des cartes
 	self.cartes.shuffle()
 	for carte in self.cartes:
-		if carte.type == Globals.typesCartes.BOURRE:
+		if carte.type == Globals.typesCartes.MYSTERE:
+			carte.afficheEffets()
+			mystery = true
+			joueursMysterieux.append(carte.joueurQuiAPose)
+		elif carte.type == Globals.typesCartes.BOURRE:
 			drunked = true
 		carte.positionCible = Vector3(0,0,1)
 	
-	yield(get_tree().create_timer(0.5), "timeout")
+	yield(get_tree().create_timer(1.5), "timeout")
 
 	var cartePosees = []
-	for carte in self.cartes:
+	for i in range(0,self.cartes.size()):
+		var carte = self.cartes[i]
 		carte.afficheEffetBrouillard(drunked)
-		for cartezer in cartePosees:
-			cartezer.positionCible.x += 0.14
-		cartePosees.append(carte)
 		
-		carte.positionCible = Vector3(0.14, 0, 0) * -(cartePosees.size() - 1)
+		carte.positionCible.x = (float(i+0.5)-(float(self.cartes.size())/2))*0.5
+		carte.positionCible.y = 0.0
+		carte.positionCible.z = 0.0
 		
 		yield(get_tree().create_timer(0.2), "timeout")
-
-	for cartezer in cartePosees:
-		cartezer.positionCible.x -= 0.14
 
 	#retourner les cartes
 	for child in self.cartes:
 		yield(get_tree(), "idle_frame")
-		child.setVisible(true)
+		if(!mystery or (Network.id in self.joueursMysterieux)):
+			child.setVisible(true)
 
 func voirRes():
-	if(drunked):
-		drunked = false
-		for carte in self.cartes:
-			carte.afficheEffetBrouillard(false)
+	joueursMysterieux = []
+	drunked = false
+	mystery = false
+	for carte in self.cartes:
+		carte.setVisible(true)
+		carte.afficheEffetBrouillard(false)
 	for j in self.joueurs:
 		j.voirRes()
-	
+
 #================
 #	getters et trucs utiles toi même tu sais
 func getJoueur(id: int):

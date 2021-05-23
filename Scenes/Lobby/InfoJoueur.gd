@@ -19,7 +19,8 @@ func _ready():
 
 func setId(id: int):
 	self.id = id
-	$HBoxContainer/SymboleHote.visible = id == 1
+	if (id == 1 and !Network.withHost):
+		$HBoxContainer/SymboleHote.texture = load("res://Assets/Sprites/crown.png")
 
 
 func setNom(nom: String):

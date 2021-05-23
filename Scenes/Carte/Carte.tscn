@@ -1,4 +1,4 @@
-[gd_scene load_steps=107 format=2]
+[gd_scene load_steps=112 format=2]
 
 [ext_resource path="res://Scenes/Carte/Carte.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/Carte/Mesh/CarteDixit.obj" type="ArrayMesh" id=2]
@@ -56,6 +56,7 @@
 [ext_resource path="res://Assets/Sprites/Smoke/smoke_0048.png" type="Texture" id=54]
 [ext_resource path="res://Assets/Sprites/Smoke/smoke_0034.png" type="Texture" id=55]
 [ext_resource path="res://Assets/Sprites/beer.png" type="Texture" id=56]
+[ext_resource path="res://Assets/Sprites/question-mark-draw.png" type="Texture" id=57]
 
 [sub_resource type="QuadMesh" id=1]
 size = Vector2( 0.68, 0.98 )
@@ -1308,6 +1309,27 @@ material = SubResource( 48 )
 [sub_resource type="Curve" id=50]
 _data = [ Vector2( 0, 0 ), 0.0, 0.0, 0, 0, Vector2( 0.494253, 1 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
 
+[sub_resource type="SpatialMaterial" id=51]
+flags_transparent = true
+flags_unshaded = true
+params_billboard_mode = 3
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
+albedo_color = Color( 0.968627, 0.764706, 0.0666667, 0.839216 )
+albedo_texture = ExtResource( 57 )
+
+[sub_resource type="QuadMesh" id=52]
+material = SubResource( 51 )
+
+[sub_resource type="Curve" id=53]
+min_value = -360.0
+max_value = 360.0
+_data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 0.245714, 130.909 ), 0.0, 0.0, 0, 0, Vector2( 0.502857, 1 ), -491.254, -491.254, 0, 0, Vector2( 0.754286, 111.273 ), 0.0, 0.0, 0, 0, Vector2( 1, 1 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="Curve" id=54]
+_data = [ Vector2( 0, 0 ), 0.0, 0.0, 0, 0, Vector2( 0.502857, 1 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
+
 [node name="Carte" type="Spatial"]
 transform = Transform( 0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, 0, 0, 0 )
 script = ExtResource( 1 )
@@ -1391,6 +1413,17 @@ angle_random = 1.0
 scale_amount = 0.2
 scale_amount_random = 0.05
 scale_amount_curve = SubResource( 50 )
+
+[node name="Mystere" type="CPUParticles" parent="ParticulesRoot"]
+emitting = false
+lifetime = 1.75
+mesh = SubResource( 52 )
+emission_shape = 2
+emission_box_extents = Vector3( 0.3, 0.49, 0 )
+gravity = Vector3( 0, 0, 0 )
+angular_velocity_curve = SubResource( 53 )
+scale_amount = 0.13
+scale_amount_curve = SubResource( 54 )
 [connection signal="input_event" from="Mesh/Area" to="." method="_on_Area_input_event"]
 [connection signal="mouse_entered" from="Mesh/Area" to="." method="_on_Area_mouse_entered"]
 [connection signal="mouse_exited" from="Mesh/Area" to="." method="_on_Area_mouse_exited"]

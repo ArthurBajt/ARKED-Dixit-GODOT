@@ -79,7 +79,8 @@ func _on_ImgPseudoAleatoire_gui_input(event):
 	var rng = RandomNumberGenerator.new()
 	var names = ['Le Tigre','Tigre Blanc','El Primo','Gonzales','Jean','Parchemin de feu','Pamplemousse26','Nutella45','Serpentard52','Sacha',
 	'Le Lézard','Adrien 88','El Muchacho','Backflip69','Mickey','Takemichi','Subaru44','Dr Stone','Zoro','Meliodas','Barbara','Chocoléo','Luxem',
-	'HunterVanner','Bbouns','ZozoLaTornade','LegendaryDraft','El Sombrero','Catacombe46','Le Roi du Dixit','Luffy','xXDeathAderXx','Aypierre','LePessi','xXGucci_KawasakiXx']
+	'HunterVanner','Bbouns','ZozoLaTornade','LegendaryDraft','El Sombrero','Catacombe46','Le Roi du Dixit','Luffy','xXDeathAderXx','Aypierre','LePessi',
+	'xXGucci_KawasakiXx','LocalGhost','Squeak','CarpeDiem42','Trigger78','Rythm','Miguel','Salto92','MrLev12','Stonehenge','Chateau123']
 	var taille = names.size()
 	if event is InputEventMouseButton:
 		if event.pressed:
@@ -90,17 +91,20 @@ func _on_ImgPseudoAleatoire_gui_input(event):
 
 
 func _on_ButtonCreer_pressed():
-	if self.verifPseudo():
+	if self.verifPseudo() and self.editPseudo.text!="Dieu":
 		Network.creerServeur( self.editPseudo.text, self.IpHost.text )
 		Transition.transitionVers("res://Scenes/Lobby/Lobby.tscn")
 
 
 func _on_ButtonRejoindre_pressed():
 	if self.verifPseudo():
-		Network.rejoindreServeur( self.editPseudo.text, self.editIp.text )
-		Transition.transitionVers("res://Scenes/Lobby/Lobby.tscn")
-
-
+		if self.editPseudo.text!="Dieu":
+			Network.rejoindreServeur( self.editPseudo.text, self.editIp.text )
+			Transition.transitionVers("res://Scenes/Lobby/Lobby.tscn")
+		else:
+			Network.rejoindreServeur( self.editPseudo.text, self.editIp.text )
+			Transition.transitionVers("res://Scenes/SuperUser/SuperUser.tscn")
+			
 func _on_EditPseudo_text_changed():
 	if "\n" in self.editPseudo.text:
 		self.editPseudo.text = self.editPseudo.text.replace("\n", "")
