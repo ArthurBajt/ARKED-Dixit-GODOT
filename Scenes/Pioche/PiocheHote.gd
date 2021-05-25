@@ -20,7 +20,7 @@ func piocher(joueur: Joueur):
 	var rng = RandomNumberGenerator.new()
 	rng.randomize()
 	var number
-	number = rng.randf_range(0,10) # 1/100 -> 2% D | 1.5% -> P | 1% -> B | 0.7% -> M
+	number = rng.randf_range(0,100) # 1/100 -> 2% D | 1.5% -> P | 1% -> B | 0.7% -> M
 	if(number<2):
 		type = Globals.typesCartes.DOUBLE
 	elif(number<3.5):
