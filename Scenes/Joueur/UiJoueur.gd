@@ -15,7 +15,7 @@ func changeTheme(theme, estConteur=true, nomConteur=""):
 	if(estConteur):
 		labelConteur.text = "Vous avez choisi : %s" % theme
 	else:
-		labelConteur.text = "%s a choisi : %s" % [nomConteur,theme]
+		labelConteur.text = "%s a choisit : %s" % [nomConteur,theme]
 
 func resetTheme():
 	labelConteur.text = R.getString("labelConteur")
